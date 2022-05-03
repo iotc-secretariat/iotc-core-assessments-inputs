@@ -1,0 +1,107 @@
+[666/4SF_SAMPLESIZEALB]:
+
+SELECT 
+	cdeFleetGearFishery.Fishery, 
+	cdeFleetGearFishery.TargetArea AS Area, 
+	dbo_4SF_SampleSizeALB.*
+FROM 
+	dbo_4SF_SampleSizeALB 
+INNER JOIN 
+	cdeFleetGearFishery 
+ON 
+    ( dbo_4SF_SampleSizeALB.gear = cdefleetgearfishery.gear ) AND
+    ( dbo_4SF_SampleSizeALB.cdeFleet = cdefleetgearfishery.fleet OR cdefleetgearfishery.fleet = '*' ) AND
+    ( cdeFleetGearFishery.AREA = 
+        IIF(
+            Left([Grid],1)='1' OR Left([Grid],1)='9',
+            0, 
+            IIF(
+                Mid([Grid],2,3)*1<=225 AND Mid([Grid],5,3)*1<=75, 
+                1, 
+                IIF(
+                    Mid([Grid],2,3)*1<=225 AND Mid([Grid],5,3)*1>75, 
+                    2, 
+                    IIF(
+                        Mid([Grid],2,3)*1>225 AND Mid([Grid],5,3)*1<=75, 
+                        3, 
+                        4
+                    )
+                )
+            )
+        )
+    );
+
+[666/CEFORSF]:
+
+SELECT 
+	cdefleetgearfishery.fisheryNC, 
+	cdefleetgearfishery.fishery, 
+	cdefleetgearfishery.targetArea AS area, 
+	ceforsf.*
+FROM 
+	ceforsf 
+INNER JOIN 
+	cdefleetgearfishery 
+ON 
+	( ceforsf.gear = cdefleetgearfishery.gear ) AND
+	( ceforsf.fleet = cdefleetgearfishery.fleet OR cdefleetgearfishery.fleet = '*' ) AND
+	( cdeFleetGearFishery.AREA = 
+		IIF(Mid([Grid],2,3)*1<=225 AND Mid([Grid],5,3)*1<=75, 
+			1, 
+			IIF(Mid([Grid],2,3)*1<=225 AND Mid([Grid],5,3)*1>75, 
+				2, 
+				IIF(Mid([Grid],2,3)*1>225 AND Mid([Grid],5,3)*1<=75, 
+				3, 
+				4)
+			)
+		) 
+	);
+
+
+Creation of SA_ALB_Strata:
+
+(within CreateALBAss() procedure)
+
+ * [666/CEFORSF] + cdesizeclasses
+
+INSERT INTO 
+	SA_ALB_Strata (
+		fishery, 
+		Area, 
+		[year], 
+		quarter, 
+		firstclasslow, 
+		lastclasslow, 
+		sizeinterval, 
+		sno, 
+		tno, 
+		tmt 
+	)
+	
+	SELECT 
+		[666/CEFORSF].fishery, 
+		[666/CEFORSF].Area, 
+		[666/CEFORSF].year, 
+		[666/CEFORSF].quarter, 
+		cdesizeclasses.firstclasslow, 
+		cdesizeclasses.lastclasslow, 
+		cdesizeclasses.sizeinterval, 
+		Cdbl(0), 
+		SUM([666/CEFORSF].cenofish), 
+		SUM([666/CEFORSF].cemtfish)
+	FROM 
+		[666/CEFORSF]
+    INNER JOIN 
+    	cdesizeclasses
+    ON 
+    	[666/CEFORSF].species = cdesizeclasses.species
+    GROUP BY 
+    	[666/CEFORSF].fishery, 
+    	[666/CEFORSF].Area, 
+    	[666/CEFORSF].year, 
+    	[666/CEFORSF].quarter, 
+    	cdesizeclasses.firstclasslow, 
+    	cdesizeclasses.lastclasslow, 
+    	cdesizeclasses.sizeinterval, 
+    	Cdbl(0);
+ 
