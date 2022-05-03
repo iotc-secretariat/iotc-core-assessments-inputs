@@ -1,7 +1,5 @@
-.Rproj.user
-.Rhistory
-.RData
-.Ruserdata
-.csv
-.xlsx
-.png
+*.csv
+*.xlsx
+*.xls
+*.png
+*.RData
