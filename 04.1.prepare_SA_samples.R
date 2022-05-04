@@ -15,7 +15,7 @@ prepare_SA_samples_FIA_Q = function(raised_catches, size_frequency_samples) {
   
   setcolorder(
     SA_samples_FIA_Q, 
-    c("FISHERY", "AREA", 
+    c("FISHERY", "AREA", "AREA_ORIG",
       "YEAR", "QUARTER", 
       "FIRST_CLASS_LOW", "SIZE_INTERVAL", "NUMBER_OF_SAMPLES", 
       "EST_NO", "EST_MT")
@@ -29,7 +29,7 @@ prepare_SA_samples_FIA_Q = function(raised_catches, size_frequency_samples) {
   # Orders the result and assigns 0 as number of samples, and the default first class low and 
   # size-interval values to those records for which there was no SF_<species code> data
   
-  SA_samples_FIA_Q = SA_samples_FIA_Q[order(-YEAR, +FISHERY, +AREA, +QUARTER)]
+  SA_samples_FIA_Q = SA_samples_FIA_Q[order(-YEAR, +FISHERY, +AREA, +AREA_ORIG, +QUARTER)]
   SA_samples_FIA_Q[is.na(NUMBER_OF_SAMPLES), `:=`(NUMBER_OF_SAMPLES = 0,
                                                   FIRST_CLASS_LOW   = DEFAULT_FIRST_CLASS_LOW, # Species-specific constant imported through species' configuration
                                                   SIZE_INTERVAL     = DEFAULT_SIZE_INTERVAL    # Species-specific constant imported through species' configuration

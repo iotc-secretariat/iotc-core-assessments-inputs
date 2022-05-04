@@ -41,6 +41,12 @@ SA_AREAS_ORIG[CODE == "IRBETZW", NAME_SHORT := "A0 - South-Southwest"]
 SA_AREAS_ORIG[CODE == "IRBETZC", NAME_SHORT := "A0 - South-South-central"]
 SA_AREAS_ORIG[CODE == "IRBETZE", NAME_SHORT := "A0 - South-Southeast"]
 
+# Area names
+SA_AREA_ORIG_NAMES = c("A0 - Northwest", "A0 - Northeast", 
+                       "A1 - West", "A2 - East",
+                       "A3 - Southwest", "A3 - South-central", "A3 - Southeast",
+                       "A0 - South-Southwest", "A0 - South-South-central", "A0 - South-Southeast")
+  
 FG_5_TO_SA_AREAS_ORIG = iotc.core.gis.cwp.IO::grid_intersections_by_source_grid_type(target_grid_codes = SA_AREA_ORIG_CODES, 
                                                                                 source_grid_type_code = grid_5x5)
 
@@ -65,6 +71,8 @@ assign_area = function(dataset) {
     dataset = dataset[!is.na(TARGET_FISHING_GROUND_CODE)]
   }
   
+  dataset$AREA_ORIG = dataset$TARGET_FISHING_GROUND_CODE
+  
   delete_column(dataset, "PROPORTION")
   
   dataset = merge(dataset, BET_AREA_MAPPINGS,
@@ -80,6 +88,13 @@ assign_area = function(dataset) {
     dataset$AREA,
     levels = c(1, 2, 3, 0),
     labels = AREA_NAMES,
+    ordered = TRUE
+  )
+  
+  dataset$AREA_ORIG = factor(
+    dataset$AREA_ORIG,
+    levels = SA_AREA_ORIG_CODES,
+    labels = SA_AREA_ORIG_NAMES,
     ordered = TRUE
   )
   

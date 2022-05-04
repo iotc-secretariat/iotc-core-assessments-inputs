@@ -82,23 +82,23 @@ prepare_SA_CAS_FIA_Q = function(merged_catches_and_quarterly_CAS, samples_by_fis
   #CAS_strata = assign_area_and_fishery(extract_CAS_strata(CAS_strata_and_catches))
   CAS_data = assign_area_and_fishery(extract_CAS_data(CAS, quantity))
   
-  CAS_strata_and_catches = CAS_strata_and_catches[, .(EST_NO = sum(EST_NO, na.rm = TRUE), EST_MT = sum(EST_MT, na.rm = TRUE)), keyby = .(FISHERY, AREA, YEAR, QUARTER, FIRST_CLASS_LOW, SIZE_INTERVAL)]
-  #CAS_strata = unique(CAS_strata[, .(FISHERY, AREA, YEAR, QUARTER, FIRST_CLASS_LOW, SIZE_INTERVAL)])
+  CAS_strata_and_catches = CAS_strata_and_catches[, .(EST_NO = sum(EST_NO, na.rm = TRUE), EST_MT = sum(EST_MT, na.rm = TRUE)), keyby = .(FISHERY, AREA, AREA_ORIG, YEAR, QUARTER, FIRST_CLASS_LOW, SIZE_INTERVAL)]
+  #CAS_strata = unique(CAS_strata[, .(FISHERY, AREA, AREA_ORIG, YEAR, QUARTER, FIRST_CLASS_LOW, SIZE_INTERVAL)])
   
   colnames(CAS_data)[which(colnames(CAS_data) == quantity)] = "QUANTITY"
-  CAS_data = CAS_data[, .(QUANTITY = sum(QUANTITY, na.rm = TRUE)), keyby = .(FISHERY, AREA, YEAR, QUARTER, SIZE_BIN, SIZE_CLASS)]
+  CAS_data = CAS_data[, .(QUANTITY = sum(QUANTITY, na.rm = TRUE)), keyby = .(FISHERY, AREA, AREA_ORIG, YEAR, QUARTER, SIZE_BIN, SIZE_CLASS)]
   colnames(CAS_data)[which(colnames(CAS_data) == "QUANTITY")] = quantity
 
   CAS_data_pivoted = dcast.data.table(
     CAS_data, 
-    FISHERY + AREA + YEAR + QUARTER ~ SIZE_BIN,
+    FISHERY + AREA + AREA_ORIG + YEAR + QUARTER ~ SIZE_BIN,
     value.var = quantity, 
     fun = sum, 
     fill = 0.0,
     drop = c(TRUE, FALSE)
   )
   
-  SAMPLES = samples_by_fishery_and_quarter[, .(NUMBER_OF_SAMPLES = sum(NUMBER_OF_SAMPLES, na.rm = TRUE)), keyby = .(FISHERY, AREA, YEAR, QUARTER)]
+  SAMPLES = samples_by_fishery_and_quarter[, .(NUMBER_OF_SAMPLES = sum(NUMBER_OF_SAMPLES, na.rm = TRUE)), keyby = .(FISHERY, AREA, AREA_ORIG, YEAR, QUARTER)]
   
   CAS_strata_catches_samples = 
     merge(CAS_strata_and_catches, SAMPLES,
@@ -111,7 +111,7 @@ prepare_SA_CAS_FIA_Q = function(merged_catches_and_quarterly_CAS, samples_by_fis
   #       "FLEET", "GEAR_CODE", "SCHOOL_TYPE_CODE", 
   #       "FISHING_GROUND_CODE"),
   
-  setcolorder(CAS_OUT, c("FISHERY", "AREA", 
+  setcolorder(CAS_OUT, c("FISHERY", "AREA", "AREA_ORIG", 
                          "YEAR", "QUARTER", 
                          "FIRST_CLASS_LOW", "SIZE_INTERVAL",
                          "NUMBER_OF_SAMPLES", "EST_NO", "EST_MT"))

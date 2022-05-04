@@ -62,11 +62,11 @@ prepare_SA_CAA_NO_FIA_Q = function(merged_catches_and_quarterly_CAS, age_length_
   CAS_strata_and_catches = assign_area_and_fishery(extract_CAS_strata_and_catches(CAS))
   CAS_data               = assign_area_and_fishery(extract_CAS_data(CAS, quantity))
   
-  CAS_strata_and_catches = CAS_strata_and_catches[, .(EST_NO = sum(EST_NO, na.rm = TRUE), EST_MT = sum(EST_MT, na.rm = TRUE)), keyby = .(FISHERY, AREA, YEAR, QUARTER, FIRST_CLASS_LOW, SIZE_INTERVAL)]
+  CAS_strata_and_catches = CAS_strata_and_catches[, .(EST_NO = sum(EST_NO, na.rm = TRUE), EST_MT = sum(EST_MT, na.rm = TRUE)), keyby = .(FISHERY, AREA, AREA_ORIG, YEAR, QUARTER, FIRST_CLASS_LOW, SIZE_INTERVAL)]
   
   
   colnames(CAS_data)[which(colnames(CAS_data) == quantity)] = "QUANTITY"
-  CAS_data               = CAS_data[, .(QUANTITY = sum(QUANTITY, na.rm = TRUE)), keyby = .(FISHERY, AREA, YEAR, QUARTER, SIZE_BIN, SIZE_CLASS)]
+  CAS_data               = CAS_data[, .(QUANTITY = sum(QUANTITY, na.rm = TRUE)), keyby = .(FISHERY, AREA, AREA_ORIG, YEAR, QUARTER, SIZE_BIN, SIZE_CLASS)]
   colnames(CAS_data)[which(colnames(CAS_data) == "QUANTITY")] = quantity
   
   CAS_data$SIZE_CLASS_ALT = CAS_data$SIZE_CLASS
@@ -79,7 +79,7 @@ prepare_SA_CAA_NO_FIA_Q = function(merged_catches_and_quarterly_CAS, age_length_
   
   colnames(CAA_data)[which(colnames(CAA_data) == quantity)] = "QUANTITY"
   
-  CAA_data = CAA_data[, .(FISHERY, AREA,
+  CAA_data = CAA_data[, .(FISHERY, AREA, AREA_ORIG, 
                           YEAR, QUARTER, 
                           QUANTITY,
                           METHOD = Method, AGE = Age, PROPORTION = Proportion)]
@@ -92,7 +92,7 @@ prepare_SA_CAA_NO_FIA_Q = function(merged_catches_and_quarterly_CAS, age_length_
   
   CAA_data_pivoted = dcast.data.table(
     CAA_data, 
-    FISHERY + AREA + YEAR + QUARTER + METHOD ~ AGE,
+    FISHERY + AREA + AREA_ORIG + YEAR + QUARTER + METHOD ~ AGE,
     value.var = quantity, 
     fun = sum, 
     fill = 0.0,
@@ -101,14 +101,14 @@ prepare_SA_CAA_NO_FIA_Q = function(merged_catches_and_quarterly_CAS, age_length_
   
   CAA_OUT = merge(CAS_strata_and_catches, 
                   CAA_data_pivoted,
-                  by = c("FISHERY", "AREA", 
+                  by = c("FISHERY", "AREA", "AREA_ORIG",
                          "YEAR", "QUARTER"),
                   all.x = TRUE)
  
   delete_column(CAA_OUT, c("FIRST_CLASS_LOW",
                            "SIZE_INTERVAL"))
   
-  setcolorder(CAA_OUT, c("FISHERY", "AREA",
+  setcolorder(CAA_OUT, c("FISHERY", "AREA", "AREA_ORIG", 
                          "YEAR", "QUARTER", 
                          "EST_NO", "EST_MT", "METHOD"))
   

@@ -43,7 +43,7 @@ delete_column(CAA_FIA_Q_U, c("EST_MT", "EST_NO", "METHOD"))
 CAA_FIA_Q_UNPIVOTED_NO = 
   melt.data.table(
     CAA_FIA_Q_U,
-    id.vars = c("FISHERY", "AREA", "YEAR", "QUARTER"),
+    id.vars = c("FISHERY", "AREA", "AREA_ORIG", "YEAR", "QUARTER"),
     value.name = "FISH_COUNT", 
     variable.name = "AGE"
   )

@@ -12,7 +12,9 @@ SA_AREAS[CODE == "IRALB03", NAME_SHORT := "3 - Southwest"]
 SA_AREAS[CODE == "IRALB04", NAME_SHORT := "4 - Southeast"]
 
 # Area and fishery group names
-AREA_NAMES          = SA_AREAS$NAME_SHORT
+AREA_NAMES          = sort(SA_AREAS$NAME_SHORT)
+AREA_CODES          = sort(SA_AREAS$CODE)
+
 FISHERY_GROUP_NAMES = c("DN - Driftnets", 
                         "FLL - fresh-tuna longliners", 
                         "LL - all other longliners", 
@@ -25,75 +27,47 @@ assign_area = function(dataset) {
                   by.y = "SOURCE_FISHING_GROUND_CODE",
                   all.x = TRUE)
   
-  dataset[, AREA := ifelse(TARGET_FISHING_GROUND_CODE == "IRALB01", 1,
-                           ifelse(TARGET_FISHING_GROUND_CODE == "IRALB02", 2,
-                                  ifelse(TARGET_FISHING_GROUND_CODE == "IRALB03", 3, 4)))]
-  
+  dataset[, AREA_ORIG := TARGET_FISHING_GROUND_CODE]
+
   delete_column(dataset, c("TARGET_FISHING_GROUND_CODE", "PROPORTION"))
 
-  unmapped_grid_codes = unique(dataset[is.na(AREA)]$FISHING_GROUND_CODE)
+  unmapped_grid_codes = unique(dataset[is.na(AREA_ORIG)]$FISHING_GROUND_CODE)
   
   if(length(unmapped_grid_codes) >= 1) {
     print(paste0(length(unmapped_grid_codes), " grids have not been assigned to any SA area..."))
-    print(unique(dataset[is.na(AREA)]$FISHING_GROUND_CODE))
+    print(unique(dataset[is.na(AREA_ORIG)]$FISHING_GROUND_CODE))
    
-    dataset = dataset[!is.na(AREA)]
+    dataset = dataset[!is.na(AREA_ORIG)]
   }
+  
+  dataset$AREA_ORIG = factor(
+    dataset$AREA_ORIG,
+    levels = AREA_CODES,
+    labels = AREA_NAMES,
+    ordered = TRUE
+  )
+  
+  dataset$AREA = dataset$AREA_ORIG
   
   return(dataset)
 }
 
-# For this to be of help, we need to break down SF grids as 5x5 grids first, considering that several records might indeed refer to larger (or smaller) grids
-# IRALB01 = grid_intersections_by_source_grid_type(grid_5x5, "IRALB01")
-# IRALB02 = grid_intersections_by_source_grid_type(grid_5x5, "IRALB02")
-# IRALB03 = grid_intersections_by_source_grid_type(grid_5x5, "IRALB03")
-# IRALB04 = grid_intersections_by_source_grid_type(grid_5x5, "IRALB04")
-assign_area_old = function(dataset) {
-  #print("Assigning area to dataset...")
-  
-  # WRONG DEFINITIONS (used for previous assessments)
-  
-  N = dataset[substr(FISHING_GROUND_CODE, 2, 4) <= "225"]
-  S = dataset[substr(FISHING_GROUND_CODE, 2, 4)  > "225"]
-  
-  N[substr(FISHING_GROUND_CODE, 5, 7) <= "075", AREA := 1]
-  N[substr(FISHING_GROUND_CODE, 5, 7)  > "075", AREA := 2]
-  
-  S[substr(FISHING_GROUND_CODE, 5, 7) <= "075", AREA := 3]
-  S[substr(FISHING_GROUND_CODE, 5, 7)  > "075", AREA := 4]
-  
-  # CORRECT DEFINITIONS (to be used for forthcoming assessments)
-  
-  #N = dataset[substr(FISHING_GROUND_CODE, 2, 4)  < "225"]
-  #S = dataset[substr(FISHING_GROUND_CODE, 2, 4) >= "225"]
-  
-  #N[substr(FISHING_GROUND_CODE, 5, 7)  < "075", AREA := 1]
-  #N[substr(FISHING_GROUND_CODE, 5, 7) >= "075", AREA := 2]
-  
-  #S[substr(FISHING_GROUND_CODE, 5, 7)  < "075", AREA := 3]
-  #S[substr(FISHING_GROUND_CODE, 5, 7) >= "075", AREA := 4]
-  
-  #dataset[substr(FISHING_GROUND_CODE, 2, 4)  < "225" & substr(FISHING_GROUND_CODE, 5, 7)  < "075", AREA := 1]
-  #dataset[substr(FISHING_GROUND_CODE, 2, 4)  < "225" & substr(FISHING_GROUND_CODE, 5, 7) >= "075", AREA := 2]
-  #dataset[substr(FISHING_GROUND_CODE, 2, 4) >= "225" & substr(FISHING_GROUND_CODE, 5, 7)  < "075", AREA := 3]
-  #dataset[substr(FISHING_GROUND_CODE, 2, 4) >= "225" & substr(FISHING_GROUND_CODE, 5, 7) >= "075", AREA := 4]
-  
-  return(rbind(N, S))
-}
-
 assign_fishery = function(dataset) {
-  dataset[, FISHERY_TYPE := "OT"]
+  dataset[,                                                                             FISHERY_TYPE := "OT"]
   dataset[GEAR_CODE %in% c("LL", "LLOB", "FLL", "LLCO", "ELL", "ELLOB", "SLL", "LLEX"), FISHERY_TYPE := "LL"]
   dataset[GEAR_CODE %in% c("PS", "PSOB"),                                               FISHERY_TYPE := "PS"]
   dataset[GEAR_CODE %in% c("GILL") & FLEET == "TWN",                                    FISHERY_TYPE := "DN"]
   
-  dataset[, FISHERY := paste0(FISHERY_TYPE, AREA)]
+  dataset[AREA == "1 - Northwest", FISHERY := paste0(FISHERY_TYPE, 1)]
+  dataset[AREA == "2 - Northeast", FISHERY := paste0(FISHERY_TYPE, 2)]
+  dataset[AREA == "3 - Southwest", FISHERY := paste0(FISHERY_TYPE, 3)]
+  dataset[AREA == "4 - Southeast", FISHERY := paste0(FISHERY_TYPE, 4)]
   
-  dataset[FISHERY_TYPE == "PS",  FISHERY := paste0(FISHERY_TYPE, 1)]
-  dataset[FISHERY_TYPE == "OT" & FLEET == "MDV", FISHERY := paste0(FISHERY_TYPE, 1)]
-  dataset[FISHERY_TYPE == "OT" & FLEET == "AUS", FISHERY := paste0(FISHERY_TYPE, 4)]
-  dataset[FISHERY_TYPE == "DN" & AREA %in% c(1, 3), FISHERY := paste0(FISHERY_TYPE, 3)]
-  dataset[FISHERY_TYPE == "DN" & AREA %in% c(2, 4), FISHERY := paste0(FISHERY_TYPE, 4)]
+  dataset[FISHERY_TYPE == "PS",  `:=`(FISHERY = paste0(FISHERY_TYPE, 1), AREA = "1 - Northwest")]
+  dataset[FISHERY_TYPE == "OT" & FLEET == "MDV", `:=`(FISHERY = paste0(FISHERY_TYPE, 1), AREA = "1 - Northwest")]
+  dataset[FISHERY_TYPE == "OT" & FLEET == "AUS", `:=`(FISHERY = paste0(FISHERY_TYPE, 4), AREA = "4 - Southeast")]
+  dataset[FISHERY_TYPE == "DN" & AREA_ORIG %in% c("1 - Northwest", "3 - Southwest"), `:=`(FISHERY = paste0(FISHERY_TYPE, 3), AREA = "3 - Southwest")]
+  dataset[FISHERY_TYPE == "DN" & AREA_ORIG %in% c("2 - Northeast", "4 - Southeast"), `:=`(FISHERY = paste0(FISHERY_TYPE, 4), AREA = "4 - Southeast")]
   
   return(dataset)
 }

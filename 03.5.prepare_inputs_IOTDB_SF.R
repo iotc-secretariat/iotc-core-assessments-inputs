@@ -179,19 +179,19 @@ standardize_grids = function(unpivoted, target_grid_type = grid_5x5) {
 repivot_SF_fishery_area = function(unpivoted) {
   unpivoted = assign_area_and_fishery(unpivoted)
   unpivoted = unpivoted[, .(FISH_COUNT = sum(FISH_COUNT, na.rm = TRUE)),
-                            keyby = .(FISHERY, AREA,
+                            keyby = .(FISHERY, AREA, AREA_ORIG,
                                       YEAR, QUARTER,
                                       FIRST_CLASS_LOW, SIZE_INTERVAL,
                                       #NUMBER_OF_SAMPLES,
                                       SIZE_BIN, SIZE_CLASS)]
   
   unpivoted[, NUMBER_OF_SAMPLES := round(sum(FISH_COUNT, na.rm = TRUE), 2), 
-              by = .(FISHERY, AREA, 
+              by = .(FISHERY, AREA, AREA_ORIG,
                      YEAR, QUARTER,
                      FIRST_CLASS_LOW, SIZE_INTERVAL)]
                      #NUMBER_OF_SAMPLES)]
   
-  setcolorder(unpivoted, c("FISHERY", "AREA", 
+  setcolorder(unpivoted, c("FISHERY", "AREA", "AREA_ORIG",
                            "YEAR", "QUARTER", 
                            "FIRST_CLASS_LOW", "SIZE_INTERVAL", 
                            "NUMBER_OF_SAMPLES",
@@ -201,7 +201,7 @@ repivot_SF_fishery_area = function(unpivoted) {
   pivoted = 
     dcast.data.table(
       unpivoted[FISH_COUNT > 0], 
-      FISHERY + AREA + YEAR + QUARTER + FIRST_CLASS_LOW + SIZE_INTERVAL + NUMBER_OF_SAMPLES ~ SIZE_BIN,
+      FISHERY + AREA + AREA_ORIG + YEAR + QUARTER + FIRST_CLASS_LOW + SIZE_INTERVAL + NUMBER_OF_SAMPLES ~ SIZE_BIN,
       value.var = "FISH_COUNT", 
       fun = sum, 
       fill = NA,

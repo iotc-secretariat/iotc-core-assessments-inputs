@@ -82,7 +82,7 @@ prepare_alternative_data = function(CE_raised_by_YQMFG) {
   
   CE_TWN_JPN = 
     CE_TWN_JPN[, .(CE_NO = sum(CE_NO, na.rm = TRUE), CE_MT = sum(CE_MT, na.rm = TRUE)),
-               keyby = .(YEAR, QUARTER, FISHERY, AREA, FLEET)]
+               keyby = .(YEAR, QUARTER, FISHERY, AREA, AREA_ORIG, FLEET)]
   
   CE_TWN_JPN_MT_Y = CE_TWN_JPN[, .(CE_MT = sum(CE_MT, na.rm = TRUE)), keyby = .(FLEET, YEAR)][CE_MT > 0]
   NC_TWN_JPN_MT_Y = CE_raised_by_YQMFG[GEAR_CODE == "LL" & FLEET %in% c("TWN", "JPN"), .(NC_MT = sum(EST_MT)), keyby = .(YEAR, FLEET)]
@@ -98,10 +98,10 @@ prepare_alternative_data = function(CE_raised_by_YQMFG) {
   CE_R_FIA_Q_ALT = assign_area_and_fishery(CE_raised_by_YQMFG)
   CE_R_FIA_Q_ALT = CE_R_FIA_Q_ALT[, .(CAS_NO = sum(EST_NO, na.rm = TRUE), 
                                       CAS_MT = sum(EST_MT, na.rm = TRUE)),
-                                  keyby = .(FLEET, FISHERY, AREA, YEAR, QUARTER)]
+                                  keyby = .(FLEET, FISHERY, AREA, AREA_ORIG, YEAR, QUARTER)]
   
   CE_R_FIA_Q_ALT = merge(CE_R_FIA_Q_ALT, CE_TWN_JPN_U,
-                         by = c("YEAR", "FLEET", "QUARTER", "FISHERY", "AREA"),
+                         by = c("YEAR", "FLEET", "QUARTER", "FISHERY", "AREA", "AREA_ORIG"),
                          all.x = TRUE)
   
   CE_R_FIA_Q_ALT[!is.na(CE_NO_C), EST_NO := CE_NO_C]
@@ -110,11 +110,11 @@ prepare_alternative_data = function(CE_raised_by_YQMFG) {
   CE_R_FIA_Q_ALT[!FLEET %in% c("JPN", "TWN") | !FISHERY %in% c("LL1", "LL2", "LL3", "LL4"), EST_NO := CAS_NO]
   
   CE_R_FIA_Q_ALT = CE_R_FIA_Q_ALT[, .(EST_NO = sum(EST_NO, na.rm = TRUE), EST_MT = sum(CAS_MT, na.rm = TRUE)),
-                                  keyby = .(FISHERY, AREA, YEAR, QUARTER)]
+                                  keyby = .(FISHERY, AREA, AREA_ORIG, YEAR, QUARTER)]
   
   ### MIGHT BE NECESSARY TO SCALE UP / DOWN THE SF FOR ALL TWN LL FISHERIES BY THE COEFFICIENT IDENTIFIED FOR THEIR AREA
   
-  setcolorder(CE_R_FIA_Q_ALT, c("FISHERY", "AREA", "YEAR", "QUARTER", "EST_MT", "EST_NO"))
+  setcolorder(CE_R_FIA_Q_ALT, c("FISHERY", "AREA", "AREA_ORIG", "YEAR", "QUARTER", "EST_MT", "EST_NO"))
   
   return(CE_R_FIA_Q_ALT)
 }
@@ -136,7 +136,7 @@ CE_R_FIA_Q =
       CE_raised
     )
   )[, .(EST_MT = sum(EST_MT, na.rm = TRUE), EST_NO = sum(EST_NO, na.rm = TRUE)),
-        keyby = .(FISHERY, AREA, YEAR , QUARTER)]
+        keyby = .(FISHERY, AREA, AREA_ORIG, YEAR , QUARTER)]
 
 CE_R_FIA_Q_FL = 
   assign_area_and_fishery(
@@ -144,6 +144,6 @@ CE_R_FIA_Q_FL =
       CE_raised
     )
   )[, .(EST_MT = sum(EST_MT, na.rm = TRUE), EST_NO = sum(EST_NO, na.rm = TRUE)),
-    keyby = .(FISHERY, AREA, YEAR , QUARTER, FLEET)]
+    keyby = .(FISHERY, AREA, AREA_ORIG, YEAR , QUARTER, FLEET)]
 
 CE_R_FIA_Q_ALT = prepare_alternative_data(CE_R_YQMFG)
