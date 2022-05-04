@@ -16,15 +16,17 @@ print("###### Merging raised catches and estimated samples by size bins by Y / Q
 
 merged_CAS   = merge_catches_and_quarterly_CAS(CE_R_YQMFG, CE_SF_YQFG)
 
-print("###### Preparing CAS (in numbers) by Y / Q / M / F / G / S / FG...")
-
-CAS_YQMFG   = prepare_SA_CAS_YQMFG(merged_CAS)
-
-write.csv(CAS_YQMFG,   file = output_folder(SPECIES, LOCAL_FOLDER, "CAS/number/SA_CAS_raw.csv"), na = "", row.names = FALSE)
+if(FALSE) {
+  print("###### Preparing CAS (in numbers) by Y / Q / M / F / G / S / FG...")
+  
+  CAS_YQMFG   = prepare_SA_CAS_YQMFG(merged_CAS)
+  
+  write.csv(CAS_YQMFG,   file = output_folder(SPECIES, LOCAL_FOLDER, "CAS/number/SA_CAS_raw.csv"), na = "", row.names = FALSE)
+}
 
 print("###### Preparing CAA (in numbers) by FI / A / Y / Q...")
 
 # SF_FIA_Q is created in 03.5.prepare_inputs_IOTDB_SF.R
-CAS_FIA_Q   = prepare_SA_CAS_FIA_Q(merged_CAS,   SF_FIA_Q)
+CAS_FIA_Q   = prepare_SA_CAS_FIA_Q(merged_CAS, SF_FIA_Q)
 
 write.csv(CAS_FIA_Q,   file = output_folder(SPECIES, LOCAL_FOLDER, "CAS/number/SA_CAS.csv"), na = "", row.names = FALSE)

@@ -65,7 +65,7 @@ assign_area_and_fishery = function(dataset) {
       )
     )
   
-  dataset_FI$FISHERY_TYPE = NULL
+  #dataset_FI$FISHERY_TYPE = NULL
   
   setcolorder(dataset_FI, c("FISHERY", "AREA"))
   

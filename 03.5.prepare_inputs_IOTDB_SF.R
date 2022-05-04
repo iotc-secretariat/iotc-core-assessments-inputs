@@ -83,7 +83,8 @@ remove_SF_strata = function(raw_data, strata_to_delete) {
   NUMBER_OF_SAMPLES = sum(raw_data$NUMBER_OF_SAMPLES)
   
   if(NUMBER_OF_SAMPLES_orig != NUMBER_OF_SAMPLES) {
-    print(paste0("!!! WARNING !!! : number of samples *before* deletion of unwanted strata (", NUMBER_OF_SAMPLES_orig, ") differs from number of samples *after* deletion (", NUMBER_OF_SAMPLES, ") by ", (NUMBER_OF_SAMPLES_orig), " individuals"))
+    print(paste0("!!! WARNING !!! : number of samples *before* deletion of unwanted strata (", NUMBER_OF_SAMPLES_orig, ") ", 
+                 "differs from number of samples *after* deletion (", NUMBER_OF_SAMPLES, ") by ", (NUMBER_OF_SAMPLES_orig - NUMBER_OF_SAMPLES), " individuals"))
   }
   
   return(raw_data)

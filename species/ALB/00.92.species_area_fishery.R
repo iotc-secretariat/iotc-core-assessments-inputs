@@ -1,4 +1,11 @@
-SA_AREAS = iotc.core.gis.wkt::fishing_grounds_data(fishing_ground_codes = c("IRALB01", "IRALB02", "IRALB03", "IRALB04"), connection = IOTC)
+SA_AREA_CODES = c("IRALB01", "IRALB02", "IRALB03", "IRALB04")
+
+SA_AREAS = iotc.core.gis.wkt::fishing_grounds_data(fishing_ground_codes = SA_AREA_CODES, connection = IOTC)
+FG_5_TO_SA_AREAS = iotc.core.gis.cwp.IO::grid_intersections_by_source_grid_type(target_grid_codes = SA_AREA_CODES, 
+                                                                                source_grid_type_code = grid_5x5)
+
+# HERE IT SHOULD CHECK THAT EACH 5x5 GRID IS NOT ASSIGNED TO MORE THAN 1 SA AREA
+
 SA_AREAS[CODE == "IRALB01", NAME_SHORT := "1 - Northwest"]
 SA_AREAS[CODE == "IRALB02", NAME_SHORT := "2 - Northeast"]
 SA_AREAS[CODE == "IRALB03", NAME_SHORT := "3 - Southwest"]
@@ -12,12 +19,38 @@ FISHERY_GROUP_NAMES = c("DN - Driftnets",
                         "PS - industrial purse seines", 
                         "OT - Other gears")
 
+assign_area = function(dataset) {
+  dataset = merge(dataset, FG_5_TO_SA_AREAS,
+                  by.x = "FISHING_GROUND_CODE",
+                  by.y = "SOURCE_FISHING_GROUND_CODE",
+                  all.x = TRUE)
+  
+  dataset[, AREA := ifelse(TARGET_FISHING_GROUND_CODE == "IRALB01", 1,
+                           ifelse(TARGET_FISHING_GROUND_CODE == "IRALB02", 2,
+                                  ifelse(TARGET_FISHING_GROUND_CODE == "IRALB03", 3, 4)))]
+  
+  delete_column(dataset, c("TARGET_FISHING_GROUND_CODE", "PROPORTION"))
+
+  unmapped_grid_codes = unique(dataset[is.na(AREA)]$FISHING_GROUND_CODE)
+  
+  if(length(unmapped_grid_codes) >= 1) {
+    print(paste0(length(unmapped_grid_codes), " grids have not been assigned to any SA area..."))
+    print(unique(dataset[is.na(AREA)]$FISHING_GROUND_CODE))
+   
+    dataset = dataset[!is.na(AREA)]
+  }
+  
+  return(dataset)
+}
+
 # For this to be of help, we need to break down SF grids as 5x5 grids first, considering that several records might indeed refer to larger (or smaller) grids
 # IRALB01 = grid_intersections_by_source_grid_type(grid_5x5, "IRALB01")
 # IRALB02 = grid_intersections_by_source_grid_type(grid_5x5, "IRALB02")
 # IRALB03 = grid_intersections_by_source_grid_type(grid_5x5, "IRALB03")
 # IRALB04 = grid_intersections_by_source_grid_type(grid_5x5, "IRALB04")
-assign_area = function(dataset) {
+assign_area_old = function(dataset) {
+  #print("Assigning area to dataset...")
+  
   # WRONG DEFINITIONS (used for previous assessments)
   
   N = dataset[substr(FISHING_GROUND_CODE, 2, 4) <= "225"]

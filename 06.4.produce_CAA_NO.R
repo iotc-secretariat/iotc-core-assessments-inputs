@@ -23,11 +23,13 @@ setkey(AL_KEYS_METHOD, LengthFrom, LengthTo)
 
 # merged_CAS = merge_catches_and_quarterly_CAS(CE_R_YQMFG, CE_SF_YQFG)
 
-print("###### Preparing CAA (in numbers) by Y / Q / M / F / G / S / FG...")
-
-CAA_YQMFG   = prepare_SA_CAA_NO_YQMFG(merged_CAS, AL_KEYS_METHOD)
-
-write.csv(CAA_YQMFG,   file = output_folder(SPECIES, LOCAL_FOLDER, paste0("CAA/number/SA_CAA_", AL_METHOD, "_raw.csv")), na = "", row.names = FALSE)
+if(FALSE) {
+  print("###### Preparing CAA (in numbers) by Y / Q / M / F / G / S / FG...")
+  
+  CAA_YQMFG   = prepare_SA_CAA_NO_YQMFG(merged_CAS, AL_KEYS_METHOD)
+  
+  write.csv(CAA_YQMFG,   file = output_folder(SPECIES, LOCAL_FOLDER, paste0("CAA/number/SA_CAA_", AL_METHOD, "_raw.csv")), na = "", row.names = FALSE)
+}
 
 print("###### Preparing CAA (in numbers) by FI / A / Y / Q...")
 

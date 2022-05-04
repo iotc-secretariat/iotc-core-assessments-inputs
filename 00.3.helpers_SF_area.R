@@ -1,8 +1,8 @@
 ### SF AREA FUNCTIONS
 
-#load(file = paste0("./versions/", LOCAL_FOLDER, "/input/CAS/grids_1_5_mappings.RData"))
-#load(file = paste0("./versions/", LOCAL_FOLDER, "/input/CAS/grids_5_mappings.RData"))
-#load(file = paste0("./versions/", LOCAL_FOLDER, "/input/CAS/grids_5_PS_LL.RData"))
+load(file = input_folder(SPECIES, LOCAL_FOLDER, "CAS/grids_1_5_mappings.RData"))
+load(file = input_folder(SPECIES, LOCAL_FOLDER, "CAS/grids_5_mappings.RData"))
+load(file = input_folder(SPECIES, LOCAL_FOLDER, "CAS/grids_5_PS_LL.RData"))
 
 assign_SF_area = function(dataset, sf_area_mappings) {
   # Computes the gear type 

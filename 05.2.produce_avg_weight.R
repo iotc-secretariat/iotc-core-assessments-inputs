@@ -16,6 +16,8 @@ write.csv(CE_R_YQMFG[, .(AVG_WEIGHT = sum(EST_MT, na.rm = TRUE) * 1000 / sum(EST
 # Reads the historical average annual weights (all fisheries combined) from previous WP
 SA_AVG_WEIGHT_HISTORICAL = fread(references_folder(SPECIES, LOCAL_FOLDER, "SA_AVG_WEIGHT_HISTORY.csv"), header = TRUE)
 
+SA_AVG_WEIGHT_HISTORICAL$WP = as.character(SA_AVG_WEIGHT_HISTORICAL$WP)
+
 # Melts the data by WP and year
 SA_AVG_WEIGHT_HISTORICAL = 
   melt.data.table(data = SA_AVG_WEIGHT_HISTORICAL, 
