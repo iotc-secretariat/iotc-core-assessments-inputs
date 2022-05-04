@@ -164,7 +164,7 @@ write.csv(CATCHES_BY_DECADE_FISHERY_TABLE, file = output_folder(SPECIES, LOCAL_F
 SA_SFs = WKT_to_simple_feature(SA_AREAS)
 SA_SFs$NAME_SHORT = SA_AREAS$NAME_SHORT
 
-SA_MAP = iotc.core.gis.maps::IO_map()
+SA_MAP = iotc.core.gis.maps::IO_map(show_EEZs = TRUE, show_high_seas = FALSE, show_IO_areas = FALSE)
 SA_MAP = 
   SA_MAP + 
     geom_sf(SA_SFs, mapping = aes(geometry = WKT, fill = NAME_SHORT, color = NAME_SHORT, alpha = 0.3)) +

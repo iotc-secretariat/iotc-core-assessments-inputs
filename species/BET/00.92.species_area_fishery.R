@@ -11,37 +11,46 @@ BET_AREA_MAPPINGS =
 
 BET_AREA_MAPPINGS$FISHERY = NULL
 
-SA_AREA_CODES = c("IRBETNW", "IRBETNE",
-                  "IRBETWE", "IRBETEA",
-                  "IRBETSW", "IRBETSC", "IRBETSE",
-                  "IRBETZW", "IRBETZC", "IRBETZE")
+SA_AREA_CODES = c("IRBET01", "IRBET02", "IRBET03", "IRBET00")
 
 SA_AREAS = iotc.core.gis.wkt::fishing_grounds_data(fishing_ground_codes = SA_AREA_CODES, connection = IOTC)
 
-FG_5_TO_SA_AREAS = iotc.core.gis.cwp.IO::grid_intersections_by_source_grid_type(target_grid_codes = SA_AREA_CODES, 
+SA_AREAS[CODE == "IRBET01", NAME_SHORT := "1 - West"]
+SA_AREAS[CODE == "IRBET02", NAME_SHORT := "2 - East"]
+SA_AREAS[CODE == "IRBET03", NAME_SHORT := "3 - South"]
+SA_AREAS[CODE == "IRBET00", NAME_SHORT := "4 - All other IO areas"]
+
+# Area names
+AREA_NAMES = c("1 - West", "2 - East", "3 - South", "4 - All other IO areas")
+
+SA_AREA_ORIG_CODES = c("IRBETNW", "IRBETNE",
+                       "IRBETWE", "IRBETEA",
+                       "IRBETSW", "IRBETSC", "IRBETSE",
+                       "IRBETZW", "IRBETZC", "IRBETZE")
+
+SA_AREAS_ORIG = iotc.core.gis.wkt::fishing_grounds_data(fishing_ground_codes = SA_AREA_ORIG_CODES, connection = IOTC)
+
+SA_AREAS_ORIG[CODE == "IRBETNW", NAME_SHORT := "A0 - Northwest"]
+SA_AREAS_ORIG[CODE == "IRBETNE", NAME_SHORT := "A0 - Northeast"]
+SA_AREAS_ORIG[CODE == "IRBETWE", NAME_SHORT := "A1 - West"]
+SA_AREAS_ORIG[CODE == "IRBETEA", NAME_SHORT := "A2 - East"]
+SA_AREAS_ORIG[CODE == "IRBETSW", NAME_SHORT := "A3 - Southwest"]
+SA_AREAS_ORIG[CODE == "IRBETSC", NAME_SHORT := "A3 - South-central"]
+SA_AREAS_ORIG[CODE == "IRBETSE", NAME_SHORT := "A3 - Southeast"]
+SA_AREAS_ORIG[CODE == "IRBETZW", NAME_SHORT := "A0 - South-Southwest"]
+SA_AREAS_ORIG[CODE == "IRBETZC", NAME_SHORT := "A0 - South-South-central"]
+SA_AREAS_ORIG[CODE == "IRBETZE", NAME_SHORT := "A0 - South-Southeast"]
+
+FG_5_TO_SA_AREAS_ORIG = iotc.core.gis.cwp.IO::grid_intersections_by_source_grid_type(target_grid_codes = SA_AREA_ORIG_CODES, 
                                                                                 source_grid_type_code = grid_5x5)
 
-FG_1_TO_SA_AREAS = iotc.core.gis.cwp.IO::grid_intersections_by_source_grid_type(target_grid_codes = SA_AREA_CODES, 
+FG_1_TO_SA_AREAS_ORIG = iotc.core.gis.cwp.IO::grid_intersections_by_source_grid_type(target_grid_codes = SA_AREA_ORIG_CODES, 
                                                                                 source_grid_type_code = grid_1x1)
 
-FG_TO_SA_AREAS = rbind(FG_5_TO_SA_AREAS, FG_1_TO_SA_AREAS)  
-
-SA_AREAS[CODE == "IRBETNW", NAME_SHORT := "A0 - Northwest"]
-SA_AREAS[CODE == "IRBETNE", NAME_SHORT := "A0 - Northeast"]
-SA_AREAS[CODE == "IRBETWE", NAME_SHORT := "A1 - West"]
-SA_AREAS[CODE == "IRBETEA", NAME_SHORT := "A2 - East"]
-SA_AREAS[CODE == "IRBETSW", NAME_SHORT := "A3 - Southwest"]
-SA_AREAS[CODE == "IRBETSC", NAME_SHORT := "A3 - South-central"]
-SA_AREAS[CODE == "IRBETSE", NAME_SHORT := "A3 - Southeast"]
-SA_AREAS[CODE == "IRBETZW", NAME_SHORT := "A0 - South-Southwest"]
-SA_AREAS[CODE == "IRBETZC", NAME_SHORT := "A0 - South-South-central"]
-SA_AREAS[CODE == "IRBETZE", NAME_SHORT := "A0 - South-Southeast"]
-
-# Area and fishery group names
-AREA_NAMES = c("1 - West", "2 - East", "3 - South")
+FG_TO_SA_AREAS_ORIG = rbind(FG_5_TO_SA_AREAS_ORIG, FG_1_TO_SA_AREAS_ORIG)  
 
 assign_area = function(dataset) {
-  dataset = merge(dataset, FG_TO_SA_AREAS,
+  dataset = merge(dataset, FG_TO_SA_AREAS_ORIG,
                   by.x = "FISHING_GROUND_CODE",
                   by.y = "SOURCE_FISHING_GROUND_CODE",
                   all.x = TRUE,
@@ -69,7 +78,7 @@ assign_area = function(dataset) {
 
   dataset$AREA = factor(
     dataset$AREA,
-    levels = c(1, 2, 3),
+    levels = c(1, 2, 3, 0),
     labels = AREA_NAMES,
     ordered = TRUE
   )
