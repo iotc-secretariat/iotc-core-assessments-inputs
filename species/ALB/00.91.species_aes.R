@@ -10,6 +10,10 @@ AR_COLORS = rbind(AR_COLORS, AR_COLOR_2)
 AR_COLORS = rbind(AR_COLORS, AR_COLOR_3)
 AR_COLORS = rbind(AR_COLORS, AR_COLOR_4)
 
+# Color constants for original areas
+
+AR_ORIG_COLORS = AR_COLORS
+
 # Color constants for current fishery groups
 
 FG_COLORS = ALL_FI_COLORS[FISHERY_CODE == "GN"]

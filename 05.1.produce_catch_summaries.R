@@ -2,17 +2,45 @@
 
 # SA_AREAS are defined in 00.92.species_area_fishery.R (species-specific)
 
+SA_SFs = WKT_to_simple_feature(SA_AREAS)
+
+SA_SFs$NAME_SHORT = SA_AREAS$NAME_SHORT
+SA_SFs$NAME_SHORT = factor(
+  SA_SFs$NAME_SHORT,
+  levels = SA_AREAS$NAME_SHORT,
+  ordered = TRUE
+)
+
+SA_MAP = iotc.core.gis.maps::IO_map(show_EEZs = TRUE, show_high_seas = FALSE, show_IO_areas = FALSE)
+SA_MAP = 
+  SA_MAP + 
+  geom_sf(SA_SFs, mapping = aes(geometry = WKT, fill = NAME_SHORT, color = NAME_SHORT, alpha = NAME_SHORT)) +
+  scale_fill_manual(values = AR_COLORS$FILL) +
+  scale_color_manual(values = AR_COLORS$OUTLINE) +
+  scale_alpha_manual(values = rep(0.6, nrow(SA_AREAS))) + 
+  theme(legend.position = "right") + 
+  labs(fill = "Stock assessment area") + 
+  guides(alpha = "none", color = "none")
+
+ggsave(SA_MAP, file = output_folder(SPECIES, LOCAL_FOLDER, "SA_AREAS.png"), width = 12, height = 7.5)
+
 # Puts data together
 CATCHES = assign_area_and_fishery(CE_R_YQMFG)
 CATCHES$AREA    = factor(CATCHES$AREA)
 CATCHES$FISHERY = factor(CATCHES$FISHERY)
 
-levels(CATCHES$AREA) = AREA_NAMES
+ORDERED_AREA_NAMES = SA_AREAS[order(CODE)]$NAME_SHORT
+levels(CATCHES$AREA) = ORDERED_AREA_NAMES
+
+ORDERED_AREA_ORIG_NAMES = SA_AREAS_ORIG[order(CODE)]$NAME_SHORT
+levels(CATCHES$AREA_ORIG) = ORDERED_AREA_ORIG_NAMES
 
 # This is implemented in 00.92.species_area_fishery.R (species-specific)
 CATCHES = update_fishery_groups(CATCHES)
 
 CATCHES[, Decade := as.integer(floor(YEAR / 10) * 10)]
+
+CATCHES_AO = copy(CATCHES)
 
 CATCHES = CATCHES[, .(Decade, 
                       Year = YEAR, 
@@ -20,6 +48,13 @@ CATCHES = CATCHES[, .(Decade,
                       Fishery = FISHERY, 
                       Area = AREA, 
                       Catches = EST_MT)]
+
+CATCHES_AO = CATCHES_AO[, .(Decade, 
+                            Year = YEAR, 
+                            FisheryGroup = FISHERY_GROUP, 
+                            Fishery = FISHERY, 
+                            Area = AREA_ORIG, 
+                            Catches = EST_MT)]
 
 ### SUMMARIES OF CATCHES BY FISHERY GROUP (species specific)
 
@@ -161,21 +196,6 @@ write.csv(CATCHES_BY_DECADE_FISHERY_TABLE, file = output_folder(SPECIES, LOCAL_F
 
 ### SUMMARIES OF CATCHES BY AREA 
 
-SA_SFs = WKT_to_simple_feature(SA_AREAS)
-SA_SFs$NAME_SHORT = SA_AREAS$NAME_SHORT
-
-SA_MAP = iotc.core.gis.maps::IO_map(show_EEZs = TRUE, show_high_seas = FALSE, show_IO_areas = FALSE)
-SA_MAP = 
-  SA_MAP + 
-    geom_sf(SA_SFs, mapping = aes(geometry = WKT, fill = NAME_SHORT, color = NAME_SHORT, alpha = 0.3)) +
-    scale_fill_discrete(type = AR_COLORS$FILL) +
-    scale_color_discrete(type = AR_COLORS$OUTLINE) +
-    theme(legend.position = "top") + 
-    labs(fill = "Stock assessment area") + 
-    guides(alpha = "none", color = "none")
-
-ggsave(SA_MAP, file = output_folder(SPECIES, LOCAL_FOLDER, "SA_area.png"), width = 9, height = 7.5)
-
 #### ANNUAL
 
 CATCHES_BY_YEAR_AREA_TABLE = 
@@ -196,7 +216,7 @@ CATCHES_BY_YEAR_AREA_TABLE_PLOT =
             fill_by = "Area", 
             colors = AR_COLORS,
             scale = 1000,
-            num_legend_rows = 1,
+            num_legend_rows = ceiling(nrow(SA_AREAS) / 5),
             x_axis_label = "Year",
             y_axis_label = "Annual catches (x 1,000 t)")
 
@@ -207,7 +227,7 @@ CATCHES_BY_YEAR_AREA_TABLE_PLOT_REL =
                 value = "Catches", time = "Year", 
                 fill_by = "Area", 
                 colors = AR_COLORS,
-                num_legend_rows = 1,
+                num_legend_rows = ceiling(nrow(SA_AREAS) / 5),
                 x_axis_label = "Year",
                 y_axis_label = "Annual catches (%)")
 
@@ -226,3 +246,56 @@ CATCHES_BY_DECADE_AREA_TABLE =
   )
 
 write.csv(CATCHES_BY_DECADE_AREA_TABLE, file = output_folder(SPECIES, LOCAL_FOLDER, "catches/by_area/CA_A_D.csv"), na = "", row.names = FALSE)
+
+### SUMMARIES OF CATCHES BY ORIGINAL AREA 
+
+#### ANNUAL
+
+CATCHES_BY_YEAR_AREA_ORIG_TABLE = 
+  dcast.data.table(
+    CATCHES_AO,
+    Area ~ Year,
+    value.var = "Catches",
+    fill = NA,
+    drop = c(FALSE, FALSE),
+    fun.aggregate = sum
+  )
+
+write.csv(CATCHES_BY_YEAR_AREA_ORIG_TABLE, file = output_folder(SPECIES, LOCAL_FOLDER, "catches/by_area/CA_A_ORIG_Y.csv"), na = "", row.names = FALSE)
+
+CATCHES_BY_YEAR_AREA_ORIG_TABLE_PLOT = 
+  bar.value(CATCHES_AO, 
+            value = "Catches", time = "Year", 
+            fill_by = "Area", 
+            colors = AR_ORIG_COLORS,
+            scale = 1000,
+            num_legend_rows = ceiling(nrow(SA_AREAS_ORIG) / 5),
+            x_axis_label = "Year",
+            y_axis_label = "Annual catches (x 1,000 t)")
+
+ggsave(CATCHES_BY_YEAR_AREA_ORIG_TABLE_PLOT, filename = output_folder(SPECIES, LOCAL_FOLDER, "catches/by_area/CA_A_ORIG_Y.png"), width = 12, height = 6.75)
+
+CATCHES_BY_YEAR_AREA_ORIG_TABLE_PLOT_REL = 
+  bar.value.rel(CATCHES_AO, 
+                value = "Catches", time = "Year", 
+                fill_by = "Area", 
+                colors = AR_ORIG_COLORS,
+                num_legend_rows = ceiling(nrow(SA_AREAS_ORIG) / 5),
+                x_axis_label = "Year",
+                y_axis_label = "Annual catches (%)")
+
+ggsave(CATCHES_BY_YEAR_AREA_ORIG_TABLE_PLOT_REL, filename = output_folder(SPECIES, LOCAL_FOLDER, "catches/by_area/CA_A_ORIG_Y_REL.png"), width = 12, height = 6.75)
+
+#### DECADAL
+
+CATCHES_BY_DECADE_AREA_ORIG_TABLE = 
+  dcast.data.table(
+    CATCHES_AO,
+    Area ~ Decade,
+    value.var = "Catches",
+    fill = NA,
+    drop = c(FALSE, FALSE),
+    fun.aggregate = sum
+  )
+
+write.csv(CATCHES_BY_DECADE_AREA_ORIG_TABLE, file = output_folder(SPECIES, LOCAL_FOLDER, "catches/by_area/CA_A_ORIG_D.csv"), na = "", row.names = FALSE)

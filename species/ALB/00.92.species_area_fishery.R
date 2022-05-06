@@ -12,8 +12,12 @@ SA_AREAS[CODE == "IRALB03", NAME_SHORT := "3 - Southwest"]
 SA_AREAS[CODE == "IRALB04", NAME_SHORT := "4 - Southeast"]
 
 # Area and fishery group names
-AREA_NAMES          = sort(SA_AREAS$NAME_SHORT)
-AREA_CODES          = sort(SA_AREAS$CODE)
+AREA_NAMES = sort(SA_AREAS$NAME_SHORT)
+AREA_CODES = sort(SA_AREAS$CODE)
+
+SA_AREAS_ORIG   = SA_AREAS
+AREA_ORIG_CODES = AREA_CODES
+AREA_ORIG_NAMES = AREA_NAMES
 
 FISHERY_GROUP_NAMES = c("DN - Driftnets", 
                         "FLL - fresh-tuna longliners", 

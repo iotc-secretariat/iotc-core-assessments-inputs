@@ -18,10 +18,18 @@ SA_AREAS = iotc.core.gis.wkt::fishing_grounds_data(fishing_ground_codes = SA_ARE
 SA_AREAS[CODE == "IRBET01", NAME_SHORT := "1 - West"]
 SA_AREAS[CODE == "IRBET02", NAME_SHORT := "2 - East"]
 SA_AREAS[CODE == "IRBET03", NAME_SHORT := "3 - South"]
-SA_AREAS[CODE == "IRBET00", NAME_SHORT := "4 - All other IO areas"]
+SA_AREAS[CODE == "IRBET00", NAME_SHORT := "0 - All other areas"]
+
+SA_AREAS$CODE = factor(
+  SA_AREAS$CODE,
+  levels = c("IRBET01", "IRBET02", "IRBET03", "IRBET00"),
+  ordered = TRUE
+)
+
+SA_AREAS = SA_AREAS[order(CODE)]
 
 # Area names
-AREA_NAMES = c("1 - West", "2 - East", "3 - South", "4 - All other IO areas")
+AREA_NAMES = SA_AREAS[order(CODE)]$NAME_SHORT
 
 SA_AREA_ORIG_CODES = c("IRBETNW", "IRBETNE",
                        "IRBETWE", "IRBETEA",
@@ -41,11 +49,17 @@ SA_AREAS_ORIG[CODE == "IRBETZW", NAME_SHORT := "A0 - South-Southwest"]
 SA_AREAS_ORIG[CODE == "IRBETZC", NAME_SHORT := "A0 - South-South-central"]
 SA_AREAS_ORIG[CODE == "IRBETZE", NAME_SHORT := "A0 - South-Southeast"]
 
+SA_AREAS_ORIG$CODE = factor(
+  SA_AREAS_ORIG$CODE,
+  levels = c("IRBETNW", "IRBETNE", 
+             "IRBETWE", "IRBETEA",
+             "IRBETSW", "IRBETSC", "IRBETSE",
+             "IRBETZW", "IRBETZC", "IRBETZE"),
+  ordered = TRUE
+)
+
 # Area names
-SA_AREA_ORIG_NAMES = c("A0 - Northwest", "A0 - Northeast", 
-                       "A1 - West", "A2 - East",
-                       "A3 - Southwest", "A3 - South-central", "A3 - Southeast",
-                       "A0 - South-Southwest", "A0 - South-South-central", "A0 - South-Southeast")
+AREA_ORIG_NAMES = SA_AREAS_ORIG$NAME_SHORT
   
 FG_5_TO_SA_AREAS_ORIG = iotc.core.gis.cwp.IO::grid_intersections_by_source_grid_type(target_grid_codes = SA_AREA_ORIG_CODES, 
                                                                                 source_grid_type_code = grid_5x5)
@@ -94,7 +108,7 @@ assign_area = function(dataset) {
   dataset$AREA_ORIG = factor(
     dataset$AREA_ORIG,
     levels = SA_AREA_ORIG_CODES,
-    labels = SA_AREA_ORIG_NAMES,
+    labels = AREA_ORIG_NAMES,
     ordered = TRUE
   )
   
@@ -128,17 +142,16 @@ assign_fishery = function(dataset) {
 
 # STILL TO BE REFINED...
 
-FISHERY_GROUP_CODES = c("PS - industrial purse seine", 
-                        "LL - deep-freezing longlines", "FL - fresh tuna longlines", 
+FISHERY_GROUP_CODES = c("PS - industrial purse seines", 
+                        "LL - industrial longlines", 
                         "BB - pole-and-lines and small seines", 
                         "LI - handlines and small longlines", 
                         "OT - other gears")
 
 update_fishery_groups = function(dataset) {
   dataset[,                               FISHERY_GROUP := "OT - other gears"]
-  dataset[FISHERY %in% c("PSFS", "PSLS"), FISHERY_GROUP := "PS - industrial purse seine"]
-  dataset[FISHERY == "LL",                FISHERY_GROUP := "LL - deep-freezing longlines"]
-  dataset[FISHERY == "FL",                FISHERY_GROUP := "FL - fresh tuna longlines"]
+  dataset[FISHERY %in% c("PSFS", "PSLS"), FISHERY_GROUP := "PS - industrial purse seines"]
+  dataset[FISHERY %in% c("LL", "FL"),     FISHERY_GROUP := "LL - industrial longlines"]
   dataset[FISHERY == "BB",                FISHERY_GROUP := "BB - pole-and-lines and small seines"]
   dataset[FISHERY == "LINE",              FISHERY_GROUP := "LI - handlines and small longlines"]
   

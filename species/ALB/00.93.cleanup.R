@@ -1,0 +1,3 @@
+# Cleanup script for ALB
+
+# Currently it does nothing...

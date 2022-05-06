@@ -114,3 +114,48 @@ SA_AVG_WEIGHT_FISHERY_PLOT =
   )
 
 ggsave(SA_AVG_WEIGHT_FISHERY_PLOT, filename = output_folder(SPECIES, LOCAL_FOLDER, "avg_weight/AVG_WEIGHT_BY_FISHERY.png"), width = AVG_WEIGHT_CHART_WIDTH, height = AVG_WEIGHT_CHART_HEIGHT)
+
+#### AVERAGE WEIGHTS FROM SAMPLES
+AW_NC = copy(CE_R_YQMFG)[, .(EST_MT = sum(EST_MT, na.rm = TRUE)), keyby = .(YEAR, FLEET, GEAR_CODE, SCHOOL_TYPE_CODE)] 
+
+AW_SF = assign_area_and_fishery(SF_FIA_Q_UNPIVOTED)
+#AW_SF[GEAR_CODE == "LLOB", GEAR_CODE := "LL"]
+#AW_SF[GEAR_CODE == "ELLOB", GEAR_CODE := "ELL"]
+#AW_SF[GEAR_CODE == "PSOB", GEAR_CODE := "PS"]
+
+AW_SF[, WEIGHT := NUMBER_OF_SAMPLES * LW_A * ( SIZE_CLASS + SIZE_INTERVAL / 2 ) ^ LW_B]
+AW_SF = AW_SF[, .(NUMBER_OF_SAMPLES = sum(NUMBER_OF_SAMPLES, na.rm = TRUE), WEIGHT = sum(WEIGHT, na.rm = TRUE)),
+                  keyby = .(YEAR, AREA, FISHERY, FLEET, GEAR_CODE, SCHOOL_TYPE_CODE)]
+
+AW_SF = merge(AW_SF, AW_NC,
+              by = c("YEAR", "FLEET", "GEAR_CODE", "SCHOOL_TYPE_CODE"),
+              all.x = TRUE)[is.na(NUMBER_OF_SAMPLES) | NUMBER_OF_SAMPLES >= EST_MT]
+
+AW_SF = AW_SF[, .(AVG_WEIGHT = sum(WEIGHT, na.rm = TRUE) / sum(NUMBER_OF_SAMPLES, na.rm = TRUE)),
+                  keyby = .(YEAR, FISHERY)][!FISHERY %in% AVG_WEIGHT_FISHERIES_TO_EXCLUDE]
+
+AW_SF_PIVOT = 
+  dcast.data.table(
+    AW_SF,
+    formula = FISHERY ~ YEAR,
+    fun.aggregate = sum,
+    value.var = "AVG_WEIGHT",
+    drop = c(FALSE, FALSE),
+    fill = NA
+  )
+
+write.csv(AW_SF_PIVOT, output_folder(SPECIES, LOCAL_FOLDER, "avg_weight/AVG_WEIGHT_BY_FISHERY_SF.csv"), na = "", row.names = FALSE)
+
+AW_SF_PLOT = line.value(
+  AW_SF,
+  time = "YEAR",
+  value = "AVG_WEIGHT",
+  color_by = "FISHERY",
+  colors = FI_COLORS[FISHERY_CODE %in% unique(AW_SF$FISHERY)],
+  plot_points = TRUE,
+  num_legend_rows = 1,
+  x_axis_label = "Year",
+  y_axis_label = "Average fish weight (kg)"
+)
+
+ggsave(AW_SF_PLOT, filename = output_folder(SPECIES, LOCAL_FOLDER, "avg_weight/AVG_WEIGHT_BY_FISHERY_SF.png"), width = AVG_WEIGHT_CHART_WIDTH, height = AVG_WEIGHT_CHART_HEIGHT)

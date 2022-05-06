@@ -15,12 +15,17 @@ source("./00.3.helpers_SF_area.R")
 source("./00.4.helpers_size_class_and_bin.R")
 
 source("./01.1.configure_data_access.R")
-source("./02.1.read_inputs_SA.R")
-source("./02.2.read_inputs_IOTDB.R")
+
+if(FALSE) {
+  source("./02.1.read_inputs_SA.R")
+  source("./02.2.read_inputs_IOTDB.R")
+}
+
 #source("./03.1.prepare_inputs_SA_CE_all.R")
 source("./03.2.prepare_inputs_SA_CE_raised.R")
 source("./03.3.prepare_inputs_SA_CE_for_SF.R")
 #source("./03.4.prepare_inputs_SA_SF_all.R")
+
 source("./03.5.prepare_inputs_IOTDB_SF.R")
 source("./04.1.prepare_SA_samples.R")
 source("./04.2.prepare_SA_CAS.R")
@@ -33,3 +38,5 @@ source("./06.3.produce_CAS_W.R")
 source("./06.4.produce_CAA_NO.R")
 source("./06.5.produce_CAA_W.R")
 source("./06.6.produce_samples_summaries.R")
+
+source(species_folder(SPECIES, "./00.93.cleanup.R"))

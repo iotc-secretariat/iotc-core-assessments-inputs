@@ -253,42 +253,42 @@ repivot_SF = function(unpivoted) {
 
 SF_FIA_Q   = sanitize_SF(SF_FL_WITH_SAMPLES, scale_by_samples = TRUE)
 
-SF_FIA_Q   = 
-  repivot_SF_fishery_area(
-    size_bin_from_size_class(
-      standardize_grids(
-        unpivot_SF(
-          remove_SF_strata(
-            SF_FIA_Q,
-            SF_strata_DEL
-          ), 
-          scale_by_samples = TRUE
-        )
-      ),
-      first_class_low = DEFAULT_FIRST_CLASS_LOW,
-      size_interval   = DEFAULT_SIZE_INTERVAL,
-      max_bins        = DEFAULT_NUM_SIZE_BINS
-    )
+SF_FIA_Q_UNPIVOTED = 
+  size_bin_from_size_class(
+    standardize_grids(
+      unpivot_SF(
+        remove_SF_strata(
+          SF_FIA_Q,
+          SF_strata_DEL
+        ), 
+        scale_by_samples = TRUE
+      )
+    ),
+    first_class_low = DEFAULT_FIRST_CLASS_LOW,
+    size_interval   = DEFAULT_SIZE_INTERVAL,
+    max_bins        = DEFAULT_NUM_SIZE_BINS
   )
+
+SF_FIA_Q = repivot_SF_fishery_area(SF_FIA_Q_UNPIVOTED)
 
 # The following is produced but not really used 
 
 SF_YQMFG = sanitize_SF(SF_FL_WITH_SAMPLES, scale_by_samples = TRUE)
 
-SF_YQMFG   = 
-  repivot_SF(
-    size_bin_from_size_class(
-      standardize_grids(
-        unpivot_SF(
-          remove_SF_strata(
-            SF_YQMFG,
-            SF_strata_DEL
-          ), 
-          scale_by_samples = TRUE
-        )
-      ),
-      first_class_low = DEFAULT_FIRST_CLASS_LOW, # This constant is species specific, and included with the species configuration
-      size_interval   = DEFAULT_SIZE_INTERVAL,   # This constant is species specific, and included with the species configuration
-      max_bins        = DEFAULT_NUM_SIZE_BINS    # This constant is species specific, and included with the species configuration
-    )
+SF_YQMFG_UNPIVOTED = 
+  size_bin_from_size_class(
+    standardize_grids(
+      unpivot_SF(
+        remove_SF_strata(
+          SF_YQMFG,
+          SF_strata_DEL
+        ), 
+        scale_by_samples = TRUE
+      )
+    ),
+    first_class_low = DEFAULT_FIRST_CLASS_LOW, # This constant is species specific, and included with the species configuration
+    size_interval   = DEFAULT_SIZE_INTERVAL,   # This constant is species specific, and included with the species configuration
+    max_bins        = DEFAULT_NUM_SIZE_BINS    # This constant is species specific, and included with the species configuration
   )
+
+SF_YQMFG = repivot_SF(SF_YQMFG_UNPIVOTED)
