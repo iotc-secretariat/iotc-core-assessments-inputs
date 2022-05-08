@@ -2,7 +2,7 @@ library(iotc.base.common.plots)
 library(RODBC)
 
 # Change this to run the process for a different species (that will self-configure)
-SPECIES = "ALB" 
+SPECIES = "YFT" 
 
 source("./00.1.common_constants.R")
 source("./00.2.helpers_misc.R")
@@ -40,3 +40,5 @@ source("./06.5.produce_CAA_W.R")
 source("./06.6.produce_samples_summaries.R")
 
 source(species_folder(SPECIES, "./00.93.cleanup.R"))
+
+source("./99.0.update_WP_CE_raised.R")
