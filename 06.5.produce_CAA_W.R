@@ -32,6 +32,7 @@ CAA_FIA_Q_W = prepare_SA_CAA_NO_FIA_Q(merged_CAS_W, AL_KEYS_METHOD, "FISH_WEIGHT
 
 write.csv(CAA_FIA_Q_W, file = output_folder(SPECIES, LOCAL_FOLDER, paste0("CAA/weight/SA_CAA_", AL_METHOD, "_W.csv")), na = "", row.names = FALSE)
               
+CAA_FIA_Q_W_U = copy(CAA_FIA_Q_W)
 delete_column(CAA_FIA_Q_W_U, c("EST_MT", "EST_NO", "METHOD"))
 
 CAA_FIA_Q_UNPIVOTED_W = 
