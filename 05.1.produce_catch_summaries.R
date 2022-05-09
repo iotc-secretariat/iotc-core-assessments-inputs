@@ -4,17 +4,17 @@
 
 SA_SFs = WKT_to_simple_feature(SA_AREAS)
 
-SA_SFs$NAME_SHORT = SA_AREAS$NAME_SHORT
-SA_SFs$NAME_SHORT = factor(
-  SA_SFs$NAME_SHORT,
-  levels = SA_AREAS$NAME_SHORT,
+SA_SFs$AREA_NAME = SA_AREAS$AREA_NAME
+SA_SFs$AREA_NAME = factor(
+  SA_SFs$AREA_NAME,
+  levels = SA_AREAS$AREA_NAME,
   ordered = TRUE
 )
 
 SA_MAP = iotc.core.gis.maps::IO_map(show_EEZs = TRUE, show_high_seas = FALSE, show_IO_areas = FALSE)
 SA_MAP = 
   SA_MAP + 
-  geom_sf(SA_SFs, mapping = aes(geometry = WKT, fill = NAME_SHORT, color = NAME_SHORT, alpha = NAME_SHORT)) +
+  geom_sf(SA_SFs, mapping = aes(geometry = WKT, fill = AREA_NAME, color = AREA_NAME, alpha = AREA_NAME)) +
   scale_fill_manual(values = AR_COLORS$FILL) +
   scale_color_manual(values = AR_COLORS$OUTLINE) +
   scale_alpha_manual(values = rep(0.6, nrow(SA_AREAS))) + 
@@ -29,10 +29,10 @@ CATCHES = sanitize_duplicated_SF_areas(assign_area_and_fishery(CE_R_YQMFG))
 CATCHES$AREA    = factor(CATCHES$AREA)
 CATCHES$FISHERY = factor(CATCHES$FISHERY)
 
-ORDERED_AREA_NAMES = SA_AREAS[order(CODE)]$NAME_SHORT
+ORDERED_AREA_NAMES = SA_AREAS[order(CODE)]$AREA_NAME
 levels(CATCHES$AREA) = ORDERED_AREA_NAMES
 
-ORDERED_AREA_ORIG_NAMES = SA_AREAS_ORIG[order(CODE)]$NAME_SHORT
+ORDERED_AREA_ORIG_NAMES = SA_AREAS_ORIG[order(CODE)]$AREA_NAME
 levels(CATCHES$AREA_ORIG) = ORDERED_AREA_ORIG_NAMES
 
 # This is implemented in 00.92.species_area_fishery.R (species-specific)
@@ -248,6 +248,32 @@ CATCHES_BY_DECADE_AREA_TABLE =
 write.csv(CATCHES_BY_DECADE_AREA_TABLE, file = output_folder(SPECIES, LOCAL_FOLDER, "catches/by_area/CA_A_D.csv"), na = "", row.names = FALSE)
 
 ### SUMMARIES OF CATCHES BY ORIGINAL AREA 
+
+# Produces the map of all original areas
+SA_SF_ORIGs = as.data.table(WKT_to_simple_feature(SA_AREAS_ORIG))
+SA_SF_ORIGs$AREA_NAME = SA_AREAS_ORIG$AREA_NAME
+
+SORTED_NAMES = SA_SF_ORIGs[order(CODE)]$AREA_NAME
+
+SA_SF_ORIGs$AREA_NAME = factor(
+  SA_SF_ORIGs$AREA_NAME,
+  levels = SORTED_NAMES,
+  labels = SORTED_NAMES,
+  ordered = TRUE
+)
+
+SA_ORIG_MAP = iotc.core.gis.maps::IO_map(show_EEZs = TRUE, show_high_seas = FALSE, show_IO_areas = FALSE) 
+SA_ORIG_MAP =
+  SA_ORIG_MAP +
+  geom_sf(data = SA_SF_ORIGs, mapping = aes(geometry = WKT, color = AREA_NAME, fill = AREA_NAME, alpha = AREA_NAME)) +
+  scale_fill_manual(values = AR_ORIG_COLORS$FILL) +
+  scale_color_manual(values = AR_ORIG_COLORS$OUTLINE) +
+  scale_alpha_manual(values = rep(0.6, nrow(SA_SF_ORIGs))) + 
+  theme(legend.position = "right") + 
+  labs(fill = "Original area") + 
+  guides(alpha = "none", color = "none")
+
+ggsave(SA_ORIG_MAP, file = output_folder(SPECIES, LOCAL_FOLDER, "SA_AREAS_ORIG.png"), width = 12, height = 7.5)
 
 #### ANNUAL
 

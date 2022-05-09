@@ -87,14 +87,12 @@ prepare_SA_CAS_FIA_Q = function(merged_catches_and_quarterly_CAS, samples_by_fis
   CAS_strata_and_catches = assign_area_and_fishery(extract_CAS_strata_and_catches(CAS))
   #CAS_strata = assign_area_and_fishery(extract_CAS_strata(CAS_strata_and_catches))
   
-  dbg("prepare_SA_CAS_FIA_Q - gc() - START")
-  
-  gc()
-  
-  dbg("prepare_SA_CAS_FIA_Q - gc() - END")
+  runGC()
   
   CAS_data = assign_area_and_fishery(extract_CAS_data(CAS, quantity))
    
+  runGC()
+  
   CAS_strata_and_catches = CAS_strata_and_catches[, .(EST_NO = sum(EST_NO, na.rm = TRUE), EST_MT = sum(EST_MT, na.rm = TRUE)), keyby = .(FISHERY, AREA, AREA_ORIG, YEAR, QUARTER, FIRST_CLASS_LOW, SIZE_INTERVAL)]
   #CAS_strata = unique(CAS_strata[, .(FISHERY, AREA, AREA_ORIG, YEAR, QUARTER, FIRST_CLASS_LOW, SIZE_INTERVAL)])
   
@@ -102,6 +100,8 @@ prepare_SA_CAS_FIA_Q = function(merged_catches_and_quarterly_CAS, samples_by_fis
   CAS_data = CAS_data[, .(QUANTITY = sum(QUANTITY, na.rm = TRUE)), keyby = .(FISHERY, AREA, AREA_ORIG, YEAR, QUARTER, SIZE_BIN, SIZE_CLASS)]
   colnames(CAS_data)[which(colnames(CAS_data) == "QUANTITY")] = quantity
 
+  dbg("Pivoting CAS data - START")
+  
   CAS_data_pivoted = dcast.data.table(
     CAS_data, 
     FISHERY + AREA + AREA_ORIG + YEAR + QUARTER ~ SIZE_BIN,
@@ -111,20 +111,26 @@ prepare_SA_CAS_FIA_Q = function(merged_catches_and_quarterly_CAS, samples_by_fis
     drop = c(TRUE, FALSE)
   )
   
-  dbg("prepare_SA_CAS_FIA_Q - gc() - START")
+  dbg("Pivoting CAS data - END")
   
-  gc()
-  
-  dbg("prepare_SA_CAS_FIA_Q - gc() - END")
+  runGC()
   
   SAMPLES = samples_by_fishery_and_quarter[, .(NUMBER_OF_SAMPLES = sum(NUMBER_OF_SAMPLES, na.rm = TRUE)), keyby = .(FISHERY, AREA, AREA_ORIG, YEAR, QUARTER)]
+  
+  dbg("Merging samples - START")
   
   CAS_strata_catches_samples = 
     merge(CAS_strata_and_catches, SAMPLES,
           all.x = TRUE)[is.na(NUMBER_OF_SAMPLES), NUMBER_OF_SAMPLES := 0]
+
+  dbg("Merging samples - END")
+  
+  dbg("Merging pivoted data - START")
   
   CAS_OUT = merge(CAS_strata_catches_samples, CAS_data_pivoted,
                   all.x = TRUE)
+
+  dbg("Merging pivoted data - END")
   
   #by = c("YEAR", "QUARTER", "MONTH", 
   #       "FLEET", "GEAR_CODE", "SCHOOL_TYPE_CODE", 

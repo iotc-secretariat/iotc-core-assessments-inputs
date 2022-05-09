@@ -4,6 +4,12 @@ dbg = function(message) {
   print(paste0("[ DEBUG ] : ", date(), " - ", message))
 }
 
+runGC = function() {
+  if(FALSE) dbg("GC() - START")
+  gc()
+  if(FALSE) dbg("GC() - END")
+}
+
 ### FILE ACCESS FUNCTIONS
 
 species_folder = function(species_code, file_name = NA) {
@@ -57,23 +63,4 @@ get_table = function(connection, table_name) {
       sqlFetch(connection, table_name)
     )
   )
-}
-
-### AREA + FISHERY FUNCTIONS
-
-assign_area_and_fishery = function(dataset) {
-  dataset_FI = 
-    assign_fishery(
-      assign_area(
-        copy(
-          dataset
-        )
-      )
-    )
-  
-  #dataset_FI$FISHERY_TYPE = NULL
-  
-  setcolorder(dataset_FI, c("FISHERY", "AREA", "AREA_ORIG"))
-  
-  return(dataset_FI)
 }

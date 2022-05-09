@@ -2,11 +2,11 @@
 
 print("###### Producing samples' summaries ######")
 
-SA_CAS_NO = merged_CAS  [, .(FISH_COUNT  = sum(FISH_COUNT,  na.rm = TRUE)), keyby = .(SIZE_CLASS)]
+SA_CAS_NO = merged_CAS[, .(FISH_COUNT  = sum(FISH_COUNT,  na.rm = TRUE)), keyby = .(SIZE_CLASS)]
 TOT_NO = sum(SA_CAS_NO$FISH_COUNT)
 SA_CAS_NO[, `:=`(FRACTION = FISH_COUNT / TOT_NO, Source = "Catch-at-size (numbers)")]
 
-SA_CAS_W  = merged_CAS_W[, .(FISH_WEIGHT = sum(FISH_WEIGHT, na.rm = TRUE)), keyby = .(SIZE_CLASS)]
+SA_CAS_W  = merged_CAS[, .(FISH_WEIGHT = sum(FISH_WEIGHT, na.rm = TRUE)), keyby = .(SIZE_CLASS)]
 TOT_W  = sum(SA_CAS_W$FISH_WEIGHT)
 SA_CAS_W[, `:=`(FRACTION = FISH_WEIGHT / TOT_W, Source = "Catch-at-size (weight)")]
 

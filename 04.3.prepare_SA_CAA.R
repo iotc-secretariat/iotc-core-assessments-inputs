@@ -71,13 +71,9 @@ prepare_SA_CAA_NO_FIA_Q = function(merged_catches_and_quarterly_CAS, age_length_
   colnames(CAS_data)[which(colnames(CAS_data) == "QUANTITY")] = quantity
   
   CAS_data$SIZE_CLASS_ALT = CAS_data$SIZE_CLASS
-  
-  dbg("prepare_SA_CAA_NO_FIA_Q - gc() - START")
-  
-  gc()
-  
-  dbg("prepare_SA_CAA_NO_FIA_Q - gc() - END")
-  
+
+  runGC()
+
   CAA_data = 
     foverlaps(CAS_data, age_length_keys,
               by.x = c("SIZE_CLASS", "SIZE_CLASS_ALT"),
@@ -97,7 +93,7 @@ prepare_SA_CAA_NO_FIA_Q = function(merged_catches_and_quarterly_CAS, age_length_
   
   CAA_data[, AGE := paste0("A", str_sub(paste0("00", AGE), start = -2))]
 
-  dbg("prepare_SA_CAA_NO_FIA_Q - pivoting CAA data - START")
+  dbg("Pivoting CAA data - START")
   
   CAA_data_pivoted = dcast.data.table(
     CAA_data, 
@@ -108,9 +104,9 @@ prepare_SA_CAA_NO_FIA_Q = function(merged_catches_and_quarterly_CAS, age_length_
     drop = c(TRUE, FALSE)
   )
 
-  dbg("prepare_SA_CAA_NO_FIA_Q - pivoting CAA data - END")
+  dbg("Pivoting CAA data - END")
 
-  dbg("prepare_SA_CAA_NO_FIA_Q - merging CAS strata & CAA data - START")
+  dbg("Merging CAS strata & CAA data - START")
   
   CAA_OUT = merge(CAS_strata_and_catches, 
                   CAA_data_pivoted,
@@ -118,7 +114,7 @@ prepare_SA_CAA_NO_FIA_Q = function(merged_catches_and_quarterly_CAS, age_length_
                          "YEAR", "QUARTER"),
                   all.x = TRUE)
 
-  dbg("prepare_SA_CAA_NO_FIA_Q - merging CAS strata & CAA data - END")
+  dbg("Merging CAS strata & CAA data - END")
   
   delete_column(CAA_OUT, c("FIRST_CLASS_LOW",
                            "SIZE_INTERVAL"))

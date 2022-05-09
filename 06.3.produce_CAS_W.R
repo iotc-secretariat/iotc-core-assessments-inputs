@@ -16,9 +16,9 @@ print("###### Converting fish lengths to weights...")
 
 # LW_A and LW_B are configured at species' level
 
-merged_CAS_W[, FISH_WEIGHT := FISH_COUNT * LW_A * ( SIZE_CLASS + SIZE_INTERVAL / 2 ) ^ LW_B / 1000]
+merged_CAS[, FISH_WEIGHT := FISH_COUNT * LW_A * ( SIZE_CLASS + SIZE_INTERVAL / 2 ) ^ LW_B / 1000]
                
-gc()
+runGC()
 
 if(FALSE) {
   print("###### Preparing CAS (in weight) by Y / Q / M / F / G / S / FG...")
@@ -31,6 +31,6 @@ if(FALSE) {
 print("###### Preparing CAS (in weight) by FI / A / Y / Q...")
 
 # SF_FIA_Q is created in 03.5.prepare_inputs_IOTDB_SF.R
-CAS_FIA_Q_W = prepare_SA_CAS_FIA_Q(merged_CAS_W, SF_FIA_Q, "FISH_WEIGHT")
+CAS_FIA_Q_W = prepare_SA_CAS_FIA_Q(merged_CAS, SF_FIA_Q, "FISH_WEIGHT")
 
 write.csv(CAS_FIA_Q_W, file = output_folder(SPECIES, LOCAL_FOLDER, "CAS/weight/SA_CAS_W.csv"), na = "", row.names = FALSE)
