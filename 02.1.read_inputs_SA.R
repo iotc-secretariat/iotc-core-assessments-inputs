@@ -1,32 +1,34 @@
 # The mapping between 1x1 grids, 5x5 grids and PS areas
-GRIDS_15_MAPPINGS = get_table(IN, "0Grids1Fishing")
-GRIDS_15_MAPPINGS = GRIDS_15_MAPPINGS[, .(GRID_1 = as.character(Grid1), 
-                                          GRID_5 = as.character(Grid6), 
+if(FALSE) { # DEPRECATED
+  GRIDS_15_MAPPINGS = get_table(IN, "0Grids1Fishing")
+  GRIDS_15_MAPPINGS = GRIDS_15_MAPPINGS[, .(GRID_1 = as.character(Grid1), 
+                                            GRID_5 = as.character(Grid6), 
+                                            PS_AREA_NUMBER = as.character(PSnoArea),
+                                            PS_AREA = as.character(PSArea))]
+  
+  save(list = "GRIDS_15_MAPPINGS", file = input_folder(SPECIES, LOCAL_FOLDER, "CAS/grids_1_5_mappings.RData"))
+  write.csv(GRIDS_15_MAPPINGS, file = input_folder(SPECIES, LOCAL_FOLDER, "CAS/grids_1_5_mappings.csv"), row.names = FALSE)
+  
+  # The mapping between 5x5 grids and PS / LL areas
+  GRIDS_5_MAPPINGS = get_table(IN, "0Grids6Fishing")
+  GRIDS_5_MAPPINGS = GRIDS_5_MAPPINGS[, .(GRID_5 = as.character(Grid6), 
                                           PS_AREA_NUMBER = as.character(PSnoArea),
-                                          PS_AREA = as.character(PSArea))]
-
-save(list = "GRIDS_15_MAPPINGS", file = input_folder(SPECIES, LOCAL_FOLDER, "CAS/grids_1_5_mappings.RData"))
-write.csv(GRIDS_15_MAPPINGS, file = input_folder(SPECIES, LOCAL_FOLDER, "CAS/grids_1_5_mappings.csv"), row.names = FALSE)
-
-# The mapping between 5x5 grids and PS / LL areas
-GRIDS_5_MAPPINGS = get_table(IN, "0Grids6Fishing")
-GRIDS_5_MAPPINGS = GRIDS_5_MAPPINGS[, .(GRID_5 = as.character(Grid6), 
-                                        PS_AREA_NUMBER = as.character(PSnoArea),
-                                        PS_AREA = as.character(PSArea),
-                                        LL_AREA = as.character(LLArea))]
-
-save(list = "GRIDS_5_MAPPINGS", file = input_folder(SPECIES, LOCAL_FOLDER, "CAS/grids_5_mappings.RData"))
-write.csv(GRIDS_5_MAPPINGS, file = input_folder(SPECIES, LOCAL_FOLDER, "CAS/grids_5_mappings.csv"), row.names = FALSE)
-
-GRIDS_5_LL = GRIDS_5_MAPPINGS[, .(GEAR_TYPE = "LL", GRID_5, SF_AREA = LL_AREA, PROPORTION = 1)]
-GRIDS_5_PS = unique(GRIDS_15_MAPPINGS[, .(GEAR_TYPE = "PS", GRID_5, SF_AREA = PS_AREA, PROPORTION = 1)])
-
-GRIDS_5_PS[, PROPORTION := 1 / .N, by = .(GRID_5)]
-
-GRIDS_5_PS_LL = rbind(GRIDS_5_LL, GRIDS_5_PS)
-
-save(list = "GRIDS_5_PS_LL", file = input_folder(SPECIES, LOCAL_FOLDER, "CAS/grids_5_PS_LL.RData"))
-write.csv(GRIDS_5_MAPPINGS, file = input_folder(SPECIES, LOCAL_FOLDER, "CAS/grids_5_PS_LL.csv"), row.names = FALSE)
+                                          PS_AREA = as.character(PSArea),
+                                          LL_AREA = as.character(LLArea))]
+  
+  save(list = "GRIDS_5_MAPPINGS", file = input_folder(SPECIES, LOCAL_FOLDER, "CAS/grids_5_mappings.RData"))
+  write.csv(GRIDS_5_MAPPINGS, file = input_folder(SPECIES, LOCAL_FOLDER, "CAS/grids_5_mappings.csv"), row.names = FALSE)
+  
+  GRIDS_5_LL = GRIDS_5_MAPPINGS[, .(GEAR_TYPE = "LL", GRID_5, SF_AREA = LL_AREA, PROPORTION = 1)]
+  GRIDS_5_PS = unique(GRIDS_15_MAPPINGS[, .(GEAR_TYPE = "PS", GRID_5, SF_AREA = PS_AREA, PROPORTION = 1)])
+  
+  GRIDS_5_PS[, PROPORTION := 1 / .N, by = .(GRID_5)]
+  
+  GRIDS_5_PS_LL = rbind(GRIDS_5_LL, GRIDS_5_PS)
+  
+  save(list = "GRIDS_5_PS_LL", file = input_folder(SPECIES, LOCAL_FOLDER, "CAS/grids_5_PS_LL.RData"))
+  write.csv(GRIDS_5_MAPPINGS, file = input_folder(SPECIES, LOCAL_FOLDER, "CAS/grids_5_PS_LL.csv"), row.names = FALSE)
+}
 
 # The list of SF strata (YEAR + FLEET + GEAR) to be deleted
 SF_strata_DEL = unique(get_table(IN, "0StrataSF")[Table == SPECIES])

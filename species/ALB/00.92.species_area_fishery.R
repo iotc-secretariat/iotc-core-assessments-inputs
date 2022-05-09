@@ -26,6 +26,8 @@ FISHERY_GROUP_NAMES = c("DN - Driftnets",
                         "OT - Other gears")
 
 assign_area = function(dataset) {
+  dbg(paste0("Assigning area to dataset of ", nrow(dataset), " rows..."))
+  
   dataset = merge(dataset, FG_5_TO_SA_AREAS,
                   by.x = "FISHING_GROUND_CODE",
                   by.y = "SOURCE_FISHING_GROUND_CODE",
@@ -52,6 +54,8 @@ assign_area = function(dataset) {
   )
   
   dataset$AREA = dataset$AREA_ORIG
+
+  dbg(paste0("Assigned area to dataset of ", nrow(dataset), " rows!"))
   
   return(dataset)
 }

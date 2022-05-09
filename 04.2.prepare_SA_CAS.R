@@ -3,6 +3,8 @@
 #################################################################################################################
 
 merge_catches_and_quarterly_CAS = function(raised_catches, quarterly_CAS) {
+  dbg("Merging CA & Q CAS...")
+  
   merged = 
     merge(raised_catches, #sanitize_duplicated_SF_areas(raised_catches), 
           quarterly_CAS, 
@@ -16,6 +18,8 @@ merge_catches_and_quarterly_CAS = function(raised_catches, quarterly_CAS) {
   #merged = merged[, FISH_COUNT := FISH_COUNT / UNIQUE_SF_AREAS]
   
   #delete_column(merged, "UNIQUE_SF_AREAS")
+  
+  dbg("Finished merging CA & Q CAS!")
   
   return(merged)
 }
@@ -76,12 +80,21 @@ prepare_SA_CAS_YQMFG = function(merged_catches_and_quarterly_CAS, quantity = "FI
 }
 
 prepare_SA_CAS_FIA_Q = function(merged_catches_and_quarterly_CAS, samples_by_fishery_and_quarter, quantity = "FISH_COUNT") {
+  dbg("Preparing CAS FIA Q...")
+  
   CAS = merged_catches_and_quarterly_CAS
   
   CAS_strata_and_catches = assign_area_and_fishery(extract_CAS_strata_and_catches(CAS))
   #CAS_strata = assign_area_and_fishery(extract_CAS_strata(CAS_strata_and_catches))
-  CAS_data = assign_area_and_fishery(extract_CAS_data(CAS, quantity))
   
+  dbg("prepare_SA_CAS_FIA_Q - gc() - START")
+  
+  gc()
+  
+  dbg("prepare_SA_CAS_FIA_Q - gc() - END")
+  
+  CAS_data = assign_area_and_fishery(extract_CAS_data(CAS, quantity))
+   
   CAS_strata_and_catches = CAS_strata_and_catches[, .(EST_NO = sum(EST_NO, na.rm = TRUE), EST_MT = sum(EST_MT, na.rm = TRUE)), keyby = .(FISHERY, AREA, AREA_ORIG, YEAR, QUARTER, FIRST_CLASS_LOW, SIZE_INTERVAL)]
   #CAS_strata = unique(CAS_strata[, .(FISHERY, AREA, AREA_ORIG, YEAR, QUARTER, FIRST_CLASS_LOW, SIZE_INTERVAL)])
   
@@ -97,6 +110,12 @@ prepare_SA_CAS_FIA_Q = function(merged_catches_and_quarterly_CAS, samples_by_fis
     fill = 0.0,
     drop = c(TRUE, FALSE)
   )
+  
+  dbg("prepare_SA_CAS_FIA_Q - gc() - START")
+  
+  gc()
+  
+  dbg("prepare_SA_CAS_FIA_Q - gc() - END")
   
   SAMPLES = samples_by_fishery_and_quarter[, .(NUMBER_OF_SAMPLES = sum(NUMBER_OF_SAMPLES, na.rm = TRUE)), keyby = .(FISHERY, AREA, AREA_ORIG, YEAR, QUARTER)]
   
@@ -115,6 +134,8 @@ prepare_SA_CAS_FIA_Q = function(merged_catches_and_quarterly_CAS, samples_by_fis
                          "YEAR", "QUARTER", 
                          "FIRST_CLASS_LOW", "SIZE_INTERVAL",
                          "NUMBER_OF_SAMPLES", "EST_NO", "EST_MT"))
+
+  dbg("Finished preparing CAS FIA Q!")
   
   return(CAS_OUT)
 }

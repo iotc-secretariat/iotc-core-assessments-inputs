@@ -25,7 +25,7 @@ SA_MAP =
 ggsave(SA_MAP, file = output_folder(SPECIES, LOCAL_FOLDER, "SA_AREAS.png"), width = 12, height = 7.5)
 
 # Puts data together
-CATCHES = assign_area_and_fishery(CE_R_YQMFG)
+CATCHES = sanitize_duplicated_SF_areas(assign_area_and_fishery(CE_R_YQMFG))
 CATCHES$AREA    = factor(CATCHES$AREA)
 CATCHES$FISHERY = factor(CATCHES$FISHERY)
 

@@ -19,6 +19,8 @@ CE_A_F_mappings = merge(CE_A_mappings, LAST_FI_mappings,
                         by = c("FLEET", "GEAR_CODE"),
                         all.x = TRUE)
 
+# Adds missing mappings (from previous assessment)
+
 CE_A_F_mappings[FLEET == "AUS" & GEAR_CODE == "RR",     FISHERY := "OT"]
 CE_A_F_mappings[FLEET == "EUESP" & GEAR_CODE == "LLEX", FISHERY := "LL"]
 CE_A_F_mappings[FLEET == "MOZ" & GEAR_CODE %in% c("BS", "HARP"), FISHERY := "OT"]
@@ -26,8 +28,12 @@ CE_A_F_mappings[FLEET == "PAK" & GEAR_CODE == "HAND",   FISHERY := "HD"]
 CE_A_F_mappings[FLEET == "SYC" & GEAR_CODE == "FLL",    FISHERY := "LF"]
 CE_A_F_mappings[FLEET %in% c("EUMYT", "SYC") & GEAR_CODE == "LLCO", FISHERY := "LF"]
 
+# Subdivides the 'PS' fishery in its FS / LS components
+
 CE_A_F_mappings[FISHERY == "PS" & SCHOOL_TYPE_CODE == "FS", FISHERY := "FS"]
 CE_A_F_mappings[FISHERY == "PS" & SCHOOL_TYPE_CODE == "LS", FISHERY := "LS"]
+
+# Initializes the "area mappings" to transfer catches from one fishery / area to another (area)
 
 CE_A_F_mappings[FISHERY == "LL" & AREA_ORIG == "IRYFT1a", SA_AREA := "R1a"]
 CE_A_F_mappings[FISHERY == "LL" & AREA_ORIG == "IRYFT1b", SA_AREA := "R1b"]
@@ -61,18 +67,19 @@ CE_A_F_mappings$AREA_ORIG = factor(
   ordered = TRUE
 )
 
+CE_A_F_mappings$SCHOOL_TYPE_CODE = "UNCL"
+
+CE_A_F_mappings[GEAR_CODE == "PS" & FISHERY == "FS", SCHOOL_TYPE_CODE := "FS"]
+CE_A_F_mappings[GEAR_CODE == "PS" & FISHERY == "LS", SCHOOL_TYPE_CODE := "LS"]                
+
 CE_A_F_mappings_PIVOT =
   dcast.data.table(
     CE_A_F_mappings,
     value.var = "SA_AREA",
-    FLEET + GEAR_CODE + FISHERY ~ AREA_ORIG,
+    FLEET + GEAR_CODE + SCHOOL_TYPE_CODE + FISHERY ~ AREA_ORIG,
     fill = NA,
     fun.aggregate = unique,
     drop = c(TRUE, FALSE)
   )
 
-CE_A_F_mappings[FLEET == "AUS" & GEAR_CODE == "HAND"]
-
-write.csv(CE_A_F_mappings_PIVOT, file = "./species/YFT/YFT_FISHERIES.csv", row.names = FALSE, na = "--")
-
-summary(FOO)
+write.csv(CE_A_F_mappings_PIVOT, file = "./species/YFT/YFT_FISHERIES.csv", row.names = FALSE, na = "")

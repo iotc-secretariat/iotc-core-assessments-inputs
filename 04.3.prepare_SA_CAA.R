@@ -57,11 +57,12 @@ prepare_SA_CAA_NO_YQMFG = function(merged_catches_and_quarterly_CAS, age_length_
 }
 
 prepare_SA_CAA_NO_FIA_Q = function(merged_catches_and_quarterly_CAS, age_length_keys, quantity = "FISH_COUNT") {
+  dbg("prepare_SA_CAA_NO_FIA_Q - BEGIN")
+  
   CAS = merged_catches_and_quarterly_CAS
   
   CAS_strata_and_catches = assign_area_and_fishery(extract_CAS_strata_and_catches(CAS))
   CAS_data               = assign_area_and_fishery(extract_CAS_data(CAS, quantity))
-  
   CAS_strata_and_catches = CAS_strata_and_catches[, .(EST_NO = sum(EST_NO, na.rm = TRUE), EST_MT = sum(EST_MT, na.rm = TRUE)), keyby = .(FISHERY, AREA, AREA_ORIG, YEAR, QUARTER, FIRST_CLASS_LOW, SIZE_INTERVAL)]
   
   
@@ -70,6 +71,12 @@ prepare_SA_CAA_NO_FIA_Q = function(merged_catches_and_quarterly_CAS, age_length_
   colnames(CAS_data)[which(colnames(CAS_data) == "QUANTITY")] = quantity
   
   CAS_data$SIZE_CLASS_ALT = CAS_data$SIZE_CLASS
+  
+  dbg("prepare_SA_CAA_NO_FIA_Q - gc() - START")
+  
+  gc()
+  
+  dbg("prepare_SA_CAA_NO_FIA_Q - gc() - END")
   
   CAA_data = 
     foverlaps(CAS_data, age_length_keys,
@@ -89,6 +96,8 @@ prepare_SA_CAA_NO_FIA_Q = function(merged_catches_and_quarterly_CAS, age_length_
   colnames(CAA_data)[which(colnames(CAA_data) == "QUANTITY")] = quantity
   
   CAA_data[, AGE := paste0("A", str_sub(paste0("00", AGE), start = -2))]
+
+  dbg("prepare_SA_CAA_NO_FIA_Q - pivoting CAA data - START")
   
   CAA_data_pivoted = dcast.data.table(
     CAA_data, 
@@ -98,19 +107,27 @@ prepare_SA_CAA_NO_FIA_Q = function(merged_catches_and_quarterly_CAS, age_length_
     fill = 0.0,
     drop = c(TRUE, FALSE)
   )
+
+  dbg("prepare_SA_CAA_NO_FIA_Q - pivoting CAA data - END")
+
+  dbg("prepare_SA_CAA_NO_FIA_Q - merging CAS strata & CAA data - START")
   
   CAA_OUT = merge(CAS_strata_and_catches, 
                   CAA_data_pivoted,
                   by = c("FISHERY", "AREA", "AREA_ORIG",
                          "YEAR", "QUARTER"),
                   all.x = TRUE)
- 
+
+  dbg("prepare_SA_CAA_NO_FIA_Q - merging CAS strata & CAA data - END")
+  
   delete_column(CAA_OUT, c("FIRST_CLASS_LOW",
                            "SIZE_INTERVAL"))
   
   setcolorder(CAA_OUT, c("FISHERY", "AREA", "AREA_ORIG", 
                          "YEAR", "QUARTER", 
                          "EST_NO", "EST_MT", "METHOD"))
+  
+  dbg("prepare_SA_CAA_NO_FIA_Q - END")
   
   return(CAA_OUT)
 }

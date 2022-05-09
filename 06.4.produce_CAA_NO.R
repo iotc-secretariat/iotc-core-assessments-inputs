@@ -33,12 +33,18 @@ if(FALSE) {
 
 print("###### Preparing CAA (in numbers) by FI / A / Y / Q...")
 
+dbg("Preparing SA CAA NO FIA Q")
+
 CAA_FIA_Q   = prepare_SA_CAA_NO_FIA_Q(merged_CAS, AL_KEYS_METHOD)
+
+dbg("Preparing SA CAA NO FIA Q - DONE!")
 
 write.csv(CAA_FIA_Q,   file = output_folder(SPECIES, LOCAL_FOLDER, paste0("CAA/number/SA_CAA_", AL_METHOD, ".csv")), na = "", row.names = FALSE)
 
 CAA_FIA_Q_U = copy(CAA_FIA_Q)
 delete_column(CAA_FIA_Q_U, c("EST_MT", "EST_NO", "METHOD"))
+
+dbg("Unpivoting CAA FIA Q NO")
 
 CAA_FIA_Q_UNPIVOTED_NO = 
   melt.data.table(
@@ -47,6 +53,8 @@ CAA_FIA_Q_UNPIVOTED_NO =
     value.name = "FISH_COUNT", 
     variable.name = "AGE"
   )
+
+dbg("Unpivoting CAA FIA Q NO - DONE!")
 
 AGES = as.character(sort(unique(CAA_FIA_Q_UNPIVOTED_NO$AGE)))
 

@@ -16,9 +16,10 @@ print("###### Converting fish lengths to weights...")
 
 # LW_A and LW_B are configured at species' level
 
-merged_CAS_W = copy(merged_CAS)
 merged_CAS_W[, FISH_WEIGHT := FISH_COUNT * LW_A * ( SIZE_CLASS + SIZE_INTERVAL / 2 ) ^ LW_B / 1000]
                
+gc()
+
 if(FALSE) {
   print("###### Preparing CAS (in weight) by Y / Q / M / F / G / S / FG...")
   

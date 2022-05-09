@@ -1,3 +1,9 @@
+### DEBUG
+
+dbg = function(message) {
+  print(paste0("[ DEBUG ] : ", date(), " - ", message))
+}
+
 ### FILE ACCESS FUNCTIONS
 
 species_folder = function(species_code, file_name = NA) {
