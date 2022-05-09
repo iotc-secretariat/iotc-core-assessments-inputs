@@ -2,14 +2,17 @@
 
 print("###### Producing samples' summaries ######")
 
+# Requires the CAS in numbers
 SA_CAS_NO = merged_CAS[, .(FISH_COUNT  = sum(FISH_COUNT,  na.rm = TRUE)), keyby = .(SIZE_CLASS)]
 TOT_NO = sum(SA_CAS_NO$FISH_COUNT)
 SA_CAS_NO[, `:=`(FRACTION = FISH_COUNT / TOT_NO, Source = "Catch-at-size (numbers)")]
 
+# Requires the CAS in weight
 SA_CAS_W  = merged_CAS[, .(FISH_WEIGHT = sum(FISH_WEIGHT, na.rm = TRUE)), keyby = .(SIZE_CLASS)]
 TOT_W  = sum(SA_CAS_W$FISH_WEIGHT)
 SA_CAS_W[, `:=`(FRACTION = FISH_WEIGHT / TOT_W, Source = "Catch-at-size (weight)")]
 
+# Calculates original samples distribution (% fish by size class) from the original samples 
 SA_SF = 
   size_class_from_size_bin(
     melt.data.table(
@@ -158,3 +161,74 @@ SAMPLES_Y_PLOT =
   )
 
 ggsave(SAMPLES_Y_PLOT, file = output_folder(SPECIES, LOCAL_FOLDER, "samples/SAMPLES_BY_SOURCE.png"), width = 12, height = 6.75) 
+
+YEARS = min(CAS_FIA_Q$YEAR):max(CAS_FIA_Q$YEAR)
+
+ORIGINAL_SAMPLES_BY_FIAY =
+  SF_FIA_Q[, .(NUMBER_OF_SAMPLES = sum(NUMBER_OF_SAMPLES, na.rm = TRUE)),
+               keyby = .(FISHERY, AREA, YEAR)]
+
+YFA = expand.grid(YEAR = YEARS, 
+                  FISHERY = sort(unique(ORIGINAL_SAMPLES_BY_FIAY$FISHERY)))
+
+ORIGINAL_SAMPLES_BY_FIAY = merge(YFA, ORIGINAL_SAMPLES_BY_FIAY,
+                                 all.x = TRUE)
+
+SAMPLES_AVAILABLE =
+  dcast.data.table(
+    as.data.table(ORIGINAL_SAMPLES_BY_FIAY),
+    formula = FISHERY + AREA ~ YEAR,
+    fun.aggregate = sum,
+    value.var = "NUMBER_OF_SAMPLES",
+    drop = c(TRUE, FALSE),
+    fill = NA
+  )[!is.na(AREA)]
+
+write.csv(SAMPLES_AVAILABLE, file = output_folder(SPECIES, LOCAL_FOLDER, "samples/SAMPLES_AVAILABLE.csv"), na = "", row.names = FALSE)
+
+ESTIMATED_FISH_BY_FIAY =
+  CAS_FIA_Q[, .(EST_NO = sum(EST_NO, na.rm = TRUE), EST_MT = sum(EST_MT, na.rm = TRUE)),
+                keyby = .(FISHERY, AREA, YEAR)]
+
+SAMPLES_ESTIMATED = 
+  dcast.data.table(
+    ESTIMATED_FISH_BY_FIAY,
+    formula = FISHERY + AREA ~ YEAR,
+    fun.aggregate = sum,
+    value.var = "EST_NO",
+    drop = c(TRUE, FALSE),
+    fill = NA
+  )
+
+write.csv(SAMPLES_ESTIMATED, file = output_folder(SPECIES, LOCAL_FOLDER, "samples/SAMPLES_ESTIMATED.csv"), na = "", row.names = FALSE)
+
+ORIGINAL_VS_ESTIMATED_FISH_BY_FIAY = 
+  merge(ESTIMATED_FISH_BY_FIAY, ORIGINAL_SAMPLES_BY_FIAY,
+        all.x = TRUE)
+
+ORIGINAL_VS_ESTIMATED_FISH_BY_FIAY[!is.na(EST_NO), `:=`(COVERAGE   = ifelse(is.na(NUMBER_OF_SAMPLES), 0,     NUMBER_OF_SAMPLES / EST_NO),
+                                                        COVERAGE_W = ifelse(is.na(NUMBER_OF_SAMPLES), FALSE, NUMBER_OF_SAMPLES >= EST_MT))][COVERAGE > 1, COVERAGE := 1]
+
+ORIGINAL_VS_ESTIMATED_COVERAGE =
+  dcast.data.table(
+    ORIGINAL_VS_ESTIMATED_FISH_BY_FIAY,
+    formula = FISHERY + AREA ~ YEAR,
+    fun.aggregate = max,
+    value.var = "COVERAGE",
+    drop = c(TRUE, FALSE),
+    fill = NA
+  )[!is.na(AREA)]
+
+write.csv(ORIGINAL_VS_ESTIMATED_COVERAGE, file = output_folder(SPECIES, LOCAL_FOLDER, "samples/SAMPLES_COVERAGE.csv"), na = "", row.names = FALSE)
+
+MINIMUM_COVERAGE_REACHED =
+  dcast.data.table(
+    ORIGINAL_VS_ESTIMATED_FISH_BY_FIAY,
+    formula = FISHERY + AREA ~ YEAR,
+    fun.aggregate = max,
+    value.var = "COVERAGE_W",
+    drop = c(TRUE, FALSE),
+    fill = NA
+  )
+
+write.csv(MINIMUM_COVERAGE_REACHED, file = output_folder(SPECIES, LOCAL_FOLDER, "samples/SAMPLES_COVERAGE_REACHED.csv"), na = "", row.names = FALSE)
