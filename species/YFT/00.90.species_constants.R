@@ -5,8 +5,10 @@ REMOTE_FOLDER = "WPTT24_DP"
 SA_MAIN_FILE  = "WPTT_YFT_SA(MFCL).mdb"
 
 # L-W conversion : Length-weight relationships for tropical tunas caught with purse seine in the Indian Ocean: Update and lessons learned (Chassot, E. et al in IOTC-2016-WPDSC12-INF05)
-LW_A = 0.00002459
-LW_B = 2.96670
+LW_EQ = data.table(FISHERY_TYPE = c("PSPLGI", "LLOT"), # Different equations For PS / PL / GI and LL / OT
+                   A = c(0.00002459, 0.0000094007), 
+                   B = c(2.96670000, 3.1268439870),
+                   M = c(1.00000000, 1.1300000000))
 
 # Age-Length slicing method
 AL_METHOD = "SLAF2"

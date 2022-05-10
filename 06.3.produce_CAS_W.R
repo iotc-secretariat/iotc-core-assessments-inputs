@@ -14,10 +14,17 @@ print("###### SA_CAS (t) ######")
 
 print("###### Converting fish lengths to weights...")
 
-# LW_A and LW_B are configured at species' level
+# LW_A and LW_B are configured at species' level and by type of gear (most of the times)
 
-merged_CAS[, FISH_WEIGHT := FISH_COUNT * LW_A * ( SIZE_CLASS + SIZE_INTERVAL / 2 ) ^ LW_B / 1000]
-               
+LW_EQ_PS_PL_GI = LW_EQ[FISHERY_TYPE == "PSPLGI"]
+LW_EQ_LL_OT    = LW_EQ[FISHERY_TYPE == "LLOT"]
+
+merged_CAS[GEAR_CODE %in% GEAR_PS_PL_GI$CODE, 
+           FISH_WEIGHT := FISH_COUNT * LW_EQ_PS_PL_GI$M * LW_EQ_PS_PL_GI$A * ( SIZE_CLASS + SIZE_INTERVAL / 2 ) ^ LW_EQ_PS_PL_GI$B / 1000]
+  
+merged_CAS[!GEAR_CODE %in% GEAR_PS_PL_GI$CODE, 
+           FISH_WEIGHT := FISH_COUNT * LW_EQ_LL_OT$M    * LW_EQ_LL_OT$A    * ( SIZE_CLASS + SIZE_INTERVAL / 2 ) ^ LW_EQ_LL_OT$B    / 1000]
+
 runGC()
 
 if(FALSE) {

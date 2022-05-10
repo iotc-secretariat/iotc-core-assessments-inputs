@@ -4,9 +4,11 @@ REMOTE_FOLDER = "WPTmT08_Assessment - TBD" # TWN LL and Logbook SF data (2003+) 
 
 SA_MAIN_FILE  = "WPTmT_ALB_SA(SS3).accdb"
 
-# L-W conversion
-LW_A = 0.0000137180
-LW_B = 3.09730
+# L-W conversion : Length-weight relationships for tropical tunas caught with purse seine in the Indian Ocean: Update and lessons learned (Chassot, E. et al in IOTC-2016-WPDSC12-INF05)
+LW_EQ = data.table(FISHERY_TYPE = c("PSPLGI", "LLOT"), # Different equations For PS / PL / GI and LL / OT
+                   A = c(0.0000137180, 0.0000137180), 
+                   B = c(3.0973000000, 3.0973000000),
+                   M = c(1.0000000000, 1.0000000000)) # No diffs between gears in ALB L-W equations 
 
 # Age-Length slicing method
 AL_METHOD = "SLWE1"

@@ -64,3 +64,6 @@ get_table = function(connection, table_name) {
     )
   )
 }
+
+### Gear codes fro PS / PL / GI
+GEAR_PS_PL_GI = query(IOTDB, "SELECT ACode AS CODE FROM cdeGears WHERE LAggCode IN ('Baitboat', 'Gillnet', 'Purse Seine') OR ( LAggCESF = 'Other' )")
