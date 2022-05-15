@@ -1,8 +1,11 @@
+# Clears the environment
+rm(list = ls())
+
 library(iotc.base.common.plots)
 library(RODBC)
 
 # Change this to run the process for a different species (that will self-configure)
-SPECIES = "YFT" 
+SPECIES = "BET" 
 
 source("./00.1.common_constants.R")
 source("./00.2.helpers_misc.R")
