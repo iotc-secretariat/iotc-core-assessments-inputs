@@ -27,6 +27,8 @@ SA_AREAS_CONFIG_ORIG = data.table(
 SA_AREAS_CONFIG_ORIG[, AREA_NAME := paste0(AREA_CODE, " - ", NAME_SHORT)]
 
 postprocess_fishery = function(dataset) {
+  dataset[, SF_FISHERY := fifelse(FISHERY %in% c("PSFS", "PSLS", "BB"), "PSPLGI", "LLOT")]
+
   return(dataset)
 }
 

@@ -123,7 +123,11 @@ AW_SF = assign_area_and_fishery(SF_FIA_Q_UNPIVOTED)
 #AW_SF[GEAR_CODE == "ELLOB", GEAR_CODE := "ELL"]
 #AW_SF[GEAR_CODE == "PSOB", GEAR_CODE := "PS"]
 
-AW_SF[, WEIGHT := NUMBER_OF_SAMPLES * LW_A * ( SIZE_CLASS + SIZE_INTERVAL / 2 ) ^ LW_B]
+# Iterates between the possible fishery types (for SF) to apply different L-W equations - if required
+for(sf_fishery in c("PSPLGI", "LLOT")) {
+  AW_SF[SF_FISHERY == sf_fishery, WEIGHT := NUMBER_OF_SAMPLES * LW_EQ[FISHERY_TYPE == sf_fishery]$M * LW_EQ[FISHERY_TYPE == sf_fishery]$A * ( SIZE_CLASS + SIZE_INTERVAL / 2 ) ^ LW_EQ[FISHERY_TYPE == sf_fishery]$B]
+}
+
 AW_SF = AW_SF[, .(NUMBER_OF_SAMPLES = sum(NUMBER_OF_SAMPLES, na.rm = TRUE), WEIGHT = sum(WEIGHT, na.rm = TRUE)),
                   keyby = .(YEAR, AREA, FISHERY, FLEET, GEAR_CODE, SCHOOL_TYPE_CODE)]
 
