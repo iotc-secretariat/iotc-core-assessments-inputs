@@ -1,6 +1,10 @@
-WP_CURRENT    = "2022-as-alt"
-LOCAL_FOLDER  = "WPTmT08-AS-alt"
-REMOTE_FOLDER = "WPTmT08_Assessment - TBD - alt" # TWN LL and Logbook SF data (2003+) removed, LLOB data all kept
+#WP_CURRENT    = "2022-as-alt"
+#LOCAL_FOLDER  = "WPTmT08-AS-alt"
+#REMOTE_FOLDER = "WPTmT08_Assessment - TBD - alt" # TWN LL and Logbook SF data (2003+) removed, LLOB data all kept
+
+WP_CURRENT    = "2022-as"
+LOCAL_FOLDER  = "WPTmT08-AS"
+REMOTE_FOLDER = "WPTmT08_Assessment - TBD" # TWN LL and Logbook SF data (2003+) removed, LLOB data all kept
 
 SA_MAIN_FILE  = "WPTmT_ALB_SA(SS3).accdb"
 

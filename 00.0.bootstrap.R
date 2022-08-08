@@ -5,7 +5,7 @@ library(iotc.base.common.plots)
 library(RODBC)
 
 # Change this to run the process for a different species (that will self-configure)
-SPECIES = "ALB" 
+SPECIES = "SKJ" 
 
 source("./00.1.common_constants.R")
 source("./00.2.helpers_misc.R")
@@ -20,7 +20,7 @@ source("./00.5.helpers_size_class_and_bin.R")
 
 source("./01.1.configure_data_access.R")
 
-if(TRUE) {
+if(FALSE) { # Scripts below read all relevant datasets from the Access DB files (for the SA) and from the IOTDB
   source("./02.1.read_inputs_SA.R")
   source("./02.2.read_inputs_IOTDB.R")
 }

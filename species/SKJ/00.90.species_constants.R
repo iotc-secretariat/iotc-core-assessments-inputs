@@ -11,10 +11,10 @@ SA_MAIN_FILE  = "WPTT_SKJ_SA(SS3).mdb"
 print("!!! SKJ configuration still needs to be updated !!!")
 
 # L-W conversion : Length-weight relationships for tropical tunas caught with purse seine in the Indian Ocean: Update and lessons learned (Chassot, E. et al in IOTC-2016-WPDSC12-INF05)
-LW_EQ = data.table(FISHERY_TYPE = c("PSPLGI", "LLOT"), # Different equations For PS / PL / GI and LL / OT
-                   A = c(0.0000221700, 1.5920660742613E-05), 
-                   B = c(3.0121100000, 3.041541402313),
-                   M = c(1.0000000000, 1.130000000000))
+LW_EQ = data.table(FISHERY_TYPE = c("PSPLGI", "LLOT"), # Different equations For PS / PL / GI and LL / OT - BUT NOT IN THE CASE OF SKJ, HENCE THE VALUES ARE THE SAME
+                   A = c(0.0000049700, 0.0000049700), 
+                   B = c(3.3929200000, 3.3929200000),
+                   M = c(1.0000000000, 1.0000000000))
 
 # Age-Length slicing method
 AL_METHOD = "DMPAB"
@@ -22,7 +22,7 @@ AL_METHOD = "DMPAB"
 # Output production
 DEFAULT_NUM_SIZE_BINS   = 150 
 
-DEFAULT_SIZE_INTERVAL   =   2
+DEFAULT_SIZE_INTERVAL   =   1
 DEFAULT_FIRST_CLASS_LOW =  10
 DEFAULT_LAST_CLASS_LOW  = DEFAULT_FIRST_CLASS_LOW + ( DEFAULT_NUM_SIZE_BINS - 1 ) * DEFAULT_SIZE_INTERVAL
 

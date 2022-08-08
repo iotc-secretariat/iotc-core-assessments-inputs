@@ -1,0 +1,3 @@
+# Cleanup script for SKJ
+
+# Currently it does nothing...
