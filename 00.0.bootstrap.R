@@ -5,7 +5,7 @@ library(iotc.base.common.plots)
 library(RODBC)
 
 # Change this to run the process for a different species (that will self-configure)
-SPECIES = "SKJ" 
+SPECIES = "SWO" 
 
 source("./00.1.common_constants.R")
 source("./00.2.helpers_misc.R")
@@ -20,7 +20,8 @@ source("./00.5.helpers_size_class_and_bin.R")
 
 source("./01.1.configure_data_access.R")
 
-if(FALSE) { # Scripts below read all relevant datasets from the Access DB files (for the SA) and from the IOTDB
+# Scripts below read all relevant datasets from the Access DB files (for the SA) and from the IOTDB
+if(TRUE) {   
   source("./02.1.read_inputs_SA.R")
   source("./02.2.read_inputs_IOTDB.R")
 }
@@ -39,8 +40,12 @@ source("./05.2.produce_avg_weight.R")
 source("./06.1.produce_SAMPLES.R")
 source("./06.2.produce_CAS_NO.R")
 source("./06.3.produce_CAS_W.R")
-source("./06.4.produce_CAA_NO.R")
-source("./06.5.produce_CAA_W.R")
+
+if(!is.na(AL_METHOD)) {
+  source("./06.4.produce_CAA_NO.R")
+  source("./06.5.produce_CAA_W.R")
+}
+
 source("./06.6.produce_samples_summaries.R")
 
 source(species_folder(SPECIES, "./00.93.cleanup.R"))

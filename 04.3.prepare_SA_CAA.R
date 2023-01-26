@@ -17,6 +17,14 @@ prepare_SA_CAA_NO_YQMFG = function(merged_catches_and_quarterly_CAS, age_length_
               by.y = c("LengthFrom", "LengthTo"),
               type = "within")
   
+  NA_AGE = CAA_data[is.na(Age)]
+  
+  if(nrow(NA_AGE) > 0) {
+    l_warn(paste0(nrow(NA_AGE), " records have been assigned a 'NA' age, for a total of ", round(sum(NA_AGE$FISH_COUNT)), " individuals: removing these unwanted records..."))
+    
+    CAA_data = CAA_data[!is.na(Age)]
+  }
+  
   colnames(CAA_data)[which(colnames(CAA_data) == quantity)] = "QUANTITY"
   
   CAA_data = CAA_data[, .(YEAR, QUARTER, MONTH, 
@@ -57,7 +65,7 @@ prepare_SA_CAA_NO_YQMFG = function(merged_catches_and_quarterly_CAS, age_length_
 }
 
 prepare_SA_CAA_NO_FIA_Q = function(merged_catches_and_quarterly_CAS, age_length_keys, quantity = "FISH_COUNT") {
-  dbg("prepare_SA_CAA_NO_FIA_Q - BEGIN")
+  l_info("prepare_SA_CAA_NO_FIA_Q - BEGIN")
   
   CAS = merged_catches_and_quarterly_CAS
   
@@ -80,6 +88,14 @@ prepare_SA_CAA_NO_FIA_Q = function(merged_catches_and_quarterly_CAS, age_length_
               by.y = c("LengthFrom", "LengthTo"),
               type = "within")
   
+  NA_AGE = CAA_data[is.na(Age)]
+  
+  if(nrow(NA_AGE) > 0) {
+    l_warn(paste0(nrow(NA_AGE), " records have been assigned a 'NA' age, for a total of ", round(sum(NA_AGE$FISH_COUNT)), " individuals: removing these unwanted records..."))
+    
+    CAA_data = CAA_data[!is.na(Age)]
+  }
+  
   colnames(CAA_data)[which(colnames(CAA_data) == quantity)] = "QUANTITY"
   
   CAA_data = CAA_data[, .(FISHERY, AREA, AREA_ORIG, 
@@ -93,7 +109,7 @@ prepare_SA_CAA_NO_FIA_Q = function(merged_catches_and_quarterly_CAS, age_length_
   
   CAA_data[, AGE := paste0("A", str_sub(paste0("00", AGE), start = -2))]
 
-  dbg("Pivoting CAA data - START")
+  l_info("Pivoting CAA data - START")
   
   CAA_data_pivoted = dcast.data.table(
     CAA_data, 
@@ -104,9 +120,9 @@ prepare_SA_CAA_NO_FIA_Q = function(merged_catches_and_quarterly_CAS, age_length_
     drop = c(TRUE, FALSE)
   )
 
-  dbg("Pivoting CAA data - END")
+  l_info("Pivoting CAA data - END")
 
-  dbg("Merging CAS strata & CAA data - START")
+  l_info("Merging CAS strata & CAA data - START")
   
   CAA_OUT = merge(CAS_strata_and_catches, 
                   CAA_data_pivoted,
@@ -114,7 +130,7 @@ prepare_SA_CAA_NO_FIA_Q = function(merged_catches_and_quarterly_CAS, age_length_
                          "YEAR", "QUARTER"),
                   all.x = TRUE)
 
-  dbg("Merging CAS strata & CAA data - END")
+  l_info("Merging CAS strata & CAA data - END")
   
   delete_column(CAA_OUT, c("FIRST_CLASS_LOW",
                            "SIZE_INTERVAL"))
@@ -123,7 +139,7 @@ prepare_SA_CAA_NO_FIA_Q = function(merged_catches_and_quarterly_CAS, age_length_
                          "YEAR", "QUARTER", 
                          "EST_NO", "EST_MT", "METHOD"))
   
-  dbg("prepare_SA_CAA_NO_FIA_Q - END")
+  l_info("prepare_SA_CAA_NO_FIA_Q - END")
   
   return(CAA_OUT)
 }

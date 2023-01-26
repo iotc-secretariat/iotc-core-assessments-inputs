@@ -119,7 +119,7 @@ assign_area = function(dataset,
                        original_area_config           = SA_AREAS_CONFIG_ORIG,
                        grid_to_area_mappings          = FG_TO_SA_AREAS_ORIG,
                        species_specific_area_mappings = SPECIES_SPECIFIC_AREA_MAPPINGS) {
-  dbg(paste0("Assigning area to dataset of ", nrow(dataset), " rows..."))
+  l_info(paste0("Assigning area to dataset of ", nrow(dataset), " rows..."))
   
   runGC()
   
@@ -133,8 +133,8 @@ assign_area = function(dataset,
   unmapped_grid_codes = unique(dataset[is.na(TARGET_FISHING_GROUND_CODE)]$FISHING_GROUND_CODE)
   
   if(length(unmapped_grid_codes) >= 1) {
-    print(paste0(length(unmapped_grid_codes), " grids have not been assigned to any SA area..."))
-    print(unmapped_grid_codes)
+    l_warn(paste0(length(unmapped_grid_codes), " grids have not been assigned to any SA area..."))
+    l_warn(unmapped_grid_codes)
     
     dataset = dataset[!is.na(TARGET_FISHING_GROUND_CODE)]
   }
@@ -152,7 +152,7 @@ assign_area = function(dataset,
   unmapped_areas = unique(dataset[is.na(AREA), .(FLEET, GEAR_CODE, SCHOOL_TYPE_CODE, AREA_CODE)])
   
   if(nrow(unmapped_areas) >= 1) {
-    print(paste0(nrow(unmapped_areas), " records have not been mapped to any area..."))
+    l_warn(paste0(nrow(unmapped_areas), " records have not been mapped to any area..."))
     print(unmapped_areas)
     
     dataset = dataset[!is.na(AREA)]
@@ -177,7 +177,7 @@ assign_area = function(dataset,
   
   runGC()
   
-  dbg(paste0("Assigned area to dataset of ", nrow(dataset), " rows!"))
+  l_info(paste0("Assigned area to dataset of ", nrow(dataset), " rows!"))
   
   return(dataset)
 }
@@ -185,7 +185,7 @@ assign_area = function(dataset,
 assign_fishery = function(dataset, 
                           species_specific_fishery_mappings = SPECIES_SPECIFIC_FISHERY_MAPPINGS,
                           fishery_codes = FISHERY_CODES) {
-  dbg(paste0("Assigning fishery to dataset of ", nrow(dataset), " rows..."))
+  l_info(paste0("Assigning fishery to dataset of ", nrow(dataset), " rows..."))
   
   runGC()
   
@@ -198,8 +198,8 @@ assign_fishery = function(dataset,
   num_missing_fishery = nrow(missing_fishery)
   
   if(num_missing_fishery > 0) {
-    print(paste0(num_missing_fishery, " fleet / gear / school type mappings are missing"))
-    print(unique(missing_fishery[, .(FLEET, GEAR_CODE, SCHOOL_TYPE_CODE)]))
+    l_error(paste0(num_missing_fishery, " fleet / gear / school type mappings are missing"))
+    l_error(unique(missing_fishery[, .(FLEET, GEAR_CODE, SCHOOL_TYPE_CODE)]))
   }
   
   dataset = postprocess_fishery(dataset)
@@ -213,7 +213,7 @@ assign_fishery = function(dataset,
   
   runGC()
   
-  dbg(paste0("Assigned fishery to dataset of ", nrow(dataset), " rows!"))
+  l_info(paste0("Assigned fishery to dataset of ", nrow(dataset), " rows!"))
   
   return (dataset)
 }

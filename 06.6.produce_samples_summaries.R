@@ -1,6 +1,6 @@
 ### Production of samples' summary tables and charts
 
-print("###### Producing samples' summaries ######")
+l_info("###### Producing samples' summaries ######")
 
 # Requires the CAS in numbers
 SA_CAS_NO = merged_CAS[, .(FISH_COUNT  = sum(FISH_COUNT,  na.rm = TRUE)), keyby = .(SIZE_CLASS)]

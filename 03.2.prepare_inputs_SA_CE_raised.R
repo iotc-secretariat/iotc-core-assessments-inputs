@@ -119,7 +119,7 @@ prepare_alternative_data = function(CE_raised_by_YQMFG) {
   return(CE_R_FIA_Q_ALT)
 }
 
-print("Building raised CE by Y / Q / M / FL / G / FG + SF A...")
+l_info("Building raised CE by Y / Q / M / FL / G / FG + SF A...")
 
 # Raised CE by year, quarter, month, fleet, gear and fishing ground, with SF area attached 
 # (might introduce duplicate records due to 5x5 grids belonging to multiple SF areas at a time
@@ -131,7 +131,7 @@ CE_R_YQMFG =
     GRIDS_5_PS_LL_MAPPINGS #GRIDS_5_PS_LL
   )
 
-print("Building raised CE by FI / A / Y / Q...")
+l_info("Building raised CE by FI / A / Y / Q...")
 
 # Raised CE by fishery, area, quarter, without SF area attached (not necessary)
 CE_R_FIA_Q = 
@@ -142,7 +142,7 @@ CE_R_FIA_Q =
   )[, .(EST_MT = sum(EST_MT, na.rm = TRUE), EST_NO = sum(EST_NO, na.rm = TRUE)),
         keyby = .(FISHERY, AREA, AREA_ORIG, YEAR , QUARTER)]
 
-print("Building raised CE by FL / FI / A / Y / Q...")
+l_info("Building raised CE by FL / FI / A / Y / Q...")
 
 CE_R_FIA_Q_FL = 
   assign_area_and_fishery(
@@ -152,6 +152,6 @@ CE_R_FIA_Q_FL =
   )[, .(EST_MT = sum(EST_MT, na.rm = TRUE), EST_NO = sum(EST_NO, na.rm = TRUE)),
     keyby = .(FISHERY, AREA, AREA_ORIG, YEAR , QUARTER, FLEET)]
 
-print("Building alternative raised CE by FI / A / Y / Q...")
+l_info("Building alternative raised CE by FI / A / Y / Q...")
 
 CE_R_FIA_Q_ALT = prepare_alternative_data(CE_R_YQMFG)

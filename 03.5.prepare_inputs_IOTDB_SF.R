@@ -67,7 +67,7 @@ sanitize_SF = function(raw_data, scale_by_samples = FALSE, exclude_larger_grids 
 remove_SF_strata = function(raw_data, strata_to_delete) {
   NUMBER_OF_SAMPLES_orig = sum(raw_data$NUMBER_OF_SAMPLES)
   
-  print("List of S-F strata to be deleted:")
+  l_info("List of S-F strata to be deleted:")
   print(strata_to_delete[order(+FLEET, +GEAR_CODE, -YEAR)])
   
   # Diagnostics after samples deletion...
@@ -82,8 +82,8 @@ remove_SF_strata = function(raw_data, strata_to_delete) {
   NUMBER_OF_SAMPLES = sum(raw_data$NUMBER_OF_SAMPLES)
   
   if(NUMBER_OF_SAMPLES_orig != NUMBER_OF_SAMPLES) {
-    print(paste0("!!! WARNING !!! : number of samples *before* deletion of unwanted strata (", NUMBER_OF_SAMPLES_orig, ") ", 
-                 "differs from number of samples *after* deletion (", NUMBER_OF_SAMPLES, ") by ", (NUMBER_OF_SAMPLES_orig - NUMBER_OF_SAMPLES), " individuals"))
+    l_warn(paste0("Number of samples *before* deletion of unwanted strata (", NUMBER_OF_SAMPLES_orig, ") ", 
+                  "differs from number of samples *after* deletion (", NUMBER_OF_SAMPLES, ") by ", (NUMBER_OF_SAMPLES_orig - NUMBER_OF_SAMPLES), " individuals"))
   }
   
   return(raw_data)
@@ -149,11 +149,10 @@ standardize_grids = function(unpivoted, target_grid_type = grid_5x5) {
   if(length(unmapped_grids) > 0) {
     lost_fish = sum(unpivoted[is.na(TARGET_FISHING_GROUND_CODE)]$FISH_COUNT, na.rm = TRUE)
     
-    print(paste0("!!! WARNING !!! : ", length(unmapped_grids), " unique grids cannot be mapped on regular 5x5 grids, for a total of ", lost_fish, " individuals lost"))
+    l_info(paste0(length(unmapped_grids), " unique grids cannot be mapped on regular 5x5 grids, for a total of ", lost_fish, " individuals lost"))
     
-    print("Unmapped grids:")
-    
-    print(unmapped_grids)
+    l_warn("Unmapped grids:")
+    l_warn(unmapped_grids)
   }
   
   unpivoted = unpivoted[, `:=`(FISH_COUNT = FISH_COUNT * PROPORTION,
@@ -168,9 +167,9 @@ standardize_grids = function(unpivoted, target_grid_type = grid_5x5) {
   
   total_no_fish_after = sum(unpivoted$FISH_COUNT, na.rm = TRUE)
   
-  print(paste0("Number of fish before processing: ", total_no_fish, " - ", 
-               "After processing: ", total_no_fish_after, " - ", 
-               "Difference: ", ( total_no_fish_after - total_no_fish )))
+  l_info(paste0("Number of fish before processing: ", total_no_fish, " - ", 
+                "After processing: ", total_no_fish_after, " - ", 
+                "Difference: ", ( total_no_fish_after - total_no_fish )))
   
   return(unpivoted)
 }

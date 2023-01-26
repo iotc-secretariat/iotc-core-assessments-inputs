@@ -1,6 +1,6 @@
 ### SA_SAMPLES table
 
-print("###### SA_SAMPLES ######")
+l_info("###### SA_SAMPLES ######")
 
 # CE_R_xyz contains the standardized raised catches in numbers and weight by year, quarter and criteria 
 # (either fishery + area, or month + fleet + gear + school type + fishing ground)
@@ -21,7 +21,7 @@ print("###### SA_SAMPLES ######")
 SF_FIA_Q = SF_FIA_Q[YEAR <= max(CE_R_FIA_Q$YEAR)]
 SF_YQMFG = SF_YQMFG[YEAR <= max(CE_R_FIA_Q$YEAR)]
 
-print("###### Preparing SA raised catches and raw samples by FI / A / Y / Q...")
+l_info("###### Preparing SA raised catches and raw samples by FI / A / Y / Q...")
 
 SA_SAMPLES_FIA_Q = prepare_SA_samples_FIA_Q(CE_R_FIA_Q, SF_FIA_Q)
 
@@ -33,16 +33,15 @@ SF_SAMPLES_NO = SF_SAMPLES_NO_FIA_Q
 # A first diagnostic
 
 if(SF_SAMPLES_NO_FIA_Q != SF_SAMPLES_NO_YQMFG) {
-  print(paste0("!!! WARNING !!! : ",
-               "the number of samples aggregated by Fishery, Area and Quarter (", SF_SAMPLES_NO_FIA_Q, ") differs from ",
-               "the number of samples aggregated by Year, Quarter, Month, Fleet, Gear and fishing ground (", SF_SAMPLES_NO_YQMFG, ") - ",
-               "difference = ", ( SF_SAMPLES_NO_FIA_Q - SF_SAMPLES_NO_YQMFG )))
+  l_warn(paste0("The number of samples aggregated by Fishery, Area and Quarter (", SF_SAMPLES_NO_FIA_Q, ") differs from ",
+                "the number of samples aggregated by Year, Quarter, Month, Fleet, Gear and fishing ground (", SF_SAMPLES_NO_YQMFG, ") - ",
+                "difference = ", ( SF_SAMPLES_NO_FIA_Q - SF_SAMPLES_NO_YQMFG )))
 }
 
 # If everything went well, outputs the data as a .csv file that corresponds to the SA_Samples worksheet of the assessment input file
 write.csv(SA_SAMPLES_FIA_Q, file = output_folder(SPECIES, LOCAL_FOLDER, "raised_with_samples/SA_SAMPLES.csv"), row.names = FALSE, na = "")
 
-print("###### Preparing ALTERNATIVE SA raised catches and raw samples by FI / A / Y / Q...")
+l_info("###### Preparing ALTERNATIVE SA raised catches and raw samples by FI / A / Y / Q...")
 
 SA_SAMPLES_FIA_Q_ALT = prepare_SA_samples_FIA_Q(CE_R_FIA_Q_ALT, SF_FIA_Q)
 
@@ -54,10 +53,9 @@ SF_SAMPLES_NO = SF_SAMPLES_NO_FIA_Q
 # A first diagnostic
 
 if(SF_SAMPLES_NO_FIA_Q != SF_SAMPLES_NO_YQMFG) {
-  print(paste0("!!! WARNING !!! : ",
-               "the number of samples aggregated by Fishery, Area and Quarter (", SF_SAMPLES_NO_FIA_Q, ") differs from ",
-               "the number of samples aggregated by Year, Quarter, Month, Fleet, Gear and fishing ground (", SF_SAMPLES_NO_YQMFG, ") - ",
-               "difference = ", ( SF_SAMPLES_NO_FIA_Q - SF_SAMPLES_NO_YQMFG )))
+  l_warn(paste0("The number of samples aggregated by Fishery, Area and Quarter (", SF_SAMPLES_NO_FIA_Q, ") differs from ",
+                "the number of samples aggregated by Year, Quarter, Month, Fleet, Gear and fishing ground (", SF_SAMPLES_NO_YQMFG, ") - ",
+                "difference = ", ( SF_SAMPLES_NO_FIA_Q - SF_SAMPLES_NO_YQMFG )))
 }
 
 # If everything went well, outputs the data as a .csv file that corresponds to the SA_Samples worksheet of the assessment input file
@@ -73,7 +71,7 @@ write.csv(SA_SAMPLES_FIA_Q_ALT, file = output_folder(SPECIES, LOCAL_FOLDER, "rai
 
 ### THE FOLLOWING IS LEFT HERE ONLY AS A REFERENCE ###
 
-print("###### Preparing SA raised catches and raw samples by Y / Q / M / F / G / S / FG...")
+l_info("###### Preparing SA raised catches and raw samples by Y / Q / M / F / G / S / FG...")
 
 # Merges the CE_raised and SF_<species code>
 

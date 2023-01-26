@@ -1,13 +1,9 @@
 ### DEBUG
 
-dbg = function(message) {
-  print(paste0("[ DEBUG ] : ", date(), " - ", message))
-}
-
 runGC = function() {
-  if(FALSE) dbg("GC() - START")
+  if(FALSE) l_info("GC() - START")
   gc()
-  if(FALSE) dbg("GC() - END")
+  if(FALSE) l_info("GC() - END")
 }
 
 ### FILE ACCESS FUNCTIONS
@@ -49,7 +45,7 @@ delete_column = function(data_table, column_name) {
 ### ACCESS DB FUNCTIONS
 
 connect_to = function(access_file) {
-  print(paste("Attempting to connect to", access_file))
+  l_info(paste("Attempting to connect to", access_file))
   return (
     odbcDriverConnect(
       paste0("Driver={Microsoft Access Driver (*.mdb, *.accdb)};DBQ=", access_file)

@@ -1,6 +1,6 @@
 ### SA_CAA table (no)
 
-print("###### SA_CAA (n) ######")
+l_info("###### SA_CAA (n) ######")
 
 load(file = input_folder(SPECIES, LOCAL_FOLDER, "CAS/AGE_LENGTH_KEYS.RData"))
 
@@ -24,27 +24,27 @@ setkey(AL_KEYS_METHOD, LengthFrom, LengthTo)
 # merged_CAS = merge_catches_and_quarterly_CAS(CE_R_YQMFG, CE_SF_YQFG)
 
 if(FALSE) {
-  print("###### Preparing CAA (in numbers) by Y / Q / M / F / G / S / FG...")
+  l_info("###### Preparing CAA (in numbers) by Y / Q / M / F / G / S / FG...")
   
   CAA_YQMFG   = prepare_SA_CAA_NO_YQMFG(merged_CAS, AL_KEYS_METHOD)
   
   write.csv(CAA_YQMFG,   file = output_folder(SPECIES, LOCAL_FOLDER, paste0("CAA/number/SA_CAA_", AL_METHOD, "_raw.csv")), na = "", row.names = FALSE)
 }
 
-print("###### Preparing CAA (in numbers) by FI / A / Y / Q...")
+l_info("###### Preparing CAA (in numbers) by FI / A / Y / Q...")
 
-dbg("Preparing SA CAA NO FIA Q")
+l_info("Preparing SA CAA NO FIA Q")
 
 CAA_FIA_Q   = prepare_SA_CAA_NO_FIA_Q(merged_CAS, AL_KEYS_METHOD)
 
-dbg("Preparing SA CAA NO FIA Q - DONE!")
+l_info("Preparing SA CAA NO FIA Q - DONE!")
 
 write.csv(CAA_FIA_Q,   file = output_folder(SPECIES, LOCAL_FOLDER, paste0("CAA/number/SA_CAA_", AL_METHOD, ".csv")), na = "", row.names = FALSE)
 
 CAA_FIA_Q_U = copy(CAA_FIA_Q)
 delete_column(CAA_FIA_Q_U, c("EST_MT", "EST_NO", "METHOD"))
 
-dbg("Unpivoting CAA FIA Q NO")
+l_info("Unpivoting CAA FIA Q NO")
 
 CAA_FIA_Q_UNPIVOTED_NO = 
   melt.data.table(
@@ -54,7 +54,7 @@ CAA_FIA_Q_UNPIVOTED_NO =
     variable.name = "AGE"
   )
 
-dbg("Unpivoting CAA FIA Q NO - DONE!")
+l_info("Unpivoting CAA FIA Q NO - DONE!")
 
 AGES = as.character(sort(unique(CAA_FIA_Q_UNPIVOTED_NO$AGE)))
 

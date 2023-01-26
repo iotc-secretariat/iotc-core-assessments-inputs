@@ -1,6 +1,6 @@
-print("#### Updating WP_CE_raised database...")
+l_info("#### Updating WP_CE_raised database...")
 
-print(paste0("!!! Preparing data for ", SPECIES))
+l_info(paste0("Preparing data for ", SPECIES))
 
 CE_R_YQMFG = sanitize_duplicated_SF_areas(CE_R_YQMFG)
 
@@ -51,11 +51,11 @@ CE_RAISED_DB = DB_WP_CE_RAISED()
 
 CURRENT = query(CE_RAISED_DB, paste0("SELECT COUNT(*) AS NUM_RECORDS FROM CA_RAISED WHERE SPECIES_CODE = '", SPECIES, "'"))
   
-print(paste0("!!! Deleting existing ", CURRENT$NUM_RECORDS, " records from CA_RAISED for ", SPECIES))
+l_info(paste0("Deleting existing ", CURRENT$NUM_RECORDS, " records from CA_RAISED for ", SPECIES))
 
 query(CE_RAISED_DB, paste0("DELETE FROM CA_RAISED WHERE SPECIES_CODE = '", SPECIES, "'"))
 
-print(paste0("!!! Storing current data in CA_RAISED for ", SPECIES, ": ", nrow(CA_RAISED), " total records"))
+l_info(paste0("Storing current data in CA_RAISED for ", SPECIES, ": ", nrow(CA_RAISED), " total records"))
 
 dbWriteTable(CE_RAISED_DB, name = "CA_RAISED", CA_RAISED, overwrite = FALSE, append = TRUE)
 
@@ -63,14 +63,14 @@ dbWriteTable(CE_RAISED_DB, name = "CA_RAISED", CA_RAISED, overwrite = FALSE, app
 
 CURRENT = query(CE_RAISED_DB, paste0("SELECT COUNT(*) AS NUM_RECORDS FROM CEForSF WHERE Species = '", SPECIES, "'"))
 
-print(paste0("!!! Deleting existing ", CURRENT$NUM_RECORDS, " records from CEForSF for ", SPECIES))
+l_info(paste0("Deleting existing ", CURRENT$NUM_RECORDS, " records from CEForSF for ", SPECIES))
 
 query(CE_RAISED_DB, paste0("DELETE FROM CEForSF WHERE Species = '", SPECIES, "'"))
 
-print(paste0("!!! Storing current data in CEForSF for ", SPECIES, ": ", nrow(CE_for_SF), " total records"))
+l_info(paste0("Storing current data in CEForSF for ", SPECIES, ": ", nrow(CE_for_SF), " total records"))
 
 dbWriteTable(CE_RAISED_DB, name = "CEForSF", CE_for_SF, overwrite = FALSE, append = TRUE)
 
-print("#### Finished updating WP_CE_raised database!")
+l_info("#### Finished updating WP_CE_raised database!")
 
 

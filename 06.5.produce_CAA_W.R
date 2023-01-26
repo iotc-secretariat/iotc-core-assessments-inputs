@@ -1,6 +1,6 @@
 ### SA_CAA table (no)
 
-print("###### SA_CAA ######")
+l_info("###### SA_CAA ######")
 
 load(file = input_folder(SPECIES, LOCAL_FOLDER, "CAS/AGE_LENGTH_KEYS.RData"))
 
@@ -19,14 +19,14 @@ load(file = input_folder(SPECIES, LOCAL_FOLDER, "CAS/AGE_LENGTH_KEYS.RData"))
 # merged_CAS = merge_catches_and_quarterly_CAS(CE_R_YQMFG, CE_SF_YQFG)
 
 if(FALSE) {
-  print("###### Preparing CAA (in weight) by Y / Q / M / F / G / S / FG...")
+  l_info("###### Preparing CAA (in weight) by Y / Q / M / F / G / S / FG...")
   
   CAA_YQMFG_W = prepare_SA_CAA_NO_YQMFG(merged_CAS, AL_KEYS_METHOD, "FISH_WEIGHT")
   
   write.csv(CAA_YQMFG_W, file = output_folder(SPECIES, LOCAL_FOLDER, paste0("CAA/weight/SA_CAA_", AL_METHOD, "_W_raw.csv")), na = "", row.names = FALSE)
 }
 
-print("###### Preparing CAA (in weight) by FI / A / Y / Q...")
+l_info("###### Preparing CAA (in weight) by FI / A / Y / Q...")
 
 CAA_FIA_Q_W = prepare_SA_CAA_NO_FIA_Q(merged_CAS, AL_KEYS_METHOD, "FISH_WEIGHT")
 

@@ -12,7 +12,7 @@ SA_AREAS_CONFIG_ORIG = copy(SA_AREAS_CONFIG)
 
 postprocess_fishery = function(dataset) {
   dataset[, SF_FISHERY := fifelse(FISHERY %in% c("PS", "DN"), "PSPLGI", "LLOT")]
-  dataset[, FISHERY := paste0(FISHERY, str_sub(AREA, -1))] 
+  dataset[, FISHERY := paste0(FISHERY, str_sub(AREA, -1))]
   
   return(dataset)
 }
