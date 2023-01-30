@@ -23,13 +23,13 @@ FISHERY_CODES = c("ALGI", "AUEL", "EUEL", "ISEL", "JPLL", "TWFL", "TWLL")
 FISHERY_GROUP_NAMES = c("EL - swordfish longliners", 
                         "LL - deep-freezing longliners", 
                         "FL - fresh tuna longliners", 
-                        "OT - Other gears")
+                        "OT - other gears")
 
 update_fishery_groups = function(dataset) {
-  dataset[,                                       FISHERY_GROUP := "OT - Other gears"             ]
-  dataset[FISHERY %in% c("AUEL", "EUEL", "ISEL"), FISHERY_GROUP := "EL - Swordfish longliners"    ]
-  dataset[FISHERY %in% c("JPLL", "TWLL"),         FISHERY_GROUP := "LL - Deep-freezing longliners"]
-  dataset[FISHERY %in% c("TWFL"),                 FISHERY_GROUP := "FL - Fresh tuna longliners"   ]
+  dataset[,                                       FISHERY_GROUP := "OT - other gears"             ]
+  dataset[FISHERY %in% c("AUEL", "EUEL", "ISEL"), FISHERY_GROUP := "EL - swordfish longliners"    ]
+  dataset[FISHERY %in% c("JPLL", "TWLL"),         FISHERY_GROUP := "LL - deep-freezing longliners"]
+  dataset[FISHERY %in% c("TWFL"),                 FISHERY_GROUP := "FL - fresh tuna longliners"   ]
   
   dataset$FISHERY_GROUP = factor(
     dataset$FISHERY_GROUP,
