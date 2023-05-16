@@ -1,6 +1,6 @@
-WP_CURRENT    = "2023-tcac"
-LOCAL_FOLDER  = "TCAC11"
-REMOTE_FOLDER = "TCAC11" # TWN LL and Logbook SF data (2003+) removed, LLOB data all kept
+WP_CURRENT    = "2023-dp"
+LOCAL_FOLDER  = "WPTT25-DP"
+REMOTE_FOLDER = "WPTT25_DP"
 
 SA_MAIN_FILE  = "WPTT_SKJ_SA(SS3).mdb"
 
@@ -34,7 +34,8 @@ WPS_FACTORS = c(#"2010",
                 "2017", 
                 "2022-dp",
                 "2022-as",
-                "2023-tcac")
+                "2023-tcac",
+                "2023-dp")
 
 WPS_RECENT_FACTORS = c("2014", 
                        "2016", 
@@ -42,6 +43,7 @@ WPS_RECENT_FACTORS = c("2014",
                        "2017", 
                        "2022-dp", 
                        "2022-as",
-                       "2023-tcac")
+                       "2023-tcac",
+                       "2023-dp")
 
 AVG_WEIGHT_FISHERIES_TO_EXCLUDE = c() 
