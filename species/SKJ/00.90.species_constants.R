@@ -1,6 +1,6 @@
-WP_CURRENT    = "2023-dp"
-LOCAL_FOLDER  = "WPTT25-DP"
-REMOTE_FOLDER = "WPTT25_DP"
+WP_CURRENT    = "2023-dp-alt"
+LOCAL_FOLDER  = "WPTT25-DP-alt"
+REMOTE_FOLDER = "WPTT25_DP_alt"
 
 SA_MAIN_FILE  = "WPTT_SKJ_SA(SS3).mdb"
 
@@ -24,7 +24,7 @@ DEFAULT_SIZE_INTERVAL   =   1
 DEFAULT_FIRST_CLASS_LOW =  10
 DEFAULT_LAST_CLASS_LOW  = DEFAULT_FIRST_CLASS_LOW + ( DEFAULT_NUM_SIZE_BINS - 1 ) * DEFAULT_SIZE_INTERVAL
 
-WPS_FACTORS = c(#"2010", 
+WPS_FACTORS = c("2010", 
                 "2011", 
                 "2012", 
                 "2013", 
@@ -35,15 +35,17 @@ WPS_FACTORS = c(#"2010",
                 "2022-dp",
                 "2022-as",
                 "2023-tcac",
-                "2023-dp")
+                "2023-dp",
+                "2023-dp-alt")
 
-WPS_RECENT_FACTORS = c("2014", 
-                       "2016", 
-                       "2017-old", 
-                       "2017", 
+WPS_RECENT_FACTORS = c(#"2014", 
+                       #"2016", 
+                       #"2017-old", 
+                       #"2017", 
                        "2022-dp", 
                        "2022-as",
                        "2023-tcac",
-                       "2023-dp")
+                       "2023-dp",
+                       "2023-dp-alt")
 
 AVG_WEIGHT_FISHERIES_TO_EXCLUDE = c() 

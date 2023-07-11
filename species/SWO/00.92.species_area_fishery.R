@@ -1,11 +1,12 @@
 SA_AREAS_CONFIG = data.table(
-  IOTC_CODE  = c("IRSWONE", "IRSWOSE", "IRSWOSW", "IRSWONW", "IRSWOOT"),
-  AREA_CODE  = c("NE", "SE", "SW", "NW", "OT"),
+  IOTC_CODE  = c("IRSWONE", "IRSWOSE", "IRSWOES", "IRSWOWS", "IRSWOSW", "IRSWONW"),
+  AREA_CODE  = c("NE", "SE", "ES", "WS", "SW", "NW"),
   NAME_SHORT = c("Northeast",
                  "Southeast",
+                 "South-Southeast",
+                 "South-Southwest",
                  "Southwest",
-                 "Northwest",
-                 "All other")
+                 "Northwest")
 )
 
 SA_AREAS_CONFIG[, AREA_NAME := paste0(AREA_CODE, " - ", NAME_SHORT)]
