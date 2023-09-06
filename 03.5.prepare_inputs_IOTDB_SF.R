@@ -68,11 +68,11 @@ remove_SF_strata = function(raw_data, strata_to_delete) {
   NUMBER_OF_SAMPLES_orig = sum(raw_data$NUMBER_OF_SAMPLES)
   
   l_info("List of S-F strata to be deleted:")
-  print(strata_to_delete[order(+FLEET, +GEAR_CODE, -YEAR)])
+  print(strata_to_delete[order(+FLEET, +GEAR_CODE, +SCHOOL_TYPE_CODE, -YEAR)])
   
   # Diagnostics after samples deletion...
   
-  raw_data = merge(copy(raw_data), strata_to_delete, by = c("YEAR", "FLEET", "GEAR_CODE"), all.x = TRUE)
+  raw_data = merge(copy(raw_data), strata_to_delete, by = c("YEAR", "FLEET", "GEAR_CODE", "SCHOOL_TYPE_CODE"), all.x = TRUE)
   raw_data = raw_data[is.na(DELETE) | DELETE == FALSE]
   
   # Removing leftover columns from previous join
@@ -85,6 +85,8 @@ remove_SF_strata = function(raw_data, strata_to_delete) {
     l_warn(paste0("Number of samples *before* deletion of unwanted strata (", NUMBER_OF_SAMPLES_orig, ") ", 
                   "differs from number of samples *after* deletion (", NUMBER_OF_SAMPLES, ") by ", (NUMBER_OF_SAMPLES_orig - NUMBER_OF_SAMPLES), " individuals"))
   }
+  
+  raw_data[!GEAR_CODE %in% c("PS", "PSOB", "PSFS", "PSLS"), SCHOOL_TYPE_CODE := "UNCL"]
   
   return(raw_data)
 }

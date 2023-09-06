@@ -2,6 +2,8 @@
 
 load(input_folder(SPECIES, LOCAL_FOLDER, "CAS/SF_all.RData"))
 
+SF_all[!Gear %in% c("PS", "PSOB"), Schooltype := "UNCL"]
+
 SF_all_PIVOTED = copy(SF_all)
 
 # Adds QUARTER info

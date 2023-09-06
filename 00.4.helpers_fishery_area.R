@@ -1,7 +1,7 @@
 ### AREA + FISHERY FUNCTIONS
 
 initialize_species_specific_fishery_mappings = function(species) {
-  species_specific_mappings = fread(species_folder(SPECIES, "FISHERY_AREA_MAPPINGS.csv"), na.strings = "")
+  species_specific_mappings = fread(species_folder(SPECIES, SA_FISHERY_AREA_MAPPINGS_FILE), na.strings = "")
   
   fishery_mappings = species_specific_mappings[, .(FLEET, GEAR_CODE, SCHOOL_TYPE_CODE, FISHERY)]
   
@@ -13,7 +13,7 @@ initialize_species_specific_fishery_mappings = function(species) {
 }  
 
 initialize_species_specific_area_mappings = function(species) {
-  species_specific_mappings = fread(species_folder(SPECIES, "FISHERY_AREA_MAPPINGS.csv"), na.strings = "")
+  species_specific_mappings = fread(species_folder(SPECIES, SA_FISHERY_AREA_MAPPINGS_FILE), na.strings = "")
  
   area_mappings = 
     melt.data.table(

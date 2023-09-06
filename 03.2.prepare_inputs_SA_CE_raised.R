@@ -92,7 +92,7 @@ prepare_alternative_data = function(CE_raised_by_YQMFG) {
                           all.x = TRUE)[!is.na(NC_MT)][, MT_F := NC_MT / CE_MT]
   
   CE_TWN_JPN_U = merge(CE_TWN_JPN, CE_TWN_JPN_MT_Y[, .(YEAR, FLEET, NC_MT, MT_F)],
-                       ny = c("YEAR", "FLEET"),
+                       by = c("YEAR", "FLEET"),
                        all.x = TRUE)[!is.na(MT_F), CE_NO_C := CE_NO * MT_F]
   
   CE_R_FIA_Q_ALT = assign_area_and_fishery(CE_raised_by_YQMFG)

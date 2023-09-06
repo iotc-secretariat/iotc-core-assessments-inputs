@@ -36,10 +36,11 @@ SF_strata_DEL = unique(get_table(IN, "0StrataSF")[Table == SPECIES])
 SF_strata_DEL = SF_strata_DEL[, .(YEAR = Year,
                                   FLEET = str_trim(Fleet),
                                   GEAR_CODE = str_trim(Gear),
+                                  SCHOOL_TYPE_CODE = str_trim(SchoolType),
                                   DELETE = Delete)]
 
-SF_strata_DEL = SF_strata_DEL[, DELETE := ifelse(DELETE == 1, TRUE, FALSE)][order(-DELETE, FLEET, GEAR_CODE, YEAR)]
-SF_strata_DEL[, NUM_RECORDS := .N, by = .(YEAR, FLEET, GEAR_CODE)]
+SF_strata_DEL = SF_strata_DEL[, DELETE := ifelse(DELETE == 1, TRUE, FALSE)][order(-DELETE, FLEET, GEAR_CODE, SCHOOL_TYPE_CODE, YEAR)]
+SF_strata_DEL[, NUM_RECORDS := .N, by = .(YEAR, FLEET, GEAR_CODE, SCHOOL_TYPE_CODE)]
 SF_strata_DEL = SF_strata_DEL[NUM_RECORDS == 1 | DELETE]
 SF_strata_DEL$NUM_RECORDS = NULL
 
