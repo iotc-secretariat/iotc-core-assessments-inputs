@@ -1,6 +1,6 @@
-WP_CURRENT    = "2023-dp-alt"
-LOCAL_FOLDER  = "WPTT25-DP-alt"
-REMOTE_FOLDER = "WPTT25_DP_alt"
+WP_CURRENT    = "2023-as"
+LOCAL_FOLDER  = "WPTT25-AS"
+REMOTE_FOLDER = "WPTT25_AS"
 
 SA_MAIN_FILE  = "WPTT_SKJ_SA(SS3).mdb"
 
@@ -36,7 +36,8 @@ WPS_FACTORS = c("2010",
                 "2022-as",
                 "2023-tcac",
                 "2023-dp",
-                "2023-dp-alt")
+                #"2023-dp-alt",
+                "2023-as")
 
 WPS_RECENT_FACTORS = c(#"2014", 
                        #"2016", 
@@ -46,6 +47,7 @@ WPS_RECENT_FACTORS = c(#"2014",
                        "2022-as",
                        "2023-tcac",
                        "2023-dp",
-                       "2023-dp-alt")
+                       #"2023-dp-alt",
+                       "2023-as")
 
 AVG_WEIGHT_FISHERIES_TO_EXCLUDE = c() 
