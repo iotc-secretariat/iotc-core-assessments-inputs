@@ -81,7 +81,8 @@ CATCHES_BY_YEAR_FISHERY_GROUP_PLOT =
             colors = FG_COLORS,
             scale = 1000,
             x_axis_label = "Year",
-            y_axis_label = "Annual catches (x 1,000 t)")
+            y_axis_label = "Annual catches (x 1,000 t)",
+            trim_labels = FALSE)
 
 ggsave(CATCHES_BY_YEAR_FISHERY_GROUP_PLOT, filename = output_folder(SPECIES, LOCAL_FOLDER, "catches/by_fishery_group/CA_FG_Y.png"), width = 12, height = 6.75)
 
@@ -91,7 +92,8 @@ CATCHES_BY_YEAR_FISHERY_GROUP_PLOT_REL =
                 fill_by = "FisheryGroup", 
                 colors = FG_COLORS,
                 x_axis_label = "Year",
-                y_axis_label = "Annual catches (%)")
+                y_axis_label = "Annual catches (%)",
+                trim_labels = FALSE)
 
 ggsave(CATCHES_BY_YEAR_FISHERY_GROUP_PLOT_REL, filename = output_folder(SPECIES, LOCAL_FOLDER, "catches/by_fishery_group/CA_FG_Y_REL.png"), width = 12, height = 6.75)
 
@@ -218,7 +220,8 @@ CATCHES_BY_YEAR_AREA_TABLE_PLOT =
             scale = 1000,
             num_legend_rows = ceiling(nrow(SA_AREAS) / 5),
             x_axis_label = "Year",
-            y_axis_label = "Annual catches (x 1,000 t)")
+            y_axis_label = "Annual catches (x 1,000 t)",
+            trim_labels = FALSE)
 
 ggsave(CATCHES_BY_YEAR_AREA_TABLE_PLOT, filename = output_folder(SPECIES, LOCAL_FOLDER, "catches/by_area/CA_A_Y.png"), width = 12, height = 6.75)
 
@@ -229,7 +232,8 @@ CATCHES_BY_YEAR_AREA_TABLE_PLOT_REL =
                 colors = AR_COLORS,
                 num_legend_rows = ceiling(nrow(SA_AREAS) / 5),
                 x_axis_label = "Year",
-                y_axis_label = "Annual catches (%)")
+                y_axis_label = "Annual catches (%)",
+                trim_labels = FALSE)
 
 ggsave(CATCHES_BY_YEAR_AREA_TABLE_PLOT_REL, filename = output_folder(SPECIES, LOCAL_FOLDER, "catches/by_area/CA_A_Y_REL.png"), width = 12, height = 6.75)
 
@@ -297,7 +301,8 @@ CATCHES_BY_YEAR_AREA_ORIG_TABLE_PLOT =
             scale = 1000,
             num_legend_rows = ceiling(nrow(SA_AREAS_ORIG) / 5),
             x_axis_label = "Year",
-            y_axis_label = "Annual catches (x 1,000 t)")
+            y_axis_label = "Annual catches (x 1,000 t)",
+            trim_labels = FALSE)
 
 ggsave(CATCHES_BY_YEAR_AREA_ORIG_TABLE_PLOT, filename = output_folder(SPECIES, LOCAL_FOLDER, "catches/by_area/CA_A_ORIG_Y.png"), width = 12, height = 6.75)
 
@@ -308,7 +313,8 @@ CATCHES_BY_YEAR_AREA_ORIG_TABLE_PLOT_REL =
                 colors = AR_ORIG_COLORS,
                 num_legend_rows = ceiling(nrow(SA_AREAS_ORIG) / 5),
                 x_axis_label = "Year",
-                y_axis_label = "Annual catches (%)")
+                y_axis_label = "Annual catches (%)",
+                trim_labels = FALSE)
 
 ggsave(CATCHES_BY_YEAR_AREA_ORIG_TABLE_PLOT_REL, filename = output_folder(SPECIES, LOCAL_FOLDER, "catches/by_area/CA_A_ORIG_Y_REL.png"), width = 12, height = 6.75)
 

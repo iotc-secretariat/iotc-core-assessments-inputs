@@ -35,14 +35,14 @@ SA_AREA_COLORS       = SA_AREA_COLORS_SINGLE       #SA_AREA_COLORS_MULTIPLE
 ##
 
 postprocess_fishery = function(dataset) {
-  dataset[, SF_FISHERY := fifelse(FISHERY %in% c("PSOT", "PSFS", "PSLS", "BB", "GL"), "PSPLGI", "LLOT")]
+  dataset[, SF_FISHERY := fifelse(FISHERY %in% c("PSOT", "PSFS", "PSLS", "PL", "GL"), "PSPLGI", "LLOT")]
 
   return(dataset)
 }
 
 FISHERY_CODES = c("PSFS", 
                   "PSLS", 
-                  "BB", 
+                  "PL", 
                   "GL", 
                   "LI", 
                   "LL", 
@@ -51,7 +51,7 @@ FISHERY_CODES = c("PSFS",
 # STILL TO BE REFINED...
 
 FISHERY_GROUP_CODES = c("PS - industrial purse seines", 
-                       #"BB - pole-and-lines and small seines", 
+                        "PL - pole-and-lines and small seines", 
                         "GL - gillnets", 
                         "LI - lines", 
                         "LL - longlines", 
@@ -60,7 +60,7 @@ FISHERY_GROUP_CODES = c("PS - industrial purse seines",
 update_fishery_groups = function(dataset) {
   dataset[,                               FISHERY_GROUP := "Other - all other gears"]
   dataset[FISHERY %in% c("PSFS", "PSLS"), FISHERY_GROUP := "PS - industrial purse seines"]
-  dataset[FISHERY == "BB",                FISHERY_GROUP := "BB - pole-and-lines and small seines"]
+  dataset[FISHERY == "PL",                FISHERY_GROUP := "PL - pole-and-lines and small seines"]
   dataset[FISHERY == "GL",                FISHERY_GROUP := "GL - gillnets"]
   dataset[FISHERY == "LI",                FISHERY_GROUP := "LI - lines"]
   dataset[FISHERY == "LL",                FISHERY_GROUP := "LL - longlines"]
