@@ -1,6 +1,6 @@
-WP_CURRENT    = "2023-dp"
-LOCAL_FOLDER  = "WPTT25-DP"
-REMOTE_FOLDER = "WPTT25_DP" 
+WP_CURRENT    = "2023-as"
+LOCAL_FOLDER  = "WPTT25-AS"
+REMOTE_FOLDER = "WPTT25_AS" 
 
 # WAS:
 
@@ -38,7 +38,8 @@ WPS_FACTORS = c("2010",
                 "2022-dp",
                 "2022-as",
                 "2023-tcac",
-                "2023-dp")
+                "2023-dp",
+                "2023-as")
 
 WPS_RECENT_FACTORS = c("2016",
                        "2018",
@@ -46,6 +47,7 @@ WPS_RECENT_FACTORS = c("2016",
                        "2022-dp",
                        "2022-as",
                        "2023-tcac",
-                       "2023-dp")
+                       "2023-dp",
+                       "2023-as")
 
 AVG_WEIGHT_FISHERIES_TO_EXCLUDE = c("HD", "TR", "OT") 

@@ -18,7 +18,7 @@ load(file = input_folder(SPECIES, LOCAL_FOLDER, "CAS/AGE_LENGTH_KEYS.RData"))
 
 # merged_CAS = merge_catches_and_quarterly_CAS(CE_R_YQMFG, CE_SF_YQFG)
 
-if(FALSE) {
+if(FALSE) { # Disabled - too much data to process, regular PCs won't handle it
   l_info("###### Preparing CAA (in weight) by Y / Q / M / F / G / S / FG...")
   
   CAA_YQMFG_W = prepare_SA_CAA_NO_YQMFG(merged_CAS, AL_KEYS_METHOD, "FISH_WEIGHT")

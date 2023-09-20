@@ -5,7 +5,7 @@ library(iotc.base.common.plots)
 library(RODBC)
 
 # Change this to run the process for a different species (that will self-configure)
-SPECIES = "SKJ" 
+SPECIES = "YFT" 
 
 source("./00.1.common_constants.R")
 source("./00.2.helpers_misc.R")

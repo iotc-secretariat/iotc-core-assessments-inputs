@@ -23,7 +23,7 @@ setkey(AL_KEYS_METHOD, LengthFrom, LengthTo)
 
 # merged_CAS = merge_catches_and_quarterly_CAS(CE_R_YQMFG, CE_SF_YQFG)
 
-if(FALSE) {
+if(FALSE) { # Disabled - too much data to process, regular PCs won't handle it
   l_info("###### Preparing CAA (in numbers) by Y / Q / M / F / G / S / FG...")
   
   CAA_YQMFG   = prepare_SA_CAA_NO_YQMFG(merged_CAS, AL_KEYS_METHOD)

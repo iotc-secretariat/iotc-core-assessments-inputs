@@ -27,7 +27,7 @@ merged_CAS[!GEAR_CODE %in% GEAR_PS_PL_GI$CODE,
 
 runGC()
 
-if(FALSE) {
+if(FALSE) { # Disabled - too much data to process, regular PCs won't handle it
   l_info("###### Preparing CAS (in weight) by Y / Q / M / F / G / S / FG...")
   
   CAS_YQMFG_W = prepare_SA_CAS_YQMFG(merged_CAS_W, "FISH_WEIGHT")

@@ -16,7 +16,7 @@ l_info("###### Merging raised catches and estimated samples by size bins by Y / 
 
 merged_CAS = merge_catches_and_quarterly_CAS(CE_R_YQMFG, CE_SF_YQFG)
 
-if(FALSE) {
+if(FALSE) { # Disabled - too much data to process, regular PCs won't handle it
   l_info("###### Preparing CAS (in numbers) by Y / Q / M / F / G / S / FG...")
   
   CAS_YQMFG = prepare_SA_CAS_YQMFG(merged_CAS)

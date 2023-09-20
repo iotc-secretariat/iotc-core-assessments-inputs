@@ -125,26 +125,102 @@ assign_area = function(dataset,
   
   setindex(dataset, FISHING_GROUND_CODE)
   
-  dataset = merge(dataset, grid_to_area_mappings,
+  if(FALSE) { # Doesn't solve the problem when datasets are huge...
+    years = sort(unique(dataset$YEAR))
+    
+    first_year = TRUE
+    
+    for(year in years) {
+      if(year %% 10 == 0) l_warn(paste0("Processing year ", year, "..."))
+            
+      dataset_y = merge(dataset[YEAR == year], grid_to_area_mappings, 
+                        by = "FISHING_GROUND_CODE",
+                        all.x = TRUE,
+                        allow.cartesian = TRUE)
+      
+      if(first_year) {
+        dataset_merged = dataset_y
+        first_year = FALSE
+      } else {
+        dataset_merged = rbind(dataset_merged, dataset_y)
+      }
+    }
+    
+    dataset = dataset_merged
+  }
+  
+  if(FALSE) { # ...and neither does this
+    for(m in 1:nrow(grid_to_area_mappings)) {
+      mapping = grid_to_area_mappings[m]
+      
+      dataset[FISHING_GROUND_CODE == mapping$FISHING_GROUND_CODE,
+              `:=`(TARGET_FISHING_GROUND_CODE = mapping$TARGET_FISHING_GROUND_CODE,
+                   PROPORTION = mapping$PROPORTION,
+                   AREA_CODE  = mapping$AREA_CODE,
+                   NAME_SHORT = mapping$NAME_SHORT,
+                   AREA_NAME  = mapping$AREA_NAME)]
+    }
+  }
+  
+  # Apparently, by reducing the number of columns in 'grid_to_area_mappings' in this merge, memory consumption decreases to acceptable levels
+  dataset = merge(dataset, grid_to_area_mappings[, .(FISHING_GROUND_CODE, TARGET_FISHING_GROUND_CODE, AREA_CODE)], 
                   by = "FISHING_GROUND_CODE",
                   all.x = TRUE,
                   allow.cartesian = TRUE)
+  
+  runGC()
   
   unmapped_grid_codes = unique(dataset[is.na(TARGET_FISHING_GROUND_CODE)]$FISHING_GROUND_CODE)
   
   if(length(unmapped_grid_codes) >= 1) {
     l_warn(paste0(length(unmapped_grid_codes), " grids have not been assigned to any SA area..."))
     l_warn(unmapped_grid_codes)
-    
-    dataset = dataset[!is.na(TARGET_FISHING_GROUND_CODE)]
   }
   
   dataset$AREA_ORIG = dataset$TARGET_FISHING_GROUND_CODE
   
-  dataset = merge(dataset, species_specific_area_mappings,
+  if(FALSE) { # Doesn't solve the problem when datasets are huge...
+    years = sort(unique(dataset$YEAR))
+    
+    first_year = TRUE
+    
+    for(year in years) {
+      if(year %% 10 == 0) l_warn(paste0("Processing year ", year, "..."))
+  
+      dataset_y = merge(dataset[YEAR == year], species_specific_area_mappings,
+                        by = c("FLEET", "GEAR_CODE", "SCHOOL_TYPE_CODE", "AREA_CODE"),
+                        all.x = TRUE)
+      
+      if(first_year) {
+        dataset_merged = dataset_y
+        first_year = FALSE
+      } else {
+        dataset_merged = rbind(dataset_merged, dataset_y)
+      }
+    }
+    
+    dataset = dataset_merged
+  }
+  
+  if(FALSE) { # ...and neither does this
+    for(m in 1:nrow(species_specific_area_mappings)) {
+      mapping = species_specific_area_mappings[m]
+      
+      dataset[FLEET            == mapping$FLEET &
+              GEAR_CODE        == mapping$GEAR_CODE &
+              SCHOOL_TYPE_CODE == mapping$SCHOOL_TYPE_CODE &
+              AREA_CODE        == mapping$AREA_CODE,
+              AREA_DEST_CODE   := mapping$AREA_DEST_CODE]
+    }
+  }
+  
+  # Apparently, by reducing the number of columns in 'species_specific_area_mappings' in this merge, memory consumption decreases to acceptable levels
+  dataset = merge(dataset, species_specific_area_mappings[, .(FLEET, GEAR_CODE, SCHOOL_TYPE_CODE, AREA_CODE, AREA_DEST_CODE)],
                   by = c("FLEET", "GEAR_CODE", "SCHOOL_TYPE_CODE", "AREA_CODE"),
                   all.x = TRUE)
   
+  runGC()
+
   dataset[, AREA_ORIG := AREA_CODE]
   
   colnames(dataset)[which(colnames(dataset) == "AREA_DEST_CODE")] = "AREA"
@@ -173,7 +249,7 @@ assign_area = function(dataset,
     ordered = TRUE
   )
   
-  delete_column(dataset, c("PROPORTION", "NAME_SHORT", "AREA_NAME", "AREA_CODE", "TARGET_FISHING_GROUND_CODE"))
+  #delete_column(dataset, c("PROPORTION", "NAME_SHORT", "AREA_NAME", "AREA_CODE", "TARGET_FISHING_GROUND_CODE"))
   
   runGC()
   
