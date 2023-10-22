@@ -48,6 +48,9 @@ W_L =  darken(ALL_FI_COLORS[FISHERY_CODE == "LLD"]$FILL, amount = 0.2)
 W_COLORS = data.table(FILL = colorRampPalette(c(W_F, W_L))(length(unique(FILTERED_AVG_WEIGHTS$WP))))
 W_COLORS[, OUTLINE := darken(FILL, amount = 0.4)]
 
+W_COLORS = W_COLORS[2:nrow(W_COLORS)]
+W_COLORS = rbind(W_COLORS, data.table(FILL = "black", OUTLINE = "black"))
+                 
 FILTERED_AVG_WEIGHTS$WP = factor(
   FILTERED_AVG_WEIGHTS$WP,
   levels = sort(unique(FILTERED_AVG_WEIGHTS$WP)),

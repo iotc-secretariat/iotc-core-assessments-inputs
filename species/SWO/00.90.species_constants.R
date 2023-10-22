@@ -10,9 +10,13 @@
 #LOCAL_FOLDER  = "2023-05"
 #REMOTE_FOLDER = "2023_05_25" 
 
-WP_CURRENT    = "WPB21"
-LOCAL_FOLDER  = "WPB21"
-REMOTE_FOLDER = "2023_05_25" 
+#WP_CURRENT    = "WPB21"
+#LOCAL_FOLDER  = "WPB21"
+#REMOTE_FOLDER = "2023_05_25"
+
+WP_CURRENT    = "2023-tcac2"
+LOCAL_FOLDER  = "TCAC12"
+REMOTE_FOLDER = "TCAC12"
 
 SA_MAIN_FILE  = "WPB_SWO_SA(SS3).accdb"
 
@@ -37,10 +41,11 @@ WPS_FACTORS = c("2011",
                 "2017",
                 #"2018",
                 "2023-tcac",
-                "WPB21")
+                "WPB21",
+                "2023-tcac2")
 
 WPS_RECENT_FACTORS = c("2011", "2012", "2014", "2017", 
                        #"2018", 
-                       "2023-tcac", "WPB21")
+                       "2023-tcac", "WPB21", "2023-tcac2")
 
 AVG_WEIGHT_FISHERIES_TO_EXCLUDE = c() 

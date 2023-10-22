@@ -50,4 +50,4 @@ WPS_RECENT_FACTORS = c("2016",
                        "2023-dp",
                        "2023-as")
 
-AVG_WEIGHT_FISHERIES_TO_EXCLUDE = c("HD", "TR", "OT") 
+AVG_WEIGHT_FISHERIES_TO_EXCLUDE = c("TR", "OT") 
