@@ -20,7 +20,6 @@ DEFAULT_SIZE_INTERVAL   =   2
 DEFAULT_FIRST_CLASS_LOW =  10
 DEFAULT_LAST_CLASS_LOW  = DEFAULT_FIRST_CLASS_LOW + ( DEFAULT_NUM_SIZE_BINS - 1 ) * DEFAULT_SIZE_INTERVAL
 
-<<<<<<< HEAD
 # WPS_FACTORS = c("2010", 
 #                 "2011", 
 #                 "2012",
@@ -63,30 +62,3 @@ WPS_RECENT_FACTORS = c("2018-WPTT20",
                 "2024-WPTT26-DP")
 
 AVG_WEIGHT_FISHERIES_TO_EXCLUDE = c("HD", "TR", "OT") 
-=======
-WPS_FACTORS = c("2010", 
-                "2011", 
-                "2012",
-                "2013",
-                "2014",
-                "2015",
-                "2016",
-                "2018",
-                "2019",
-                "2022-dp",
-                "2022-as",
-                "2023-tcac",
-                "2023-dp",
-                "2023-as")
-
-WPS_RECENT_FACTORS = c("2016",
-                       "2018",
-                       "2019", 
-                       "2022-dp",
-                       "2022-as",
-                       "2023-tcac",
-                       "2023-dp",
-                       "2023-as")
-
-AVG_WEIGHT_FISHERIES_TO_EXCLUDE = c("TR", "OT") 
->>>>>>> d83078f7bda60f55c882ac6a7a53bf5685a4898c
