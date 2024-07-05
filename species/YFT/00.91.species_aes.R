@@ -1,4 +1,4 @@
-# Color constants for current assessment areas
+# Colour constants for current assessment areas
 
 AR_COLOR_1 = ALL_FI_COLORS[FISHERY_CODE == "LLF"]  # IRYFT1A
 AR_COLOR_2 = ALL_FI_COLORS[FISHERY_CODE == "PSLS"] # IRYFT1B
@@ -18,7 +18,7 @@ AR_COLORS = rbind(AR_COLORS, AR_COLOR_0)
 
 AR_ORIG_COLORS = AR_COLORS
 
-# Color constants for current fishery groups
+# Colour constants for current fishery groups
 
 FG_COLORS = ALL_FI_COLORS[FISHERY_CODE == "PSFS"]                  # FS + LS
 FG_COLORS = rbind(FG_COLORS, ALL_FI_COLORS[FISHERY_CODE == "LLD"]) # LL + FL
@@ -27,7 +27,7 @@ FG_COLORS = rbind(FG_COLORS, ALL_FI_COLORS[FISHERY_CODE == "GN"])  # GN
 FG_COLORS = rbind(FG_COLORS, ALL_FI_COLORS[FISHERY_CODE == "LIT"]) # HD + TR
 FG_COLORS = rbind(FG_COLORS, ALL_FI_COLORS[FISHERY_CODE == "OT"])  # OT
 
-# Color constants for current fisheries
+# Colour constants for current fisheries
 
 FI_COLOR_FS = ALL_FI_COLORS[FISHERY_CODE == "PSFS"][, FISHERY_CODE := "FS"]
 FI_COLOR_LS = ALL_FI_COLORS[FISHERY_CODE == "PSLS"][, FISHERY_CODE := "LS"]

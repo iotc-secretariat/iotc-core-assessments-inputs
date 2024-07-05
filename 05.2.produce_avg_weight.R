@@ -14,29 +14,26 @@ write.csv(CE_R_YQMFG[, .(AVG_WEIGHT = sum(EST_MT, na.rm = TRUE) * 1000 / sum(EST
           file = output_folder(SPECIES, LOCAL_FOLDER, "avg_weight/SA_AVG_WEIGHT.csv"), row.names = FALSE, na = "")
 
 # Reads the historical average annual weights (all fisheries combined) from previous WP
+# Table with WP, YEAR, AVG_WEIGHT (manually created from last input assessment file)
 SA_AVG_WEIGHT_HISTORICAL = fread(references_folder(SPECIES, LOCAL_FOLDER, "SA_AVG_WEIGHT_HISTORY.csv"), header = TRUE)
 
-SA_AVG_WEIGHT_HISTORICAL$WP = as.character(SA_AVG_WEIGHT_HISTORICAL$WP)
-
 # Melts the data by WP and year
-SA_AVG_WEIGHT_HISTORICAL = 
-  melt.data.table(data = SA_AVG_WEIGHT_HISTORICAL, 
-                  value.name = "AVG_WEIGHT", 
+SA_AVG_WEIGHT_HISTORICAL =
+  melt.data.table(data = SA_AVG_WEIGHT_HISTORICAL,
+                  value.name = "AVG_WEIGHT",
                   variable.name = "YEAR",
-                  id.vars = c("WP"), 
+                  id.vars = c("WP"),
                   na.rm = TRUE)
-
-SA_AVG_WEIGHT_HISTORICAL[, WP := str_trim(as.character(WP))]
 
 # Adds in latest data
 SA_AVG_WEIGHT_HISTORICAL = rbind(SA_AVG_WEIGHT_HISTORICAL, SA_AVG_WEIGHT)
 
-SA_AVG_WEIGHT_HISTORICAL$WP = factor(
+SA_AVG_WEIGHT_HISTORICAL[, WP := factor(
   SA_AVG_WEIGHT_HISTORICAL$WP,
   levels = WPS_FACTORS,
   labels = WPS_FACTORS,
   ordered = TRUE
-)
+)]
 
 # Plots the average annual weight (all fisheries combined) for each of the most recent WPs
 FILTERED_AVG_WEIGHTS = 
@@ -48,12 +45,12 @@ W_L =  darken(ALL_FI_COLORS[FISHERY_CODE == "LLD"]$FILL, amount = 0.2)
 W_COLORS = data.table(FILL = colorRampPalette(c(W_F, W_L))(length(unique(FILTERED_AVG_WEIGHTS$WP))))
 W_COLORS[, OUTLINE := darken(FILL, amount = 0.4)]
 
-FILTERED_AVG_WEIGHTS$WP = factor(
+FILTERED_AVG_WEIGHTS[, WP := factor(
   FILTERED_AVG_WEIGHTS$WP,
   levels = sort(unique(FILTERED_AVG_WEIGHTS$WP)),
   labels = sort(unique(FILTERED_AVG_WEIGHTS$WP)),
   ordered = TRUE
-)
+)]
 
 FILTERED_AVG_WEIGHTS$YEAR = as.integer(as.character(FILTERED_AVG_WEIGHTS$YEAR))
 
@@ -66,9 +63,9 @@ SA_AVG_WEIGHT_HISTORICAL_PLOT =
     colors = W_COLORS,
     plot_points = TRUE,
     num_legend_rows = 1,
-    x_axis_label = "Year",
+    x_axis_label = "",
     y_axis_label = "Average fish weight (kg)"
-  )
+  ) + theme(legend.position = "bottom")
 
 ggsave(SA_AVG_WEIGHT_HISTORICAL_PLOT, filename = output_folder(SPECIES, LOCAL_FOLDER, "avg_weight/AVG_WEIGHT_HISTORICAL.png"), width = AVG_WEIGHT_CHART_WIDTH, height = AVG_WEIGHT_CHART_HEIGHT)
   
@@ -109,9 +106,9 @@ SA_AVG_WEIGHT_FISHERY_PLOT =
     color_by = "FISHERY",
     colors = FI_COLORS[!FISHERY_CODE %in% AVG_WEIGHT_FISHERIES_TO_EXCLUDE],
     plot_points = TRUE,
-    x_axis_label = "Year",
+    x_axis_label = "",
     y_axis_label = "Average fish weight (kg)"
-  )
+  ) + theme(legend.position = "bottom")
 
 ggsave(SA_AVG_WEIGHT_FISHERY_PLOT, filename = output_folder(SPECIES, LOCAL_FOLDER, "avg_weight/AVG_WEIGHT_BY_FISHERY.png"), width = AVG_WEIGHT_CHART_WIDTH, height = AVG_WEIGHT_CHART_HEIGHT)
 
@@ -158,8 +155,8 @@ AW_SF_PLOT = line.value(
   colors = FI_COLORS[FISHERY_CODE %in% unique(AW_SF$FISHERY)],
   plot_points = TRUE,
   num_legend_rows = 1,
-  x_axis_label = "Year",
+  x_axis_label = "",
   y_axis_label = "Average fish weight (kg)"
-)
+) + theme(legend.position = "bottom")
 
 ggsave(AW_SF_PLOT, filename = output_folder(SPECIES, LOCAL_FOLDER, "avg_weight/AVG_WEIGHT_BY_FISHERY_SF.png"), width = AVG_WEIGHT_CHART_WIDTH, height = AVG_WEIGHT_CHART_HEIGHT)

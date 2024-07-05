@@ -68,7 +68,7 @@ SAMPLES_BY_SIZE_PLOT =
     y_axis_label = "% of individuals",
     plot_points = TRUE,
     colors = SAMPLES_SOURCE_COLORS #color_table(unique_colors(3))
-  )
+  ) + theme(legend.position = "bottom")
 
 ggsave(SAMPLES_BY_SIZE_PLOT, file = output_folder(SPECIES, LOCAL_FOLDER, "samples/SAMPLES_DISTRIBUTION.png"), width = 12, height = 6.75) 
 
@@ -110,9 +110,9 @@ SAMPLES_BY_TYPE_PLOT = bar.value(
   scale = 1000000,
   fill_by = "TYPE",
   colors = SAMPLES_TYPE_COLORS,
-  x_axis_label = "Year",
+  x_axis_label = "",
   y_axis_label = "Number of individuals (x 1,000,000)"
-)
+) + theme(legend.position = "bottom")
 
 ggsave(SAMPLES_BY_TYPE_PLOT, file = output_folder(SPECIES, LOCAL_FOLDER, "samples/SAMPLES_BY_TYPE.png"), width = 12, height = 6.75) 
 
@@ -158,7 +158,7 @@ SAMPLES_Y_PLOT =
     colors = color_table(unique_colors(2)),
     x_axis_label = "Year",
     y_axis_label = "Number of fish (x 1,000,000)"
-  )
+  ) + theme(legend.position = "bottom")
 
 ggsave(SAMPLES_Y_PLOT, file = output_folder(SPECIES, LOCAL_FOLDER, "samples/SAMPLES_BY_SOURCE.png"), width = 12, height = 6.75) 
 
