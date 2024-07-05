@@ -41,7 +41,7 @@ source("./06.1.produce_SAMPLES.R")
 source("./06.2.produce_CAS_NO.R")
 source("./06.3.produce_CAS_W.R")
 
-if(!is.na(AL_METHOD)) {
+if(!is.na(AL_METHOD)) { 
   source("./06.4.produce_CAA_NO.R")
   source("./06.5.produce_CAA_W.R")
 }

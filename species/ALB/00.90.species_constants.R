@@ -10,17 +10,25 @@
 #LOCAL_FOLDER  = "TCAC11"
 #REMOTE_FOLDER = "TCAC11" 
 
-WP_CURRENT    = "2023-05"
-LOCAL_FOLDER  = "2023-05"
-REMOTE_FOLDER = "2023_05_25" 
+#WP_CURRENT    = "2023-05"
+#LOCAL_FOLDER  = "2023-05"
+#REMOTE_FOLDER = "2023_05_25" 
+
+WP_CURRENT    = "2023-tcac12"
+LOCAL_FOLDER  = "TCAC12"
+REMOTE_FOLDER = "TCAC12v2" 
 
 SA_MAIN_FILE  = "WPTmT_ALB_SA(SS3).accdb"
 
 # L-W conversion : Length-weight relationships for tropical tunas caught with purse seine in the Indian Ocean: Update and lessons learned (Chassot, E. et al in IOTC-2016-WPDSC12-INF05)
 LW_EQ = data.table(FISHERY_TYPE = c("PSPLGI", "LLOT"), # Different equations For PS / PL / GI and LL / OT
-                   A = c(0.0000137180, 0.0000137180), 
-                   B = c(3.0973000000, 3.0973000000),
+                   #A = c(0.0000137180, 0.0000137180), 
+                   #B = c(3.0973000000, 3.0973000000),
+                   #M = c(1.0000000000, 1.0000000000)) # No diffs between gears in ALB L-W equations 
+                   A = c(0.0000569070, 0.0000569070), 
+                   B = c(2.7514000000, 2.7514000000),
                    M = c(1.0000000000, 1.0000000000)) # No diffs between gears in ALB L-W equations 
+                   
 
 # Age-Length slicing method
 AL_METHOD = "SLWE1"
@@ -40,10 +48,11 @@ WPS_FACTORS = c(#"2008", "2010", "2011", "2012", "2013", "2014",
                 "2022-as", 
                 "2022-as-alt",
                 "2023-tcac",
-                "2023-05")
+                "2023-05",
+                "2023-tcac12")
 
-WPS_RECENT_FACTORS = c("2019-a1", "2019-a2", "2019-a3", 
-                       "2022-dp", "2022-as", "2022-as-alt",
-                       "2023-tcac", "2023-05")
+WPS_RECENT_FACTORS = c("2019-a1",   "2019-a2", "2019-a3", 
+                       "2022-dp",   "2022-as", "2022-as-alt",
+                       "2023-tcac", "2023-05", "2023-tcac12")
 
 AVG_WEIGHT_FISHERIES_TO_EXCLUDE = c("OT1", "OT2", "OT3", "OT4", "PS2", "PS3", "PS4")
