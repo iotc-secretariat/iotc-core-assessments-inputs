@@ -1,6 +1,6 @@
-WP_CURRENT    = "2024-WPTT26-DP"
-LOCAL_FOLDER  = "WPTT26-DP"
-REMOTE_FOLDER = "WPTT26_DP" 
+WP_CURRENT    = "2024-WPTT26-AS"
+LOCAL_FOLDER  = "WPTT26-AS"
+REMOTE_FOLDER = "WPTT26_AS" 
 
 #SA_MAIN_FILE  = "WPTT_YFT_SA(MFCL).mdb"   # Deprecated
 
@@ -45,7 +45,8 @@ WPS_FACTORS = c("2008-WPTT10",
                 "2018-WPTT20", 
                 "2019-WPTT21", 
                 "2021-WPTT23-AS", 
-                "2024-WPTT26-DP")
+                "2024-WPTT26-DP", 
+                "2024-WPTT26-AS")
 
 # WPS_RECENT_FACTORS = c("2016",
 #                        "2018",
@@ -59,6 +60,7 @@ WPS_FACTORS = c("2008-WPTT10",
 WPS_RECENT_FACTORS = c("2018-WPTT20", 
                 "2019-WPTT21", 
                 "2021-WPTT23-AS", 
-                "2024-WPTT26-DP")
+                "2024-WPTT26-DP", 
+                "2024-WPTT26-AS")
 
 AVG_WEIGHT_FISHERIES_TO_EXCLUDE = c("HD", "TR", "OT") 

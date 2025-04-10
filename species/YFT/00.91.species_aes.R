@@ -14,7 +14,7 @@ AR_COLORS = rbind(AR_COLORS, AR_COLOR_4)
 AR_COLORS = rbind(AR_COLORS, AR_COLOR_5)
 AR_COLORS = rbind(AR_COLORS, AR_COLOR_0)
 
-# Color constants for original areas
+# Colour constants for original areas
 
 AR_ORIG_COLORS = AR_COLORS
 

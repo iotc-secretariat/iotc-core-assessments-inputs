@@ -87,3 +87,4 @@ setkey(AL_KEYS, LengthFrom, LengthTo) # Necessary to be able to use 'foverlaps'
 
 save(list = "AL_KEYS", file = input_folder(SPECIES, LOCAL_FOLDER, "CAS/AGE_LENGTH_KEYS.RData"))
 write.csv(AL_KEYS,     file = input_folder(SPECIES, LOCAL_FOLDER, "CAS/AGE_LENGTH_KEYS.csv"), row.names = FALSE)
+
