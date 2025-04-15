@@ -17,7 +17,7 @@ CESF_U = unique(CESF[, .(FLEET, GEAR_CODE, SCHOOL_TYPE_CODE, AREA = TARGET_FISHI
 CESF_U[,                                                                             FISHERY := "OT"]
 CESF_U[GEAR_CODE %in% c("LL", "LLOB", "FLL", "LLCO", "ELL", "ELLOB", "SLL", "LLEX"), FISHERY := "LL"]
 CESF_U[GEAR_CODE %in% c("PS", "PSOB"),                                               FISHERY := "PS"]
-CESF_U[GEAR_CODE %in% c("GILL") & FLEET == "TWN",                                    FISHERY := "DN"]
+CESF_U[GEAR_CODE %in% c("GIOF") & FLEET == "TWN",                                    FISHERY := "DN"]
 
 CESF_U$AREA = factor(
   CESF_U$AREA,
@@ -30,8 +30,8 @@ CESF_U$AREA_ORIG = CESF_U$AREA
 
 CESF_U[FISHERY == "OT" & FLEET == "MDV", AREA := "A1"]
 CESF_U[FISHERY == "OT" & FLEET == "AUS", AREA := "A4"]
-CESF_U[FISHERY == "DN" & FLEET == "TWN" & AREA_ORIG == "A1",  AREA := "A3"]
-CESF_U[FISHERY == "DN" & FLEET == "TWN" & AREA_ORIG == "A2",  AREA := "A4"]
+CESF_U[FISHERY == "DN" & FLEET == "TWN" & AREA_ORIG == "A1",  AREA := "A3"]    # not sure this makes sense
+CESF_U[FISHERY == "DN" & FLEET == "TWN" & AREA_ORIG == "A2",  AREA := "A4"]    # not sure this makes sense
 
 CESF_U = unique(CESF_U)
 

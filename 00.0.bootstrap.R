@@ -5,14 +5,14 @@ library(iotc.base.common.plots)
 library(RODBC)
 
 # Change this to run the process for a different species (that will self-configure)
-SPECIES = "YFT" 
+SPECIES = "ALB" 
 
 source("./00.1.common_constants.R")
 source("./00.2.helpers_misc.R")
 
-source(species_folder(SPECIES, "./00.90.species_constants.R"))
-source(species_folder(SPECIES, "./00.91.species_aes.R"))
-source(species_folder(SPECIES, "./00.92.species_area_fishery.R"))
+source(species_folder(SPECIES, "00.90.species_constants.R"))
+source(species_folder(SPECIES, "00.91.species_aes.R"))
+source(species_folder(SPECIES, "00.92.species_area_fishery.R"))
 
 source("./00.3.helpers_SF_area.R")
 source("./00.4.helpers_fishery_area.R")

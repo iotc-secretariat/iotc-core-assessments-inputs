@@ -140,7 +140,7 @@ CE_R_FIA_Q =
       CE_raised
     )
   )[, .(EST_MT = sum(EST_MT, na.rm = TRUE), EST_NO = sum(EST_NO, na.rm = TRUE)),
-        keyby = .(FISHERY, AREA, AREA_ORIG, YEAR , QUARTER)]
+        keyby = .(FISHERY, AREA, AREA_ORIG, YEAR, QUARTER)]
 
 l_info("Building raised CE by FL / FI / A / Y / Q...")
 
@@ -150,7 +150,7 @@ CE_R_FIA_Q_FL =
       CE_raised
     )
   )[, .(EST_MT = sum(EST_MT, na.rm = TRUE), EST_NO = sum(EST_NO, na.rm = TRUE)),
-    keyby = .(FISHERY, AREA, AREA_ORIG, YEAR , QUARTER, FLEET)]
+    keyby = .(FISHERY, AREA, AREA_ORIG, YEAR, QUARTER, FLEET)]
 
 l_info("Building alternative raised CE by FI / A / Y / Q...")
 
