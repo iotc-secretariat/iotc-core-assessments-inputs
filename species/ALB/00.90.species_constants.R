@@ -7,7 +7,7 @@
 # REMOTE_FOLDER = "TCAC12v2" 
 
 WP_CURRENT      = "2025-as"
-LOCAL_FOLDER    = "WPTmT08-AS"  # name of the folder in the local project repository
+LOCAL_FOLDER    = "WPTmT09-AS"  # name of the folder in the local project repository
 REMOTE_FOLDER   = "WPTmT08_DP"  # name of the folder on the IOTC server IOTCS08 (z:)
 
 # SA_MAIN_FILE  = "WPTmT_ALB_SA(SS3).accdb"   # commented by manu on 2025-04-10 to check if deprecated
@@ -44,8 +44,8 @@ WPS_FACTORS = c("2022-as",
                 "2008")
                 
 
-#WPS_RECENT_FACTORS = c("2019-a1",   "2019-a2", "2019-a3", 
-                       "2022-dp",   "2022-as", "2022-as-alt",
-                       "2023-tcac", "2023-05", "2023-tcac12")
+WPS_RECENT_FACTORS = c("2022-as", 
+                       "2022-dp", 
+                       "2019-a3", "2019-a2", "2019-a1")
 
 AVG_WEIGHT_FISHERIES_TO_EXCLUDE = c("OT1", "OT2", "OT3", "OT4", "PS2", "PS3", "PS4")
