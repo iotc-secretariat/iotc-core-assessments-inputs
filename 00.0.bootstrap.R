@@ -5,17 +5,17 @@ library(iotc.base.common.plots)
 library(RODBC)
 
 # Change this to run the process for a different species (that will self-configure)
-SPECIES = "ALB" 
+SPECIES = "BET" 
 
 source("./00.1.common_constants.R")
 source("./00.2.helpers_misc.R")
 
 source(species_folder(SPECIES, "00.90.species_constants.R"))
 source(species_folder(SPECIES, "00.91.species_aes.R"))
-source(species_folder(SPECIES, "00.92.species_area_fishery.R"))
+source(species_folder(SPECIES, "00.92.species_area_fishery.R"))  
 
 source("./00.3.helpers_SF_area.R")
-source("./00.4.helpers_fishery_area.R")
+#source("./00.4.helpers_fishery_area.R")  # function fishing_grounds_data() down
 source("./00.5.helpers_size_class_and_bin.R")
 
 source("./01.1.configure_data_access.R")

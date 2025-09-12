@@ -7,7 +7,7 @@ IO_AREAS = iotc.core.gis.wkt::fishing_grounds_data(c("IRFAO51", "IRFAO57"), conn
 # loads all standard IOTC libs fishery colours
 ALL_FI_COLORS = iotc.core.utils.aes::all_fishery_colors()
 
-REMOTE_FOLDER_BASE_PREFIX = "Z:/03 - Data/05_Data_processing/03_Data_raising/01_Catch_data_SA/SA"
+REMOTE_FOLDER_BASE_PREFIX = "Z:\\03_Data\\05_Data_processing\\03_Data_raising\\01_Catch_data_SA\\SA"
 
 CAS_FILES_PREFIX = paste0(REMOTE_FOLDER_BASE_PREFIX, "/CAS/")
 SA_FILES_PREFIX  = paste0(REMOTE_FOLDER_BASE_PREFIX, "/Assessment/")

@@ -1,13 +1,13 @@
-WP_CURRENT    = "2023-as"
-LOCAL_FOLDER  = "WPTT25-AS"
-REMOTE_FOLDER = "WPTT25_AS"
+WP_CURRENT    = "2025-dp"
+LOCAL_FOLDER  = "WPTT27-DP"
+REMOTE_FOLDER = "WPTT27_DP"
 
 # WAS:
 #WP_CURRENT    = "2023-TCAC"
 #LOCAL_FOLDER  = "TCAC11"
 #REMOTE_FOLDER = "TCAC11" # TWN LL and Logbook SF data (2003+) removed, LLOB data all kept
 
-SA_MAIN_FILE  = "WPTT_BET_SA(SS3).mdb"
+# SA_MAIN_FILE  = "WPTT_BET_SA(SS3).mdb"  # commented as should not be used  02/09/2025
 
 # L-W conversion : Length-weight relationships for tropical tunas caught with purse seine in the Indian Ocean: Update and lessons learned (Chassot, E. et al in IOTC-2016-WPDSC12-INF05)
 LW_EQ = data.table(FISHERY_TYPE = c("PSPLGI", "LLOT"), # Different equations For PS / PL / GI and LL / OT
@@ -38,8 +38,10 @@ WPS_FACTORS = c(#"2008",
                 "2022-as",
                 "2023-tcac",
                 "2023-dp",
-                "2023-as")
+                "2023-as", 
+                "2025-dp", 
+                "2025-as")
 
-WPS_RECENT_FACTORS = c("2014", "2016", "2019", "2022-dp", "2022-as", "2023-tcac", "2023-dp", "2023-as")
+WPS_RECENT_FACTORS = c("2014", "2016", "2019", "2022-dp", "2022-as", "2023-tcac", "2023-dp", "2023-as", "2025-dp", "2025-as")
 
-AVG_WEIGHT_FISHERIES_TO_EXCLUDE = c() 
+AVG_WEIGHT_FISHERIES_TO_EXCLUDE = c()
