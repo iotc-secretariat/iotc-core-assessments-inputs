@@ -1,5 +1,4 @@
 ### Processing of VW_SF_<species code>
-
 load(input_folder(SPECIES, LOCAL_FOLDER, "IOTDB/SF_FL_WITH_SAMPLES.RData"))
 load(input_folder(SPECIES, LOCAL_FOLDER, "CAS/SF_strata_to_delete.RData"))
 

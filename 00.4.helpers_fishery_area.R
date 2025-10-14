@@ -43,7 +43,7 @@ initialize_species_specific_area_mappings = function(species) {
 }
 
 retrieve_areas = function(sa_areas_configuration = SA_AREAS_CONFIG) {
-  areas = iotc.core.gis.wkt::fishing_grounds_data(fishing_ground_codes = sa_areas_configuration$IOTC_CODE, connection = IOTC)
+  areas = fishing_grounds_data(fishing_ground_codes = sa_areas_configuration$IOTC_CODE, connection = IOTC)
   areas = merge(areas, sa_areas_configuration,
                 by.x = "CODE",
                 by.y = "IOTC_CODE",
@@ -63,8 +63,7 @@ retrieve_areas = function(sa_areas_configuration = SA_AREAS_CONFIG) {
 
 grid_to_area_mappings = function(sa_areas_configuration = SA_AREAS_CONFIG, grid_type_code = grid_5x5) {
   return(
-    iotc.core.gis.cwp.IO::grid_intersections_by_source_grid_type(target_grid_codes = sa_areas_configuration$IOTC_CODE, 
-                                                                 source_grid_type_code = grid_type_code)
+    grid_intersections_by_source_grid_type(source_grid_type_code = grid_type_code, target_grid_codes = sa_areas_configuration$IOTC_CODE)
   )
 }
 

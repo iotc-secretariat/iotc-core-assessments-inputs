@@ -15,7 +15,7 @@ source(species_folder(SPECIES, "00.91.species_aes.R"))
 source(species_folder(SPECIES, "00.92.species_area_fishery.R"))  
 
 source("./00.3.helpers_SF_area.R")
-#source("./00.4.helpers_fishery_area.R")  # function fishing_grounds_data() down
+source("./00.4.helpers_fishery_area.R")
 source("./00.5.helpers_size_class_and_bin.R")
 
 source("./01.1.configure_data_access.R")
@@ -23,7 +23,7 @@ source("./01.1.configure_data_access.R")
 # Scripts below read all relevant datasets from the Access DB files (for the SA) and from the IOTDB
 if(TRUE) {   
   source("./02.1.read_inputs_SA.R")
-  source("./02.2.read_inputs_IOTDB.R")
+  source("./02.2.read_inputs_IOTDB.R")  # need to map fishing grounds to regular grids?
 }
 
 #source("./03.1.prepare_inputs_SA_CE_all.R")
