@@ -2,7 +2,7 @@ IOTDB = DB_IOTDB()
 IOTC  = DB_IOTCSTATISTICS()
 
 # loads the shapefiles of the IOTC competence area
-IO_AREAS = iotc.core.gis.wkt::fishing_grounds_data(c("IRFAO51", "IRFAO57"), connection = IOTC)
+IO_AREAS = iotc.core.gis.wkt::fishing_grounds_data(c("IRFAO51", "IRFAO57")) #, connection = IOTC)
 
 # loads all standard IOTC libs fishery colours
 ALL_FI_COLORS = iotc.core.utils.aes::all_fishery_colors()

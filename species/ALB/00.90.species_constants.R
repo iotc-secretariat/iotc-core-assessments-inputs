@@ -6,9 +6,9 @@
 # LOCAL_FOLDER  = "TCAC12"
 # REMOTE_FOLDER = "TCAC12v2" 
 
-WP_CURRENT      = "2025-as"
-LOCAL_FOLDER    = "WPTmT09-AS"  # name of the folder in the local project repository
-REMOTE_FOLDER   = "WPTmT08_DP"  # name of the folder on the IOTC server IOTCS08 (z:)
+WP_CURRENT      = "2026-tcac"
+LOCAL_FOLDER    = "TCAC16"  # name of the folder in the local project repository
+REMOTE_FOLDER   = "TCAC16"  # name of the folder on the IOTC server IOTCS08 (z:)
 
 # SA_MAIN_FILE  = "WPTmT_ALB_SA(SS3).accdb"   # commented by manu on 2025-04-10 to check if deprecated
 

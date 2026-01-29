@@ -43,7 +43,7 @@ initialize_species_specific_area_mappings = function(species) {
 }
 
 retrieve_areas = function(sa_areas_configuration = SA_AREAS_CONFIG) {
-  areas = fishing_grounds_data(fishing_ground_codes = sa_areas_configuration$IOTC_CODE, connection = IOTC)
+  areas = fishing_grounds_data(fishing_ground_codes = sa_areas_configuration$IOTC_CODE) #, connection = IOTC)
   areas = merge(areas, sa_areas_configuration,
                 by.x = "CODE",
                 by.y = "IOTC_CODE",
