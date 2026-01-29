@@ -33,7 +33,7 @@ if(FALSE) { # DEPRECATED
 # The list of SF strata (YEAR + FLEET + GEAR) to be deleted
 SF_strata_DEL = unique(get_table(IN, "0StrataSF")[Table == SPECIES])
 
-if(SPECIES == "SKJ") { # This should only apply to SKJ for the time being
+if(SPECIES == "COM") { # This should only apply to SKJ for the time being   # changed SKJ to COM as school type absen from table 0StrataSF so this is not working
   SF_strata_DEL = SF_strata_DEL[, .(YEAR = Year,
                                     FLEET = str_trim(Fleet),
                                     GEAR_CODE = str_trim(Gear),

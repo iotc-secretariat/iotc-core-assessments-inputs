@@ -1,8 +1,8 @@
-WP_CURRENT    = "2023-as"
-LOCAL_FOLDER  = "WPTT25-AS"
-REMOTE_FOLDER = "WPTT25_AS"
+WP_CURRENT    = "2026-tcac"
+LOCAL_FOLDER  = "TCAC16"
+REMOTE_FOLDER = "TCAC16"
 
-SA_MAIN_FILE  = "WPTT_SKJ_SA(SS3).mdb"
+# SA_MAIN_FILE  = "WPTT_SKJ_SA(SS3).mdb"
 
 ########################################
 # TO BE UPDATED WITH SKJ SPECIFIC DATA #
@@ -37,7 +37,8 @@ WPS_FACTORS = c("2010",
                 "2023-tcac",
                 "2023-dp",
                 #"2023-dp-alt",
-                "2023-as")
+                "2023-as", 
+                "2026-tcac")
 
 WPS_RECENT_FACTORS = c(#"2014", 
                        #"2016", 
@@ -48,6 +49,7 @@ WPS_RECENT_FACTORS = c(#"2014",
                        "2023-tcac",
                        "2023-dp",
                        #"2023-dp-alt",
-                       "2023-as")
+                       "2023-as", 
+                       "2026-tcac")
 
 AVG_WEIGHT_FISHERIES_TO_EXCLUDE = c() 

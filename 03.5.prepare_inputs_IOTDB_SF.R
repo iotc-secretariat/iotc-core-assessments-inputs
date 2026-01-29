@@ -68,7 +68,7 @@ remove_SF_strata = function(raw_data, strata_to_delete) {
   
   l_info("List of S-F strata to be deleted:")
   
-  if(SPECIES == "SKJ") { # Temporarily only applies to SKJ
+  if(SPECIES == "COM") { # Temporarily only applies to SKJ # Changed to COM as school type is missing from strata_to_delete as it is missing from the input 0StrataSF table
     print(strata_to_delete[order(+FLEET, +GEAR_CODE, +SCHOOL_TYPE_CODE, -YEAR)])
   } else {
     print(strata_to_delete[order(+FLEET, +GEAR_CODE, -YEAR)])
@@ -76,7 +76,7 @@ remove_SF_strata = function(raw_data, strata_to_delete) {
   
   # Diagnostics after samples deletion...
   
-  if(SPECIES == "SKJ") { # Temporarily only applies to SKJ
+  if(SPECIES == "COM") { # Temporarily only applies to SKJ  # Changed to COM as school type is missing from strata_to_delete as it is missing from the input 0StrataSF table
     raw_data = merge(copy(raw_data), strata_to_delete, by = c("YEAR", "FLEET", "GEAR_CODE", "SCHOOL_TYPE_CODE"), all.x = TRUE)
   }  else {
     raw_data = merge(copy(raw_data), strata_to_delete, by = c("YEAR", "FLEET", "GEAR_CODE"), all.x = TRUE)
