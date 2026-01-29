@@ -32,7 +32,8 @@ DEFAULT_SIZE_INTERVAL   =   1
 DEFAULT_FIRST_CLASS_LOW =  30
 DEFAULT_LAST_CLASS_LOW  =  DEFAULT_FIRST_CLASS_LOW + ( DEFAULT_NUM_SIZE_BINS - 1 ) * DEFAULT_SIZE_INTERVAL
 
-WPS_FACTORS = c("2022-as", 
+WPS_FACTORS = c("2026-tcac", 
+                "2022-as", 
                 "2022-dp", 
                 "2019-a3", "2019-a2", "2019-a1", "2019-p", 
                 "2016", 
@@ -44,7 +45,8 @@ WPS_FACTORS = c("2022-as",
                 "2008")
                 
 
-WPS_RECENT_FACTORS = c("2022-as", 
+WPS_RECENT_FACTORS = c("2026-tcac", 
+                       "2022-as", 
                        "2022-dp", 
                        "2019-a3", "2019-a2", "2019-a1")
 
