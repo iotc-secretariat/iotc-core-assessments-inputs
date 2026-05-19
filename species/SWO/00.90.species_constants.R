@@ -1,14 +1,14 @@
-WP_CURRENT    = "2026-tcac"
-LOCAL_FOLDER  = "TCAC16"
-REMOTE_FOLDER = "TCAC16"
-
-# SA_MAIN_FILE  = "WPB_SWO_SA(SS3).accdb"
+WP_CURRENT    = "2026-wpb"
+LOCAL_FOLDER  = "WPB24"
+REMOTE_FOLDER = "WPB24"
 
 # L-W conversion : Length-weight relationships for swordfish from "Data from the Atlantic Ocean, Spanish longline fishery (Mejuto et al., 1988, ICCAT)"
-LW_EQ = data.table(FISHERY_TYPE = c("PSPLGI", "LLOT"), # Same equations For PS / PL / GI and LL / OT
-                   A = c(0.000004203, 0.000004203), 
-                   B = c(3.213400000, 3.213400000),
-                   M = c(1.000000000, 1.000000000))
+# LW_EQ = data.table(FISHERY_TYPE = c("PSPLGI", "LLOT"), # Same equations For PS / PL / GI and LL / OT
+#                    A = c(0.000004203, 0.000004203), 
+#                    B = c(3.213400000, 3.213400000),
+#                    M = c(1.000000000, 1.000000000))
+
+LW_EQ = iotc.base.common.std::DEFAULT_IOTC_LW_EQUATIONS[SPECIES == "SWO", .(FISHERY_TYPE = GEAR_TYPE, A, B, M = C)]
 
 # Age-Length slicing method
 AL_METHOD = "DMSP2"
@@ -27,10 +27,12 @@ WPS_FACTORS = c("2011",
                 "2023-tcac",
                 "WPB21",
 #                "2023-tcac2", 
-                "2026-tcac")
+                "2026-tcac", 
+                "2026-wpb"  
+                )
 
 WPS_RECENT_FACTORS = c("2011", "2012", "2014", "2017", 
                        #"2018", 
-                       "2023-tcac", "WPB21", "2026-tcac")
+                       "2023-tcac", "WPB21", "2026-tcac", "2026-wpb")
 
 AVG_WEIGHT_FISHERIES_TO_EXCLUDE = c()
