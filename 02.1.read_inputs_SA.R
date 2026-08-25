@@ -46,6 +46,12 @@ CE_raised[, Fleet := trimws(Fleet)]
 CE_raised[, SchoolType := trimws(SchoolType)]
 CE_raised[, Gear := trimws(Gear)]
 
+CE_for_SF[, Fleet := trimws(Fleet)]
+CE_for_SF[, SchoolType := trimws(SchoolType)]
+CE_for_SF[, Gear := trimws(Gear)]
+
+
+
 save(list = "CE_all",    file = input_folder(SPECIES, LOCAL_FOLDER, "CAS/CE_all.RData"))
 save(list = "CE_raised", file = input_folder(SPECIES, LOCAL_FOLDER, "CAS/CE_raised.RData"))
 save(list = "CE_for_SF", file = input_folder(SPECIES, LOCAL_FOLDER, "CAS/CE_for_SF.RData"))
