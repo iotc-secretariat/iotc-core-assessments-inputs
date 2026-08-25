@@ -126,8 +126,16 @@ SF_SAMPLE_NUMBERS_RAW[is.na(FISHING_GROUND_CODE) & substr(LEGACY_REGULAR_FISHING
 SF_SAMPLE_NUMBERS = SF_SAMPLE_NUMBERS_RAW[, .(SAMPLE_SIZE = sum(SAMPLE_SIZE)), keyby = .(YEAR, MONTH_START, MONTH_END, FLEET_CODE, GEAR_CODE, SCHOOL_TYPE_CODE, FISHING_GROUND_CODE)]  #, RAISE_CODE, QUALITY_CODE
 
 # Add sample size to size frequency data
-SF_DATA = query(IOTDB, paste0("SELECT * FROM vwSF", SPECIES))
+SF_DATA = query(DB_IOTDB(), paste0("SELECT * FROM vwSF", SPECIES))
 
+setnames(SF_DATA, old = "Grid", new = "Legacy_Grid")
+
+# Irregular areas using "regular" format (e.g., 2100040)
+SF_DATA <- merge(SF_DATA, sf_area_mapping[, .(LEGACY_FISHING_GROUND_CODE, Grid = FISHING_GROUND_CODE)], by.x = "Legacy_Grid", by.y = "LEGACY_FISHING_GROUND_CODE", all.x = TRUE)
+
+SF_DATA[is.na(Grid), Grid := Legacy_Grid][, Legacy_Grid := NULL]
+
+# Combine size-frequency datasets with sample numbers
 SF_FL_WITH_SAMPLES = merge(SF_DATA, SF_SAMPLE_NUMBERS, by.x = c("Year", "MonthStart", "MonthEnd", "Fleet", "Gear", "SchoolType", "Grid"), by.y = c("YEAR", "MONTH_START", "MONTH_END", "FLEET_CODE", "GEAR_CODE", "SCHOOL_TYPE_CODE", "FISHING_GROUND_CODE"))
 
 save(list = "SF_FL_WITH_SAMPLES", file = input_folder(SPECIES, LOCAL_FOLDER, "IOTDB/SF_FL_WITH_SAMPLES.RData"))

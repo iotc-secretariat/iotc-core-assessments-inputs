@@ -1,7 +1,7 @@
 # The list of SF strata (YEAR + FLEET + GEAR) to be deleted
 SF_strata_DEL = unique(get_table(IN, "0StrataSF")[Table == SPECIES])
 
-if(SPECIES == "COM") { # This should only apply to SKJ for the time being   # changed SKJ to COM as school type absen from table 0StrataSF so this is not working
+if(SPECIES == "COM") { # This should only apply to SKJ for the time being   # changed SKJ to COM as school type absent from table 0StrataSF so this is not working
   SF_strata_DEL = SF_strata_DEL[, .(YEAR = Year,
                                     FLEET = str_trim(Fleet),
                                     GEAR_CODE = str_trim(Gear),
@@ -63,5 +63,5 @@ AL_KEYS[, LengthTo := LengthTo - .01]
 setkey(AL_KEYS, LengthFrom, LengthTo) # Necessary to be able to use 'foverlaps'
 
 save(list = "AL_KEYS", file = input_folder(SPECIES, LOCAL_FOLDER, "CAS/AGE_LENGTH_KEYS.RData"))
-write.csv(AL_KEYS,     file = input_folder(SPECIES, LOCAL_FOLDER, "CAS/AGE_LENGTH_KEYS.csv"), row.names = FALSE)
+write.csv(AL_KEYS, file = input_folder(SPECIES, LOCAL_FOLDER, "CAS/AGE_LENGTH_KEYS.csv"), row.names = FALSE)
 
