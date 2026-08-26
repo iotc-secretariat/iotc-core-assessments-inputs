@@ -9,10 +9,10 @@ REMOTE_FOLDER <- "WPTT28_AS"  # name of the folder on the IOTC server IOTCS08 (z
 ########################################
 
 # L-W conversion : Length-weight relationships for tropical tunas caught with purse seine in the Indian Ocean: Update and lessons learned (Chassot, E. et al in IOTC-2016-WPDSC12-INF05)
-# LW_EQ <- data.table(FISHERY_TYPE = c("PSPLGI", "LLOT"), # Different equations For PS / PL / GI and LL / OT - BUT NOT IN THE CASE OF SKJ, HENCE THE VALUES ARE THE SAME
-#                    A = c(0.0000049700, 0.0000049700), 
-#                    B = c(3.3929200000, 3.3929200000),
-#                    M = c(1.0000000000, 1.0000000000))
+LW_EQ <- data.table(FISHERY_TYPE = c("PSPLGI", "LLOT"), # Different equations For PS / PL / GI and LL / OT - BUT NOT IN THE CASE OF SKJ, HENCE THE VALUES ARE THE SAME
+                    A = c(0.0000049700, 0.0000049700),
+                    B = c(3.3929200000, 3.3929200000),
+                    M = c(1.0000000000, 1.0000000000))
 
 # Age-Length slicing method
 AL_METHOD <- NA # NO CAA is produced for SKJ...
